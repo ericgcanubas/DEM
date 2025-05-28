@@ -1,0 +1,13 @@
+c:\users\administrator\documents\visual studio 2015\Projects\DEM\DEM\obj\Debug\DEM.vbprojResolveAssemblyReference.cache
+C:\Users\Administrator\Documents\Visual Studio 2015\Projects\DEM\DEM\obj\Debug\Interop.ADOX.dll
+C:\Users\Administrator\Documents\Visual Studio 2015\Projects\DEM\DEM\obj\Debug\Interop.MSAdodcLib.dll
+C:\Users\Administrator\Documents\Visual Studio 2015\Projects\DEM\DEM\obj\Debug\DEM.vbproj.ResolveComReference.cache
+C:\Users\Administrator\Documents\Visual Studio 2015\Projects\DEM\DEM\bin\Debug\DEM.exe.config
+C:\Users\Administrator\Documents\Visual Studio 2015\Projects\DEM\DEM\bin\Debug\DEM.exe
+C:\Users\Administrator\Documents\Visual Studio 2015\Projects\DEM\DEM\bin\Debug\DEM.pdb
+C:\Users\Administrator\Documents\Visual Studio 2015\Projects\DEM\DEM\bin\Debug\DEM.xml
+C:\Users\Administrator\Documents\Visual Studio 2015\Projects\DEM\DEM\obj\Debug\DEM.Resources.resources
+C:\Users\Administrator\Documents\Visual Studio 2015\Projects\DEM\DEM\obj\Debug\DEM.vbproj.GenerateResource.Cache
+C:\Users\Administrator\Documents\Visual Studio 2015\Projects\DEM\DEM\obj\Debug\DEM.exe
+C:\Users\Administrator\Documents\Visual Studio 2015\Projects\DEM\DEM\obj\Debug\DEM.xml
+C:\Users\Administrator\Documents\Visual Studio 2015\Projects\DEM\DEM\obj\Debug\DEM.pdb
