@@ -11,3 +11,4 @@ C:\Users\Administrator\Documents\Visual Studio 2015\Projects\DEM\DEM\obj\Debug\D
 C:\Users\Administrator\Documents\Visual Studio 2015\Projects\DEM\DEM\obj\Debug\DEM.exe
 C:\Users\Administrator\Documents\Visual Studio 2015\Projects\DEM\DEM\obj\Debug\DEM.xml
 C:\Users\Administrator\Documents\Visual Studio 2015\Projects\DEM\DEM\obj\Debug\DEM.pdb
+C:\Users\Administrator\Documents\Visual Studio 2015\Projects\DEM\DEM\obj\Debug\DEM.FrmMain.resources

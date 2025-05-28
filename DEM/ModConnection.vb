@@ -5,7 +5,7 @@
     Public gbl_Database As String
     Public gbl_Server As String
     Public IsConnected As Boolean
-    Public Function getConnection()
+    Public Sub getConnection()
         ConnMain = New ADODB.Connection()
         Try
             With ConnMain
@@ -18,24 +18,12 @@
         Catch ex As Exception
             IsConnected = False
             MessageBox.Show(ex.Message)
-
             Application.Exit()
 
         End Try
 
+    End Sub
 
-
-
-
-
-
-
-    End Function
-    Public Function CollectionAllCashier()
-
-
-
-    End Function
 
 
     Public Function fDateIsEmpty(sValue As String) As String
@@ -53,5 +41,15 @@
         fSqlFormat = sValue.Replace("'", "`")
 
     End Function
+    Public Function fNum(sValue As Object) As Double
+
+        If IsDBNull(sValue) = True Then
+            fNum = 0
+        Else
+            fNum = Val(sValue)
+        End If
+
+    End Function
+
 
 End Module

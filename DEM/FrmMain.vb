@@ -1,36 +1,91 @@
 ﻿Public Class FrmMain
     Private Sub btnExport_Click(sender As Object, e As EventArgs) Handles btnExport.Click
-        Dim DBNAME As String = CreateSmallDatabase()
 
-        If DBNAME <> "" Then
-            btnExport.Enabled = False
-            Dim str As String = getConString(DBNAME)
-            conn = New ADODB.Connection()
-            conn.Open(str)
+        saveIt()
 
-            CreateTable_tbl_PCPOS_Cashiers()
-            Collect_tbl_PCPOS_Cashiers(pbLoading, lblLoading)
+    End Sub
+    Private Sub saveIt()
 
-            CreateTable_tbl_bank()
-            Collect_tbl_Bank(pbLoading, lblLoading)
 
-            CreateTable_tbl_banks()
-            Collect_tbl_Banks(pbLoading, lblLoading)
+        Dim saveFileDialog As New SaveFileDialog()
 
-            CreateTable_tbl_Bank_Terms()
-            Collect_tbl_Bank_Terms(pbLoading, lblLoading)
+        ' Optional: Set filters and default settings
+        ' Set filter for .mdb files
+        saveFileDialog.Filter = ""
+        saveFileDialog.Title = "Save data"
+        saveFileDialog.DefaultExt = ""
+        saveFileDialog.FileName = "main" & DateTime.Now.ToString("yyyyMMMddHHmmss").ToLower() & ""
 
-            ' always last
-            CreateTable_tbl_ItemsForPLU()
-            Collect_tbl_ItemsForPLU(pbLoading, lblLoading)
+        If saveFileDialog.ShowDialog() = DialogResult.OK Then
+            ' Get the selected file path
+            GL_EXPORT_PATH = saveFileDialog.FileName
+            Dim DBNAME As String = CreateSmallDatabase()
 
-            btnExport.Enabled = True
-            MessageBox.Show("Successfully Export")
+            If DBNAME <> "" Then
+                btnExport.Enabled = False
+                chkIncludeItem.Enabled = False
+                Dim str As String = getConString(DBNAME)
+                conn = New ADODB.Connection()
+                conn.Open(str)
+
+                CreateTable_tbl_PCPOS_Cashiers()
+                Collect_tbl_PCPOS_Cashiers(pbLoading, lblLoading)
+
+                CreateTable_tbl_bank()
+                Collect_tbl_Bank(pbLoading, lblLoading)
+
+                CreateTable_tbl_banks()
+                Collect_tbl_Banks(pbLoading, lblLoading)
+
+                CreateTable_tbl_Bank_Terms()
+                Collect_tbl_Bank_Terms(pbLoading, lblLoading)
+
+                CreateTable_tbl_QRPay_Type()
+                Collect_tbl_QRPay_Type(pbLoading, lblLoading)
+
+                CreateTable_tbl_GiftCert_List()
+                Collect_tbl_GiftCert_List(pbLoading, lblLoading)
+
+                CreateTable_tbl_VPlus_Codes()
+                Collect_tbl_VPlus_Codes(pbLoading, lblLoading)
+
+                CreateTable_tbl_VPlus_Codes_Validity()
+                Collect_tbl_VPlus_Codes_Validity(pbLoading, lblLoading)
+
+                CreateTable_tbl_Bank_Changes()
+                Collect_tbl_Bank_Changes(pbLoading, lblLoading)
+
+                CreateTable_tbl_PCPOS_Cashiers_Changes()
+                Collect_tbl_PCPOS_Cashiers_Changes(pbLoading, lblLoading)
+
+                If chkIncludeItem.Checked = True Then
+                    CreateTable_tbl_ItemsForPLU()
+                    Collect_tbl_ItemsForPLU(pbLoading, lblLoading)
+                End If
+                lblLoading.Text = ""
+                btnExport.Enabled = True
+                chkIncludeItem.Enabled = True
+                Dim result As DialogResult = MessageBox.Show(
+                "File saved successfully at:" & vbCrLf & GL_EXPORT_PATH & vbCrLf & vbCrLf &
+                "Do you want to open the location?",
+                "File Saved",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            )
+
+                ' If user clicks Yes, open File Explorer and select the file
+                If result = DialogResult.Yes Then
+                    Process.Start("explorer.exe", "/select,""" & GL_EXPORT_PATH & """")
+                End If
+
+
+            End If
+
+            conn.Close()
+
         End If
 
-        conn.Close()
     End Sub
-
     Private Sub FrmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         gbl_Server = GetSetting("SYNCRONIZER", "MODE", "SERVER")
         gbl_Database = GetSetting("SYNCRONIZER", "MODE", "DATABASE")
