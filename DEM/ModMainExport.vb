@@ -308,6 +308,105 @@ Module ModMainExport
 
 
     End Sub
+
+    Public Sub CreateTable_tbl_Banks_Changes(pb As ProgressBar, l As Label)
+        Try
+            Dim createTableSql As String = "  CREATE TABLE tbl_Banks_Changes (
+                                                PK INTEGER PRIMARY KEY,
+                                                EffectDate DATETIME,
+                                                BankKey Integer,
+                                                [Changes] TEXT(50)
+                                            );"
+
+            conn.Execute(createTableSql)
+            Collect_tbl_Banks_Changes(pb, l)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "tbl_Banks_Changes")
+            Application.Exit()
+        End Try
+    End Sub
+    Private Sub Collect_tbl_Banks_Changes(pb As ProgressBar, l As Label)
+
+
+        rs = New ADODB.Recordset
+        rs.Open($"select * from tbl_Banks_Changes ", ConnMain, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_Banks_Changes :" & pb.Maximum & "/" & pb.Value
+                Application.DoEvents()
+                Dim strSQL As String = $"INSERT INTO tbl_Banks_Changes 
+                                    (PK,
+                                    EffectDate,
+                                    BankKey,
+                                    [Changes])
+                                    VALUES ('{fSqlFormat(rs.Fields("PK").Value)}',  
+                                    {fDateIsEmpty(rs.Fields("EffectDate").Value.ToString())},
+                                    {fNum(rs.Fields("BankKey").Value)},    
+                                    '{fSqlFormat(rs.Fields("Changes").Value)}'   
+                                   );"
+
+                conn.Execute(strSQL)
+                rs.MoveNext()
+            End While
+
+        End If
+
+    End Sub
+
+
+
+    Public Sub CreateTable_tbl_Bank_Changes(pb As ProgressBar, l As Label)
+        Try
+            Dim createTableSql As String = "  CREATE TABLE tbl_Bank_Changes (
+                                                PK INTEGER PRIMARY KEY,
+                                                EffectDate DATETIME,
+                                                BankKey Integer,
+                                                [Changes] TEXT(50)
+                                            );"
+
+            conn.Execute(createTableSql)
+            Collect_tbl_Bank_Changes(pb, l)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "tbl_Bank_Changes")
+            Application.Exit()
+        End Try
+    End Sub
+    Private Sub Collect_tbl_Bank_Changes(pb As ProgressBar, l As Label)
+
+
+        rs = New ADODB.Recordset
+        rs.Open($"select * from tbl_Bank_Changes", ConnMain, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_Bank_Changes :" & pb.Maximum & "/" & pb.Value
+                Application.DoEvents()
+                Dim strSQL As String = $"INSERT INTO tbl_Bank_Changes 
+                                    (PK,
+                                    EffectDate,
+                                    BankKey,
+                                    [Changes])
+                                    VALUES ('{fSqlFormat(rs.Fields("PK").Value)}',  
+                                    {fDateIsEmpty(rs.Fields("EffectDate").Value.ToString())},
+                                    {fNum(rs.Fields("BankKey").Value)},    
+                                    '{fSqlFormat(rs.Fields("Changes").Value)}'   
+                                   );"
+
+                conn.Execute(strSQL)
+                rs.MoveNext()
+            End While
+
+        End If
+
+    End Sub
+
     Public Sub CreateTable_tbl_Bank_Terms(pb As ProgressBar, l As Label)
         Try
             Dim createTableSql As String = "CREATE TABLE tbl_Bank_Terms (
@@ -468,6 +567,7 @@ Module ModMainExport
         End If
 
     End Sub
+
     Public Sub CreateTable_tbl_VPlus_Codes(pb As ProgressBar, l As Label)
         Try
             Dim createTableSql As String = "CREATE TABLE tbl_VPlus_Codes (
@@ -591,53 +691,6 @@ Module ModMainExport
 
     End Sub
 
-    Public Sub CreateTable_tbl_Bank_Changes(pb As ProgressBar, l As Label)
-        Try
-            Dim createTableSql As String = "  CREATE TABLE tbl_Bank_Changes (
-                                                PK INTEGER PRIMARY KEY,
-                                                EffectDate DATETIME,
-                                                BankKey Integer,
-                                                [Changes] TEXT(50)
-                                            );"
-
-            conn.Execute(createTableSql)
-            Collect_tbl_Bank_Changes(pb, l)
-        Catch ex As Exception
-            MessageBox.Show(ex.Message, "tbl_Bank_Changes")
-            Application.Exit()
-        End Try
-    End Sub
-    Private Sub Collect_tbl_Bank_Changes(pb As ProgressBar, l As Label)
-
-
-        rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_Bank_Changes", ConnMain, ADODB.CursorTypeEnum.adOpenStatic)
-        pb.Maximum = rs.RecordCount
-        pb.Value = 0
-        pb.Minimum = 0
-        If rs.RecordCount > 0 Then
-            While Not rs.EOF
-                pb.Value = pb.Value + 1
-                l.Text = "tbl_Bank_Changes :" & pb.Maximum & "/" & pb.Value
-                Application.DoEvents()
-                Dim strSQL As String = $"INSERT INTO tbl_Bank_Changes 
-                                    (PK,
-                                    EffectDate,
-                                    BankKey,
-                                    [Changes])
-                                    VALUES ('{fSqlFormat(rs.Fields("PK").Value)}',  
-                                    {fDateIsEmpty(rs.Fields("EffectDate").Value.ToString())},
-                                    {fNum(rs.Fields("BankKey").Value)},    
-                                    '{fSqlFormat(rs.Fields("Changes").Value)}'   
-                                   );"
-
-                conn.Execute(strSQL)
-                rs.MoveNext()
-            End While
-
-        End If
-
-    End Sub
 
     Public Sub CreateTable_tbl_PCPOS_Cashiers_Changes(pb As ProgressBar, l As Label)
         Try
@@ -1449,4 +1502,58 @@ Module ModMainExport
             End While
         End If
     End Sub
+
+
+
+    Public Sub CreateTable_tbl_GiftCert_Changes(pb As ProgressBar, l As Label)
+        Try
+            Dim createTableSql As String = "CREATE TABLE tbl_GiftCert_Changes (
+                                            PK INTEGER PRIMARY KEY,
+                                            EffectDate DATETIME NOT NULL,
+                                            GCNumber DOUBLE NOT NULL,
+                                            GCAmount DOUBLE NOT NULL,
+                                            Changes TEXT(50) NOT NULL
+                                        );"
+
+            conn.Execute(createTableSql)
+            Collect_tbl_GiftCert_Changes(pb, l)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "tbl_GiftCert_Changes")
+            Application.Exit()
+        End Try
+    End Sub
+
+    Private Sub Collect_tbl_GiftCert_Changes(pb As ProgressBar, l As Label)
+        Dim year As Integer = Now.Year - 1
+
+        rs = New ADODB.Recordset
+        rs.Open($"select * from tbl_GiftCert_Changes ", ConnMain, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_GiftCert_Changes :" & pb.Maximum & "/" & pb.Value
+                Application.DoEvents()
+                Dim strSQL As String = $"INSERT INTO tbl_GiftCert_Changes 
+                                    (PK,
+                                    EffectDate,
+                                    GCNumber,
+                                    GCAmount,
+                                    [Changes])
+                                    VALUES ({rs.Fields("PK").Value},     
+                                    {fDateIsEmpty(rs.Fields("EffectDate").Value.ToString())}, 
+                                    {rs.Fields("GCNumber").Value},
+                                    {rs.Fields("GCAmount").Value},
+                                   '{fSqlFormat(rs.Fields("Changes").Value)}'
+                                );"
+                conn.Execute(strSQL)
+                rs.MoveNext()
+            End While
+
+        End If
+
+    End Sub
+
 End Module

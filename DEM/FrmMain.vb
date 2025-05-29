@@ -28,24 +28,35 @@
                 conn = New ADODB.Connection()
                 conn.Open(str)
 
-                CreateTable_tbl_PCPOS_Cashiers(pbLoading, lblLoading)
-                CreateTable_tbl_bank(pbLoading, lblLoading)
+
                 CreateTable_tbl_banks(pbLoading, lblLoading)
+                CreateTable_tbl_Banks_Changes(pbLoading, lblLoading)
+
+                CreateTable_tbl_bank(pbLoading, lblLoading)
                 CreateTable_tbl_Bank_Terms(pbLoading, lblLoading)
+                CreateTable_tbl_Bank_Changes(pbLoading, lblLoading)
+
                 CreateTable_tbl_QRPay_Type(pbLoading, lblLoading)
+
                 CreateTable_tbl_GiftCert_List(pbLoading, lblLoading)
+                CreateTable_tbl_GiftCert_Changes(pbLoading, lblLoading)
+
                 CreateTable_tbl_VPlus_Codes(pbLoading, lblLoading)
                 CreateTable_tbl_VPlus_Codes_Validity(pbLoading, lblLoading)
-                CreateTable_tbl_Bank_Changes(pbLoading, lblLoading)
+
+
+                CreateTable_tbl_PCPOS_Cashiers(pbLoading, lblLoading)
                 CreateTable_tbl_PCPOS_Cashiers_Changes(pbLoading, lblLoading)
 
-                CreateTable_tbl_Concession_PCR_Effectivity(pbLoading,lblLoading)
+                CreateTable_tbl_Concession_PCR_Effectivity(pbLoading, lblLoading)
                 CreateTable_tbl_Concession_PCR(pbLoading, lblLoading)
                 CreateTable_tbl_Concession_PCR_Det(pbLoading, lblLoading)
+
                 CreateTable_tbl_Items(pbLoading, lblLoading)
                 CreateTable_tbl_Items_Change(pbLoading, lblLoading)
                 CreateTable_tbl_ItemsForPLU(pbLoading, lblLoading)
                 CreateTable_tbl_ItemsForPLU_For_Effect(pbLoading, lblLoading)
+
                 lblLoading.Text = ""
                 btnExport.Enabled = True
 

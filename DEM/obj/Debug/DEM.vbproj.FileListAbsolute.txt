@@ -12,3 +12,10 @@ C:\Users\Administrator\Documents\Visual Studio 2015\Projects\DEM\DEM\obj\Debug\D
 C:\Users\Administrator\Documents\Visual Studio 2015\Projects\DEM\DEM\obj\Debug\DEM.xml
 C:\Users\Administrator\Documents\Visual Studio 2015\Projects\DEM\DEM\obj\Debug\DEM.pdb
 C:\Users\Administrator\Documents\Visual Studio 2015\Projects\DEM\DEM\obj\Debug\DEM.FrmMain.resources
+C:\developer\DEM\DEM\bin\Debug\DEM.exe.config
+C:\developer\DEM\DEM\obj\Debug\Interop.ADOX.dll
+C:\developer\DEM\DEM\obj\Debug\Interop.MSAdodcLib.dll
+C:\developer\DEM\DEM\obj\Debug\DEM.vbproj.ResolveComReference.cache
+C:\developer\DEM\DEM\obj\Debug\DEM.exe
+C:\developer\DEM\DEM\obj\Debug\DEM.xml
+C:\developer\DEM\DEM\obj\Debug\DEM.pdb
