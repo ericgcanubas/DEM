@@ -14,7 +14,7 @@
         saveFileDialog.Filter = ""
         saveFileDialog.Title = "Save data"
         saveFileDialog.DefaultExt = ""
-        saveFileDialog.FileName = "main" & DateTime.Now.ToString("yyyyMMMddHHmmss").ToLower() & ""
+        saveFileDialog.FileName = "main" & DateTime.Now.ToString("yyyyMMddHHmmss").ToLower() & ""
 
         If saveFileDialog.ShowDialog() = DialogResult.OK Then
             ' Get the selected file path
@@ -23,48 +23,32 @@
 
             If DBNAME <> "" Then
                 btnExport.Enabled = False
-                chkIncludeItem.Enabled = False
+
                 Dim str As String = getConString(DBNAME)
                 conn = New ADODB.Connection()
                 conn.Open(str)
 
-                CreateTable_tbl_PCPOS_Cashiers()
-                Collect_tbl_PCPOS_Cashiers(pbLoading, lblLoading)
+                CreateTable_tbl_PCPOS_Cashiers(pbLoading, lblLoading)
+                CreateTable_tbl_bank(pbLoading, lblLoading)
+                CreateTable_tbl_banks(pbLoading, lblLoading)
+                CreateTable_tbl_Bank_Terms(pbLoading, lblLoading)
+                CreateTable_tbl_QRPay_Type(pbLoading, lblLoading)
+                CreateTable_tbl_GiftCert_List(pbLoading, lblLoading)
+                CreateTable_tbl_VPlus_Codes(pbLoading, lblLoading)
+                CreateTable_tbl_VPlus_Codes_Validity(pbLoading, lblLoading)
+                CreateTable_tbl_Bank_Changes(pbLoading, lblLoading)
+                CreateTable_tbl_PCPOS_Cashiers_Changes(pbLoading, lblLoading)
 
-                CreateTable_tbl_bank()
-                Collect_tbl_Bank(pbLoading, lblLoading)
-
-                CreateTable_tbl_banks()
-                Collect_tbl_Banks(pbLoading, lblLoading)
-
-                CreateTable_tbl_Bank_Terms()
-                Collect_tbl_Bank_Terms(pbLoading, lblLoading)
-
-                CreateTable_tbl_QRPay_Type()
-                Collect_tbl_QRPay_Type(pbLoading, lblLoading)
-
-                CreateTable_tbl_GiftCert_List()
-                Collect_tbl_GiftCert_List(pbLoading, lblLoading)
-
-                CreateTable_tbl_VPlus_Codes()
-                Collect_tbl_VPlus_Codes(pbLoading, lblLoading)
-
-                CreateTable_tbl_VPlus_Codes_Validity()
-                Collect_tbl_VPlus_Codes_Validity(pbLoading, lblLoading)
-
-                CreateTable_tbl_Bank_Changes()
-                Collect_tbl_Bank_Changes(pbLoading, lblLoading)
-
-                CreateTable_tbl_PCPOS_Cashiers_Changes()
-                Collect_tbl_PCPOS_Cashiers_Changes(pbLoading, lblLoading)
-
-                If chkIncludeItem.Checked = True Then
-                    CreateTable_tbl_ItemsForPLU()
-                    Collect_tbl_ItemsForPLU(pbLoading, lblLoading)
-                End If
+                CreateTable_tbl_Concession_PCR_Effectivity(pbLoading,lblLoading)
+                CreateTable_tbl_Concession_PCR(pbLoading, lblLoading)
+                CreateTable_tbl_Concession_PCR_Det(pbLoading, lblLoading)
+                CreateTable_tbl_Items(pbLoading, lblLoading)
+                CreateTable_tbl_Items_Change(pbLoading, lblLoading)
+                CreateTable_tbl_ItemsForPLU(pbLoading, lblLoading)
+                CreateTable_tbl_ItemsForPLU_For_Effect(pbLoading, lblLoading)
                 lblLoading.Text = ""
                 btnExport.Enabled = True
-                chkIncludeItem.Enabled = True
+
                 Dim result As DialogResult = MessageBox.Show(
                 "File saved successfully at:" & vbCrLf & GL_EXPORT_PATH & vbCrLf & vbCrLf &
                 "Do you want to open the location?",
@@ -72,16 +56,17 @@
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question
             )
-
-                ' If user clicks Yes, open File Explorer and select the file
                 If result = DialogResult.Yes Then
                     Process.Start("explorer.exe", "/select,""" & GL_EXPORT_PATH & """")
                 End If
-
-
             End If
 
-            conn.Close()
+            Try
+                conn.Close()
+            Catch ex As Exception
+
+            End Try
+
 
         End If
 
@@ -101,6 +86,16 @@
     End Sub
 
     Private Sub pbLoading_RegionChanged(sender As Object, e As EventArgs) Handles pbLoading.RegionChanged
-        MessageBox.Show("o")
+
+    End Sub
+
+    Private Sub FrmMain_Closed(sender As Object, e As EventArgs) Handles Me.Closed
+
+
+        Try
+            conn.Close()
+        Catch ex As Exception
+
+        End Try
     End Sub
 End Class

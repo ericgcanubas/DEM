@@ -26,19 +26,27 @@
 
 
 
-    Public Function fDateIsEmpty(sValue As String) As String
-
-
-        If sValue = "" Then
+    Public Function fDateIsEmpty(sValue As Object) As String
+        If IsDBNull(sValue) = True Then
             fDateIsEmpty = "null"
         Else
-            fDateIsEmpty = $"'{sValue}'"
+            If sValue = "" Then
+                fDateIsEmpty = "null"
+            Else
+                fDateIsEmpty = $"'{sValue}'"
+            End If
         End If
+
+
     End Function
 
-    Public Function fSqlFormat(sValue As String) As String
+    Public Function fSqlFormat(sValue As Object) As String
+        If IsDBNull(sValue) = True Then
+            fSqlFormat = ""
+        Else
+            fSqlFormat = sValue.ToString().Replace("'", "`")
+        End If
 
-        fSqlFormat = sValue.Replace("'", "`")
 
     End Function
     Public Function fNum(sValue As Object) As Double

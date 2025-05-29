@@ -27,7 +27,6 @@ Partial Class FrmMain
         Me.btnImport = New System.Windows.Forms.Button()
         Me.btnExport = New System.Windows.Forms.Button()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
-        Me.chkIncludeItem = New System.Windows.Forms.CheckBox()
         Me.SuspendLayout()
         '
         'lblLoading
@@ -45,6 +44,7 @@ Partial Class FrmMain
         Me.pbLoading.Location = New System.Drawing.Point(11, 102)
         Me.pbLoading.Name = "pbLoading"
         Me.pbLoading.Size = New System.Drawing.Size(287, 23)
+        Me.pbLoading.Step = 1
         Me.pbLoading.TabIndex = 2
         '
         'btnImport
@@ -62,37 +62,26 @@ Partial Class FrmMain
         '
         Me.btnExport.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(0, Byte), Integer))
         Me.btnExport.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnExport.Location = New System.Drawing.Point(12, 64)
+        Me.btnExport.Location = New System.Drawing.Point(11, 64)
         Me.btnExport.Name = "btnExport"
-        Me.btnExport.Size = New System.Drawing.Size(287, 35)
+        Me.btnExport.Size = New System.Drawing.Size(288, 35)
         Me.btnExport.TabIndex = 0
         Me.btnExport.Text = "Export"
         Me.btnExport.UseVisualStyleBackColor = False
-        '
-        'chkIncludeItem
-        '
-        Me.chkIncludeItem.AutoSize = True
-        Me.chkIncludeItem.Location = New System.Drawing.Point(12, 41)
-        Me.chkIncludeItem.Name = "chkIncludeItem"
-        Me.chkIncludeItem.Size = New System.Drawing.Size(108, 17)
-        Me.chkIncludeItem.TabIndex = 1
-        Me.chkIncludeItem.Text = "Include PLU Item"
-        Me.chkIncludeItem.UseVisualStyleBackColor = True
         '
         'FrmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(309, 296)
-        Me.Controls.Add(Me.chkIncludeItem)
         Me.Controls.Add(Me.lblLoading)
         Me.Controls.Add(Me.btnExport)
         Me.Controls.Add(Me.pbLoading)
         Me.Controls.Add(Me.btnImport)
         Me.Name = "FrmMain"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Main Office Synchronizer"
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
     Friend WithEvents btnImport As Button
@@ -100,5 +89,4 @@ Partial Class FrmMain
     Friend WithEvents pbLoading As ProgressBar
     Friend WithEvents lblLoading As Label
     Friend WithEvents SaveFileDialog1 As SaveFileDialog
-    Friend WithEvents chkIncludeItem As CheckBox
 End Class
