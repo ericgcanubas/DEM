@@ -1555,5 +1555,286 @@ Module ModMainExport
         End If
 
     End Sub
+    Public Sub CreateTable_tbl_PS_Upload_Utility(pb As ProgressBar, l As Label)
+        Try
+            Dim createTableSql As String = "CREATE TABLE tbl_PS_Upload_Utility (
+                            EffectDate DATETIME NOT NULL,
+                            StopUpload BYTE NOT NULL
+                        );"
+
+            conn.Execute(createTableSql)
+            Collect_tbl_PS_Upload_Utility(pb, l)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "tbl_GiftCert_Changes")
+            Application.Exit()
+        End Try
+    End Sub
+
+    Private Sub Collect_tbl_PS_Upload_Utility(pb As ProgressBar, l As Label)
+        Dim year As Integer = Now.Year - 1
+
+        rs = New ADODB.Recordset
+        rs.Open($"select * from tbl_PS_Upload_Utility ", ConnMain, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_PS_Upload_Utility :" & pb.Maximum & "/" & pb.Value
+                Application.DoEvents()
+                Dim strSQL As String = $"INSERT INTO tbl_PS_Upload_Utility 
+                                    (EffectDate,
+                                    StopUpload)
+                                    VALUES (    
+                                    {fDateIsEmpty(rs.Fields("EffectDate").Value.ToString())}, 
+                                    {rs.Fields("StopUpload").Value}
+                                );"
+                conn.Execute(strSQL)
+                rs.MoveNext()
+            End While
+
+        End If
+
+    End Sub
+
+    Public Sub CreateTable_tbl_VPlus_Codes_Changes(pb As ProgressBar, l As Label)
+        Try
+            Dim createTableSql As String = "CREATE TABLE tbl_VPlus_Codes_Changes (
+                                            Codes TEXT(16) NOT NULL,
+                                            DateChange DATETIME NOT NULL
+                                        );"
+
+            conn.Execute(createTableSql)
+            Collect_tbl_VPlus_Codes_Changes(pb, l)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "tbl_VPlus_Codes_Changes")
+            Application.Exit()
+        End Try
+    End Sub
+    Private Sub Collect_tbl_VPlus_Codes_Changes(pb As ProgressBar, l As Label)
+        Dim year As Integer = Now.Year - 5
+
+        rs = New ADODB.Recordset
+        rs.Open($"select * from tbl_VPlus_Codes_Changes ", ConnMain, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_VPlus_Codes_Changes :" & pb.Maximum & "/" & pb.Value
+                Application.DoEvents()
+                Dim strSQL As String = $"INSERT INTO tbl_VPlus_Codes_Changes 
+                                    (Codes,
+                                    DateChange)
+                                    VALUES ('{fSqlFormat(rs.Fields("Codes").Value)}',               
+                                    {fDateIsEmpty(rs.Fields("DateChange").Value.ToString())}   
+                                   );"
+
+                conn.Execute(strSQL)
+                rs.MoveNext()
+            End While
+
+        End If
+
+    End Sub
+    Public Sub CreateTable_tbl_VPlus_Summary(pb As ProgressBar, l As Label)
+        Try
+            Dim createTableSql As String = "CREATE TABLE tbl_VPlus_Summary (
+                                            PK INTEGER PRIMARY KEY,
+                                            VPlusCode TEXT(16) NOT NULL,
+                                            TransDate DATETIME NOT NULL,
+                                            Location TEXT(1) NOT NULL,
+                                            Cash DOUBLE NOT NULL,
+                                            Card DOUBLE NOT NULL,
+                                            [GC] DOUBLE NOT NULL,
+                                            VPlus DOUBLE NOT NULL,
+                                            InOut TEXT(1) NOT NULL,
+                                            InPoints DOUBLE NOT NULL,
+                                            OutPoints DOUBLE NOT NULL
+                                        );"
+
+            conn.Execute(createTableSql)
+            Collect_tbl_VPlus_Summary(pb, l)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "tbl_VPlus_Summary")
+            Application.Exit()
+        End Try
+    End Sub
+    Private Sub Collect_tbl_VPlus_Summary(pb As ProgressBar, l As Label)
+        Dim year As Integer = Now.Year - 5
+
+        rs = New ADODB.Recordset
+        rs.Open($"select * from tbl_VPlus_Summary ", ConnMain, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_VPlus_Summary :" & pb.Maximum & "/" & pb.Value
+                Application.DoEvents()
+                Dim strSQL As String = $"INSERT INTO tbl_VPlus_Summary 
+                                            (PK,
+                                            VPlusCode,
+                                            TransDate,
+                                            Location,
+                                            Cash,
+                                            Card,
+                                            [GC],
+                                            VPlus,
+                                            InOut ,
+                                            InPoints,
+                                            OutPoints)
+                                    VALUES ({fNum(rs.Fields("PK").Value)},
+                                        '{fSqlFormat(rs.Fields("VPlusCode").Value)}',               
+                                         {fDateIsEmpty(rs.Fields("TransDate").Value.ToString())},
+                                        '{fSqlFormat(rs.Fields("Location").Value)}', 
+                                         {fNum(rs.Fields("Cash").Value)},  
+                                         {fNum(rs.Fields("Card").Value)},  
+                                         {fNum(rs.Fields("GC").Value)},    
+                                         {fNum(rs.Fields("VPlus").Value)},  
+                                        '{fSqlFormat(rs.Fields("InOut").Value)}', 
+                                        {fNum(rs.Fields("InPoints").Value)},  
+                                        {fNum(rs.Fields("OutPoints").Value)} 
+                                   );"
+
+                conn.Execute(strSQL)
+                rs.MoveNext()
+            End While
+
+        End If
+
+    End Sub
+    Public Sub CreateTable_tbl_VPlus_Codes_For_Offline(pb As ProgressBar, l As Label)
+        Try
+            Dim createTableSql As String = "CREATE TABLE tbl_VPlus_Codes_For_Offline (
+                                            Codes TEXT(16) NOT NULL,
+                                            POSName TEXT(3) NOT NULL,
+                                            Used BYTE NOT NULL,
+                                            CreatedOn DATETIME NOT NULL
+                                        );"
+
+            conn.Execute(createTableSql)
+            Collect_tbl_VPlus_Codes_For_Offline(pb, l)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "tbl_VPlus_Codes_For_Offline")
+            Application.Exit()
+        End Try
+    End Sub
+    Private Sub Collect_tbl_VPlus_Codes_For_Offline(pb As ProgressBar, l As Label)
+        Dim year As Integer = Now.Year - 5
+
+        rs = New ADODB.Recordset
+        rs.Open($"select * from tbl_VPlus_Codes_For_Offline ", ConnMain, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_VPlus_Codes_For_Offline :" & pb.Maximum & "/" & pb.Value
+                Application.DoEvents()
+                Dim strSQL As String = $"INSERT INTO tbl_VPlus_Codes_For_Offline 
+                                            (Codes,
+                                            POSName,
+                                            Used,
+                                            CreatedOn)
+                                    VALUES (
+                                        '{fSqlFormat(rs.Fields("Codes").Value)}',    
+                                        '{fSqlFormat(rs.Fields("POSName").Value)}',    
+                                         {fNum(rs.Fields("Used").Value)},          
+                                         {fDateIsEmpty(rs.Fields("CreatedOn").Value.ToString())}
+                                   );"
+
+                conn.Execute(strSQL)
+                rs.MoveNext()
+            End While
+
+        End If
+
+    End Sub
+    Public Sub CreateTable_tbl_VPlus_App(pb As ProgressBar, l As Label)
+        Try
+            Dim createTableSql As String = "CREATE TABLE tbl_VPlus_App (
+                                            PLU TEXT(12) Not NULL
+                                        );"
+
+            conn.Execute(createTableSql)
+            Collect_tbl_VPlus_App(pb, l)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "tbl_VPlus_App")
+            Application.Exit()
+        End Try
+    End Sub
+    Private Sub Collect_tbl_VPlus_App(pb As ProgressBar, l As Label)
+        Dim year As Integer = Now.Year - 5
+
+        rs = New ADODB.Recordset
+        rs.Open($"select * from tbl_VPlus_App ", ConnMain, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_VPlus_App :" & pb.Maximum & "/" & pb.Value
+                Application.DoEvents()
+                Dim strSQL As String = $"INSERT INTO tbl_VPlus_App 
+                                            (PLU)
+                                    VALUES (
+                                        '{fSqlFormat(rs.Fields("PLU").Value)}'
+                                   );"
+
+                conn.Execute(strSQL)
+                rs.MoveNext()
+            End While
+
+        End If
+
+    End Sub
+    Public Sub CreateTable_tbl_RetrieveHistoryForLocal(pb As ProgressBar, l As Label)
+        Try
+            Dim createTableSql As String = "CREATE TABLE tbl_RetrieveHistoryForLocal (
+                                                Counter TEXT(50) NOT NULL,
+                                                ForRetrieval DECIMAL(18, 0) NOT NULL
+                                            );"
+
+            conn.Execute(createTableSql)
+            Collect_tbl_RetrieveHistoryForLocal(pb, l)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "tbl_VPlus_App")
+            Application.Exit()
+        End Try
+    End Sub
+    Private Sub Collect_tbl_RetrieveHistoryForLocal(pb As ProgressBar, l As Label)
+        Dim year As Integer = Now.Year - 5
+
+        rs = New ADODB.Recordset
+        rs.Open($"select * from tbl_RetrieveHistoryForLocal ", ConnMain, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_RetrieveHistoryForLocal :" & pb.Maximum & "/" & pb.Value
+                Application.DoEvents()
+                Dim strSQL As String = $"INSERT INTO tbl_RetrieveHistoryForLocal 
+                                            (Counter,
+                                            ForRetrieval)
+                                    VALUES (
+                                        '{fSqlFormat(rs.Fields("Counter").Value)}',
+                                        {fNum(rs.Fields("ForRetrieval").Value)}
+                                   );"
+
+                conn.Execute(strSQL)
+                rs.MoveNext()
+            End While
+
+        End If
+
+    End Sub
 
 End Module

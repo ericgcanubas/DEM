@@ -43,7 +43,12 @@
 
                 CreateTable_tbl_VPlus_Codes(pbLoading, lblLoading)
                 CreateTable_tbl_VPlus_Codes_Validity(pbLoading, lblLoading)
+                CreateTable_tbl_VPlus_Codes_Changes(pbLoading, lblLoading)
+                CreateTable_tbl_VPlus_Summary(pbLoading, lblLoading)
+                CreateTable_tbl_VPlus_Codes_For_Offline(pbLoading, lblLoading)
+                CreateTable_tbl_VPlus_App(pbLoading, lblLoading)
 
+                CreateTable_tbl_PS_Upload_Utility(pbLoading, lblLoading)
 
                 CreateTable_tbl_PCPOS_Cashiers(pbLoading, lblLoading)
                 CreateTable_tbl_PCPOS_Cashiers_Changes(pbLoading, lblLoading)
@@ -51,6 +56,8 @@
                 CreateTable_tbl_Concession_PCR_Effectivity(pbLoading, lblLoading)
                 CreateTable_tbl_Concession_PCR(pbLoading, lblLoading)
                 CreateTable_tbl_Concession_PCR_Det(pbLoading, lblLoading)
+
+                CreateTable_tbl_RetrieveHistoryForLocal(pbLoading, lblLoading)
 
                 CreateTable_tbl_Items(pbLoading, lblLoading)
                 CreateTable_tbl_Items_Change(pbLoading, lblLoading)
