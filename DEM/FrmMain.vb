@@ -1,4 +1,15 @@
-﻿Public Class FrmMain
+﻿Imports System.Runtime.InteropServices
+Public Class FrmMain
+    <DllImport("user32.dll")>
+    Public Shared Function ReleaseCapture() As Boolean
+    End Function
+
+    <DllImport("user32.dll")>
+    Public Shared Function SendMessage(hWnd As IntPtr, wMsg As Integer, wParam As Integer, lParam As Integer) As Integer
+    End Function
+
+    Const WM_NCLBUTTONDOWN As Integer = &HA1
+    Const HTCAPTION As Integer = 2
     Private Sub btnExport_Click(sender As Object, e As EventArgs) Handles btnExport.Click
 
         saveIt()
@@ -19,13 +30,14 @@
         If saveFileDialog.ShowDialog() = DialogResult.OK Then
             ' Get the selected file path
             GL_EXPORT_PATH = saveFileDialog.FileName
-            Dim DBNAME As String = CreateSmallDatabase()
+            Dim DBNAME As String = CreateData()
 
             If DBNAME <> "" Then
                 btnExport.Enabled = False
 
                 Dim str As String = getConString(DBNAME)
                 conn = New ADODB.Connection()
+                conn.ConnectionTimeout = 30
                 conn.Open(str)
 
 
@@ -47,6 +59,14 @@
                 CreateTable_tbl_VPlus_Summary(pbLoading, lblLoading)
                 CreateTable_tbl_VPlus_Codes_For_Offline(pbLoading, lblLoading)
                 CreateTable_tbl_VPlus_App(pbLoading, lblLoading)
+
+                CreateTable_tbl_PS_GT_Adjustment_EJournal_Detail(pbLoading, lblLoading)
+                CreateTable_tbl_PS_GT_Adjustment_EJournal(pbLoading, lblLoading)
+                CreateTable_tbl_PS_E_Journal(pbLoading, lblLoading)
+                CreateTable_tbl_PS_E_Journal_Detail(pbLoading, lblLoading)
+
+                CreateTable_tbl_PS_GT(pbLoading, lblLoading)
+                CreateTable_tbl_PS_GT_ZZ(pbLoading, lblLoading)
 
                 CreateTable_tbl_PS_Upload_Utility(pbLoading, lblLoading)
 
@@ -115,5 +135,16 @@
         Catch ex As Exception
 
         End Try
+    End Sub
+
+    Private Sub FrmMain_MouseDown(sender As Object, e As MouseEventArgs) Handles MyBase.MouseDown
+        If e.Button = MouseButtons.Left Then
+            ReleaseCapture()
+            SendMessage(Handle, WM_NCLBUTTONDOWN, HTCAPTION, 0)
+        End If
+    End Sub
+
+    Private Sub lblClose_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles lblClose.LinkClicked
+        End
     End Sub
 End Class

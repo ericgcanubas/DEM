@@ -1,16 +1,22 @@
-﻿Module ModConnection
+﻿Imports ADOX
+Module ModConnection
 
-    Public ConnMain As ADODB.Connection
+    Public ConnServer As ADODB.Connection
 
     Public gbl_Database As String
     Public gbl_Server As String
     Public IsConnected As Boolean
+
+    Public rs As ADODB.Recordset
+    Public conn As New ADODB.Connection()
+    Public GL_EXPORT_PATH As String
     Public Sub getConnection()
-        ConnMain = New ADODB.Connection()
+        ConnServer = New ADODB.Connection()
         Try
-            With ConnMain
+            With ConnServer
                 .CursorLocation = ADODB.CursorLocationEnum.adUseClient
                 .ConnectionString = "Provider=SQLOLEDB.1;Persist Security Info=False;User ID=sa;Initial Catalog=" + gbl_Database + ";Data Source=" + gbl_Server
+                .CommandTimeout = 60
                 .Open()
                 .IsolationLevel = ADODB.IsolationLevelEnum.adXactIsolated
             End With
@@ -25,6 +31,32 @@
     End Sub
 
 
+
+    Public Function CreateData() As String
+
+        Try
+            Dim catalog As New Catalog()
+            ' Create .mdb file in the specified path
+            Dim strDBName As String = "Export_data"
+            Dim dbPath As String = $"{GL_EXPORT_PATH}"
+            Dim connectionString As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" & dbPath
+            catalog.Create(connectionString)
+            CreateData = strDBName
+        Catch ex As Exception
+            MessageBox.Show("Error: " & ex.Message)
+            CreateData = ""
+        End Try
+
+
+    End Function
+
+    Public Function getConString(strDBName As String) As String
+        Dim dbPath As String = $"{GL_EXPORT_PATH}"
+        getConString = getConnectionString(dbPath)
+    End Function
+    Public Function getConnectionString(dbPath As String) As String
+        getConnectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" & dbPath
+    End Function
 
     Public Function fDateIsEmpty(sValue As Object) As String
         If IsDBNull(sValue) = True Then

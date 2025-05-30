@@ -19,3 +19,18 @@ C:\developer\DEM\DEM\obj\Debug\DEM.vbproj.ResolveComReference.cache
 C:\developer\DEM\DEM\obj\Debug\DEM.exe
 C:\developer\DEM\DEM\obj\Debug\DEM.xml
 C:\developer\DEM\DEM\obj\Debug\DEM.pdb
+D:\Source Code\DEM\DEM\bin\Debug\DEM.exe.config
+D:\Source Code\DEM\DEM\obj\Debug\Interop.ADOX.dll
+D:\Source Code\DEM\DEM\obj\Debug\Interop.MSAdodcLib.dll
+D:\Source Code\DEM\DEM\obj\Debug\DEM.vbproj.ResolveComReference.cache
+D:\Source Code\DEM\DEM\obj\Debug\DEM.exe
+D:\Source Code\DEM\DEM\obj\Debug\DEM.xml
+D:\Source Code\DEM\DEM\obj\Debug\DEM.pdb
+D:\Source Code\DEM\DEM\bin\Debug\DEM.exe
+D:\Source Code\DEM\DEM\bin\Debug\DEM.pdb
+D:\Source Code\DEM\DEM\bin\Debug\DEM.xml
+D:\Source Code\DEM\DEM\obj\Debug\DEM.vbprojResolveAssemblyReference.cache
+D:\Source Code\DEM\DEM\obj\Debug\DEM.FrmMain.resources
+D:\Source Code\DEM\DEM\obj\Debug\DEM.Resources.resources
+D:\Source Code\DEM\DEM\obj\Debug\DEM.vbproj.GenerateResource.Cache
+D:\Source Code\DEM\DEM\obj\Debug\DEM.FrmBranch.resources

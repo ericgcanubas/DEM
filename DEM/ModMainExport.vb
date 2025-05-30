@@ -1,31 +1,7 @@
-﻿Imports ADOX
+﻿
 
 Module ModMainExport
-    Public rs As ADODB.Recordset
-    Public conn As New ADODB.Connection()
-    Public GL_EXPORT_PATH As String
-    Public Function CreateSmallDatabase() As String
 
-        Try
-            Dim catalog As New Catalog()
-            ' Create .mdb file in the specified path
-            Dim strDBName As String = "Export_data"
-            Dim dbPath As String = $"{GL_EXPORT_PATH}"
-            Dim connectionString As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" & dbPath
-            catalog.Create(connectionString)
-            CreateSmallDatabase = strDBName
-        Catch ex As Exception
-            MessageBox.Show("Error: " & ex.Message)
-            CreateSmallDatabase = ""
-        End Try
-
-
-    End Function
-
-    Public Function getConString(strDBName As String) As String
-        Dim dbPath As String = $"{GL_EXPORT_PATH}"
-        getConString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" & dbPath
-    End Function
     Public Sub CreateTable_tbl_PCPOS_Cashiers(pb As ProgressBar, l As Label)
 
         Try
@@ -61,7 +37,7 @@ Module ModMainExport
     Private Sub Collect_tbl_PCPOS_Cashiers(pb As ProgressBar, l As Label)
 
         rs = New ADODB.Recordset
-        rs.Open("select * from tbl_PCPOS_Cashiers ", ConnMain, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open("select * from tbl_PCPOS_Cashiers ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -139,7 +115,7 @@ Module ModMainExport
     End Sub
     Private Sub Collect_tbl_ItemsForPLU(pb As ProgressBar, l As Label)
         rs = New ADODB.Recordset
-        rs.Open("select tbl_ItemsForPLU.*  FROM tbl_ItemsForPLU inner join  tbl_Items on  [tbl_Items].ItemCode = tbl_ItemsForPLU.ItemCode join tbl_Suppliers on tbl_Suppliers.PK = tbl_Items.SupplierKey  where [tbl_Items].[status] = 0 and tbl_Suppliers.SStatus = 0 ", ConnMain, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open("select tbl_ItemsForPLU.*  FROM tbl_ItemsForPLU inner join  tbl_Items on  [tbl_Items].ItemCode = tbl_ItemsForPLU.ItemCode join tbl_Suppliers on tbl_Suppliers.PK = tbl_Items.SupplierKey  where [tbl_Items].[status] = 0 and tbl_Suppliers.SStatus = 0 ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -205,10 +181,8 @@ Module ModMainExport
     End Sub
     Private Sub Collect_tbl_Bank(pb As ProgressBar, l As Label)
 
-
-
         rs = New ADODB.Recordset
-        rs.Open("select * from tbl_Bank ", ConnMain, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open("select * from tbl_Bank ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -217,7 +191,7 @@ Module ModMainExport
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_Bank :" & pb.Maximum & "/" & pb.Value
                 Application.DoEvents()
-                Dim strSQL As String = $" INSERT INTO tbl_Bank 
+                Dim strSQL As String = $"INSERT INTO tbl_Bank 
                                     (PK,
                                     BankName,
                                     [Address],
@@ -273,7 +247,7 @@ Module ModMainExport
     Private Sub Collect_tbl_Banks(pb As ProgressBar, l As Label)
 
         rs = New ADODB.Recordset
-        rs.Open("select * from tbl_Banks ", ConnMain, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open("select * from tbl_Banks ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -329,7 +303,7 @@ Module ModMainExport
 
 
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_Banks_Changes ", ConnMain, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_Banks_Changes ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -379,7 +353,7 @@ Module ModMainExport
 
 
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_Bank_Changes", ConnMain, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_Bank_Changes", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -428,7 +402,7 @@ Module ModMainExport
 
 
         rs = New ADODB.Recordset
-        rs.Open("select * from tbl_Bank_Terms ", ConnMain, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open("select * from tbl_Bank_Terms ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -477,7 +451,7 @@ Module ModMainExport
 
 
         rs = New ADODB.Recordset
-        rs.Open("select * from tbl_QRPay_Type ", ConnMain, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open("select * from tbl_QRPay_Type ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -531,7 +505,7 @@ Module ModMainExport
         Dim year As Integer = Now.Year - 1
 
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_GiftCert_List where YEAR(ValidTo) > {year}  and DateUsed is null ", ConnMain, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_GiftCert_List where YEAR(ValidTo) > {year}  and DateUsed is null ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -596,9 +570,9 @@ Module ModMainExport
     End Sub
     Private Sub Collect_tbl_VPlus_Codes(pb As ProgressBar, l As Label)
         Dim year As Integer = Now.Year - 5
-
+        Dim n As Integer = 0
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_VPlus_Codes where year(DateExpired) > {year} ", ConnMain, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_VPlus_Codes where year(DateExpired) > {year} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -606,7 +580,10 @@ Module ModMainExport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_VPlus_Codes :" & pb.Maximum & "/" & pb.Value
-                Application.DoEvents()
+                If n > 10000 Then
+                    n = 0
+                    Application.DoEvents()
+                End If
                 Dim strSQL As String = $"INSERT INTO tbl_VPlus_Codes 
                                     (Codes,
                                     Customer,
@@ -663,15 +640,19 @@ Module ModMainExport
         Dim year As Integer = Now.Year - 5
 
         rs = New ADODB.Recordset
-        rs.Open($"select tbl_VPlus_Codes_Validity.* from tbl_VPlus_Codes_Validity join tbl_VPlus_Codes on tbl_VPlus_Codes.codes = tbl_VPlus_Codes_Validity.codes  where year(tbl_VPlus_Codes.DateExpired) > {year} ", ConnMain, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select tbl_VPlus_Codes_Validity.* from tbl_VPlus_Codes_Validity join tbl_VPlus_Codes on tbl_VPlus_Codes.codes = tbl_VPlus_Codes_Validity.codes  where year(tbl_VPlus_Codes.DateExpired) > {year} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
+        Dim n As Integer = 0
         If rs.RecordCount > 0 Then
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_VPlus_Codes_Validity :" & pb.Maximum & "/" & pb.Value
-                Application.DoEvents()
+                If n > 10000 Then
+                    n = 0
+                    Application.DoEvents()
+                End If
                 Dim strSQL As String = $"INSERT INTO tbl_VPlus_Codes_Validity 
                                     (Codes,
                                     DateStarted,
@@ -710,7 +691,7 @@ Module ModMainExport
     End Sub
     Private Sub Collect_tbl_PCPOS_Cashiers_Changes(pb As ProgressBar, l As Label)
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_PCPOS_Cashiers_Changes", ConnMain, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_PCPOS_Cashiers_Changes", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -762,7 +743,7 @@ Module ModMainExport
     Private Sub Collect_tbl_Items_Changes(pb As ProgressBar, l As Label)
         Dim year As Integer = Now.Year - 1
         rs = New ADODB.Recordset
-        rs.Open($"select top 10000 * from tbl_Items_Change where year(DateChange) >= {year} order by dateChange desc", ConnMain, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select top 10000 * from tbl_Items_Change where year(DateChange) >= {year} order by dateChange desc", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -821,7 +802,7 @@ Module ModMainExport
     Private Sub Collect_tbl_ItemsForPLU_For_Effect(pb As ProgressBar, l As Label)
         Dim year As Integer = Now.Year - 1
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_ItemsForPLU_For_Effect", ConnMain, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_ItemsForPLU_For_Effect", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -935,7 +916,7 @@ Module ModMainExport
         Dim year As Integer = Now.Year - 1
 
         rs = New ADODB.Recordset
-        rs.Open($"select i.* from tbl_Items as i join tbl_Suppliers as s on s.PK = i.SupplierKey where i.Status = 0  and s.SStatus = 0", ConnMain, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select i.* from tbl_Items as i join tbl_Suppliers as s on s.PK = i.SupplierKey where i.Status = 0  and s.SStatus = 0", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -1159,18 +1140,21 @@ Module ModMainExport
         End Try
     End Sub
     Private Sub Collect_tbl_Concession_PCR(pb As ProgressBar, l As Label)
-        Dim year As Integer = Now.Year - 1
+        Dim year As Integer = Now.Year - 5
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_Concession_PCR", ConnMain, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_Concession_PCR where YYear > '{year}' ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
-
+        Dim n As Integer = 0
         If rs.RecordCount > 0 Then
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_Concession_PCR :" & pb.Maximum & "/" & pb.Value
-                Application.DoEvents()
+                If n > 10000 Then
+                    n = 0
+                    Application.DoEvents()
+                End If
                 Dim strSQL As String = $"INSERT INTO tbl_Concession_PCR 
                                     (PK,
                                     CtrlNo,
@@ -1357,18 +1341,21 @@ Module ModMainExport
     End Sub
 
     Private Sub Collect_tbl_Concession_PCR_Det(pb As ProgressBar, l As Label)
-        Dim year As Integer = Now.Year - 1
+        Dim year As Integer = Now.Year - 5
         rs = New ADODB.Recordset
-        rs.Open($"select dd.* from [tbl_Concession_PCR_Det] as dd INNER JOIN tbl_Concession_PCR on tbl_Concession_PCR.PK = dd.ConcPCRKey ", ConnMain, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select dd.* from [tbl_Concession_PCR_Det] as dd INNER JOIN tbl_Concession_PCR on tbl_Concession_PCR.PK = dd.ConcPCRKey WHERE tbl_Concession_PCR.YYear >'{year}' ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
-
+        Dim n As Integer = 0
         If rs.RecordCount > 0 Then
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_Concession_PCR_Det :" & pb.Maximum & "/" & pb.Value
-                Application.DoEvents()
+                If n > 10000 Then
+                    n = 0
+                    Application.DoEvents()
+                End If
                 Dim strSQL As String = $"INSERT INTO tbl_Concession_PCR_Det 
                                                 (PK,
                                                 ConcPCRKey,
@@ -1465,18 +1452,21 @@ Module ModMainExport
     End Sub
 
     Private Sub Collect_tbl_Concession_PCR_Effectivity(pb As ProgressBar, l As Label)
-        Dim year As Integer = Now.Year - 1
+        Dim year As Integer = Now.Year - 5
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_Concession_PCR_Effectivity", ConnMain, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_Concession_PCR_Effectivity where YEAR(Effect_To) > {year} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
-
+        Dim n As Integer = 0
         If rs.RecordCount > 0 Then
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_Concession_PCR_Effectivity :" & pb.Maximum & "/" & pb.Value
-                Application.DoEvents()
+                If n > 10000 Then
+                    n = 0
+                    Application.DoEvents()
+                End If
                 Dim strSQL As String = $"INSERT INTO tbl_Concession_PCR_Effectivity 
                                     (PK,
                                     ConcPCRKey,
@@ -1527,7 +1517,7 @@ Module ModMainExport
         Dim year As Integer = Now.Year - 1
 
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_GiftCert_Changes ", ConnMain, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_GiftCert_Changes ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -1574,7 +1564,7 @@ Module ModMainExport
         Dim year As Integer = Now.Year - 1
 
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_PS_Upload_Utility ", ConnMain, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_PS_Upload_Utility ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -1616,15 +1606,19 @@ Module ModMainExport
         Dim year As Integer = Now.Year - 5
 
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_VPlus_Codes_Changes ", ConnMain, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_VPlus_Codes_Changes where year(DateChange) >= {year}   ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
+        Dim n As Integer = 0
         If rs.RecordCount > 0 Then
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_VPlus_Codes_Changes :" & pb.Maximum & "/" & pb.Value
-                Application.DoEvents()
+                If n > 10000 Then
+                    n = 0
+                    Application.DoEvents()
+                End If
                 Dim strSQL As String = $"INSERT INTO tbl_VPlus_Codes_Changes 
                                     (Codes,
                                     DateChange)
@@ -1666,15 +1660,19 @@ Module ModMainExport
         Dim year As Integer = Now.Year - 5
 
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_VPlus_Summary ", ConnMain, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_VPlus_Summary where year(TransDate) >= {year} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
+        Dim n As Integer = 0
         If rs.RecordCount > 0 Then
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_VPlus_Summary :" & pb.Maximum & "/" & pb.Value
-                Application.DoEvents()
+                If n > 10000 Then
+                    n = 0
+                    Application.DoEvents()
+                End If
                 Dim strSQL As String = $"INSERT INTO tbl_VPlus_Summary 
                                             (PK,
                                             VPlusCode,
@@ -1727,15 +1725,19 @@ Module ModMainExport
         Dim year As Integer = Now.Year - 5
 
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_VPlus_Codes_For_Offline ", ConnMain, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_VPlus_Codes_For_Offline where year(CreatedOn) >= {year} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
+        Dim n As Integer = 0
         If rs.RecordCount > 0 Then
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_VPlus_Codes_For_Offline :" & pb.Maximum & "/" & pb.Value
-                Application.DoEvents()
+                If n > 10000 Then
+                    n = 0
+                    Application.DoEvents()
+                End If
                 Dim strSQL As String = $"INSERT INTO tbl_VPlus_Codes_For_Offline 
                                             (Codes,
                                             POSName,
@@ -1772,7 +1774,7 @@ Module ModMainExport
         Dim year As Integer = Now.Year - 5
 
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_VPlus_App ", ConnMain, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_VPlus_App ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -1797,14 +1799,14 @@ Module ModMainExport
     Public Sub CreateTable_tbl_RetrieveHistoryForLocal(pb As ProgressBar, l As Label)
         Try
             Dim createTableSql As String = "CREATE TABLE tbl_RetrieveHistoryForLocal (
-                                                Counter TEXT(50) NOT NULL,
-                                                ForRetrieval DECIMAL(18, 0) NOT NULL
+                                                [Counter] TEXT(50) NOT NULL,
+                                                [ForRetrieval] DECIMAL(18, 0) NOT NULL
                                             );"
 
             conn.Execute(createTableSql)
             Collect_tbl_RetrieveHistoryForLocal(pb, l)
         Catch ex As Exception
-            MessageBox.Show(ex.Message, "tbl_VPlus_App")
+            MessageBox.Show(ex.Message, "tbl_RetrieveHistoryForLocal")
             Application.Exit()
         End Try
     End Sub
@@ -1812,7 +1814,7 @@ Module ModMainExport
         Dim year As Integer = Now.Year - 5
 
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_RetrieveHistoryForLocal ", ConnMain, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_RetrieveHistoryForLocal ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -1822,12 +1824,722 @@ Module ModMainExport
                 l.Text = "tbl_RetrieveHistoryForLocal :" & pb.Maximum & "/" & pb.Value
                 Application.DoEvents()
                 Dim strSQL As String = $"INSERT INTO tbl_RetrieveHistoryForLocal 
-                                            (Counter,
-                                            ForRetrieval)
+                                            ([Counter],
+                                            [ForRetrieval])
                                     VALUES (
                                         '{fSqlFormat(rs.Fields("Counter").Value)}',
                                         {fNum(rs.Fields("ForRetrieval").Value)}
                                    );"
+
+                conn.Execute(strSQL)
+                rs.MoveNext()
+            End While
+
+        End If
+
+    End Sub
+    Public Sub CreateTable_tbl_PS_GT(pb As ProgressBar, l As Label)
+        Try
+            Dim createTableSql As String = "CREATE TABLE tbl_PS_GT (
+                                                [Counter] TEXT(3) NOT NULL,
+                                                TransactionCount INTEGER NOT NULL,
+                                                GrandTotal DOUBLE NOT NULL,
+                                                ZZCount INTEGER NOT NULL,
+                                                ResetCnt TEXT(20) NOT NULL,
+                                                ResetTrans DOUBLE NOT NULL,
+                                                InvoiceNumberOld TEXT(10) NOT NULL,
+                                                InvoiceNumberCnt DOUBLE NOT NULL,
+                                                InvoiceNumber TEXT(10) NOT NULL,
+                                                RA DOUBLE NOT NULL,
+                                                RACount INTEGER NOT NULL,
+                                                Sales DOUBLE NOT NULL,
+                                                SalesCount DOUBLE NOT NULL,
+                                                Discount DOUBLE NOT NULL,
+                                                Surcharge DOUBLE NOT NULL,
+                                                TranCount INTEGER NOT NULL,
+                                                Cash DOUBLE NOT NULL,
+                                                CashCount INTEGER NOT NULL,
+                                                Card DOUBLE NOT NULL,
+                                                CardCount INTEGER NOT NULL,
+                                                [GC] DOUBLE NOT NULL,
+                                                GCCount INTEGER NOT NULL,
+                                                IncentiveCard DOUBLE NOT NULL,
+                                                IncentiveCardCount INTEGER NOT NULL,
+                                                CreditMemo DOUBLE NOT NULL,
+                                                CreditMemoCount INTEGER NOT NULL,
+                                                CM_CashRefund DOUBLE NOT NULL,
+                                                CM_CashRefundCount INTEGER NOT NULL,
+                                                ATD DOUBLE NOT NULL,
+                                                ATDCount INTEGER NOT NULL,
+                                                VPlus DOUBLE NOT NULL,
+                                                VPlusCount INTEGER NOT NULL,
+                                                Misc DOUBLE NOT NULL,
+                                                MiscCount INTEGER NOT NULL,
+                                                SN TEXT(20) NOT NULL,
+                                                PermitNo TEXT(50) NOT NULL,
+                                                M_I_N TEXT(50) NOT NULL,
+                                                Trans BYTE NOT NULL,
+                                                Locked BYTE NOT NULL,
+                                                VPlusCodeCount DOUBLE NOT NULL,
+                                                Header1 TEXT(50) NOT NULL,
+                                                Header2 TEXT(50) NOT NULL,
+                                                Header3 TEXT(50) NOT NULL,
+                                                TIN TEXT(50) NOT NULL,
+                                                ForOfflineMode BYTE NOT NULL,
+                                                CapableOffline BYTE NOT NULL,
+                                                WithEJournal BYTE NOT NULL,
+                                                BankCommission DOUBLE,
+                                                SupplierName TEXT(50) NOT NULL,
+                                                SupplierAddress1 TEXT(50) NOT NULL,
+                                                SupplierAddress2 TEXT(50) NOT NULL,
+                                                SupplierTIN TEXT(50) NOT NULL,
+                                                SupplierAccreditationNo TEXT(50) NOT NULL,
+                                                SupplierDateIssued TEXT(50) NOT NULL,
+                                                SupplierValidUntil TEXT(50) NOT NULL,
+                                                IsNewRegistered INTEGER NOT NULL,
+                                                IsNew INTEGER NOT NULL,
+                                                IsDisabled INTEGER NOT NULL,
+                                                HomeCredit DOUBLE NOT NULL,
+                                                HomeCreditCount DOUBLE NOT NULL,
+                                                QRPay DOUBLE,
+                                                QRPayCount DOUBLE
+);
+
+                                                "
+
+            conn.Execute(createTableSql)
+            Collect_tbl_PS_GT(pb, l)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "tbl_PS_GT")
+            Application.Exit()
+        End Try
+    End Sub
+    Private Sub Collect_tbl_PS_GT(pb As ProgressBar, l As Label)
+        Dim year As Integer = Now.Year - 5
+
+        rs = New ADODB.Recordset
+        rs.Open($"select * from tbl_PS_GT ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_PS_GT :" & pb.Maximum & "/" & pb.Value
+                Application.DoEvents()
+                Dim strSQL As String = $"INSERT INTO tbl_PS_GT 
+                                            ( [Counter],
+                                                TransactionCount,
+                                                GrandTotal,
+                                                ZZCount,
+                                                ResetCnt,
+                                                ResetTrans,
+                                                InvoiceNumberOld,
+                                                InvoiceNumberCnt,
+                                                InvoiceNumber,
+                                                RA,
+                                                RACount,
+                                                Sales,
+                                                SalesCount,
+                                                Discount,
+                                                Surcharge,
+                                                TranCount,
+                                                Cash,
+                                                CashCount,
+                                                Card,
+                                                CardCount,
+                                                [GC],
+                                                GCCount,
+                                                IncentiveCard,
+                                                IncentiveCardCount,
+                                                CreditMemo,
+                                                CreditMemoCount,
+                                                CM_CashRefund,
+                                                CM_CashRefundCount,
+                                                ATD,
+                                                ATDCount,
+                                                VPlus,
+                                                VPlusCount,
+                                                [Misc],
+                                                MiscCount,
+                                                SN,
+                                                PermitNo,
+                                                M_I_N,
+                                                Trans,
+                                                Locked,
+                                                VPlusCodeCount,
+                                                Header1,
+                                                Header2,
+                                                Header3,
+                                                TIN,
+                                                ForOfflineMode,
+                                                CapableOffline,
+                                                WithEJournal,
+                                                BankCommission,
+                                                SupplierName,
+                                                SupplierAddress1,
+                                                SupplierAddress2,
+                                                SupplierTIN,
+                                                SupplierAccreditationNo,
+                                                SupplierDateIssued,
+                                                SupplierValidUntil,
+                                                IsNewRegistered,
+                                                IsNew,
+                                                IsDisabled,
+                                                HomeCredit ,
+                                                HomeCreditCount,
+                                                QRPay,
+                                                QRPayCount)
+                                    VALUES (
+                                        '{fSqlFormat(rs.Fields("Counter").Value)}',
+                                        {fNum(rs.Fields("TransactionCount").Value)},
+                                        {fNum(rs.Fields("GrandTotal").Value)},
+                                        {fNum(rs.Fields("ZZCount").Value)},
+                                        '{fSqlFormat(rs.Fields("ResetCnt").Value)}',
+                                        {fNum(rs.Fields("ResetTrans").Value)},
+                                        '{fSqlFormat(rs.Fields("InvoiceNumberOld").Value)}',
+                                         {fNum(rs.Fields("InvoiceNumberCnt").Value)},
+                                        '{fSqlFormat(rs.Fields("InvoiceNumber").Value)}',
+                                         {fNum(rs.Fields("RA").Value)},
+                                         {fNum(rs.Fields("RACount").Value)},
+                                         {fNum(rs.Fields("Sales").Value)},
+                                         {fNum(rs.Fields("SalesCount").Value)},
+                                         {fNum(rs.Fields("Discount").Value)},
+                                         {fNum(rs.Fields("Surcharge").Value)},
+                                         {fNum(rs.Fields("TranCount").Value)},
+                                         {fNum(rs.Fields("Cash").Value)},
+                                         {fNum(rs.Fields("CashCount").Value)},
+                                         {fNum(rs.Fields("Card").Value)},
+                                         {fNum(rs.Fields("CardCount").Value)},
+                                         {fNum(rs.Fields("GC").Value)},
+                                         {fNum(rs.Fields("GCCount").Value)},
+                                         {fNum(rs.Fields("IncentiveCard").Value)},
+                                         {fNum(rs.Fields("IncentiveCardCount").Value)},
+                                         {fNum(rs.Fields("CreditMemo").Value)},
+                                         {fNum(rs.Fields("CreditMemoCount").Value)},
+                                         {fNum(rs.Fields("CM_CashRefund").Value)},
+                                         {fNum(rs.Fields("CM_CashRefundCount").Value)},
+                                         {fNum(rs.Fields("ATD").Value)},
+                                         {fNum(rs.Fields("ATDCount").Value)},
+                                         {fNum(rs.Fields("VPlus").Value)},
+                                         {fNum(rs.Fields("VPlusCount").Value)},
+                                         {fNum(rs.Fields("Misc").Value)},
+                                         {fNum(rs.Fields("MiscCount").Value)},
+                                        '{fSqlFormat(rs.Fields("SN").Value)}',
+                                        '{fSqlFormat(rs.Fields("PermitNo").Value)}',
+                                        '{fSqlFormat(rs.Fields("M_I_N").Value)}',
+                                        {fNum(rs.Fields("Trans").Value)},
+                                        {fNum(rs.Fields("Locked").Value)},
+                                        {fNum(rs.Fields("VPlusCodeCount").Value)},
+                                        '{fSqlFormat(rs.Fields("Header1").Value)}',
+                                        '{fSqlFormat(rs.Fields("Header2").Value)}',
+                                        '{fSqlFormat(rs.Fields("Header3").Value)}',
+                                        '{fSqlFormat(rs.Fields("TIN").Value)}',
+                                        {fNum(rs.Fields("ForOfflineMode").Value)},
+                                        {fNum(rs.Fields("CapableOffline").Value)},
+                                        {fNum(rs.Fields("WithEJournal").Value)},
+                                        {fNum(rs.Fields("BankCommission").Value)},
+                                        '{fSqlFormat(rs.Fields("SupplierName").Value)}',
+                                        '{fSqlFormat(rs.Fields("SupplierAddress1").Value)}',
+                                        '{fSqlFormat(rs.Fields("SupplierAddress2").Value)}',
+                                        '{fSqlFormat(rs.Fields("SupplierTIN").Value)}',
+                                        '{fSqlFormat(rs.Fields("SupplierAccreditationNo").Value)}',
+                                        '{fSqlFormat(rs.Fields("SupplierDateIssued").Value)}',
+                                        '{fSqlFormat(rs.Fields("SupplierValidUntil").Value)}',
+                                        {fNum(rs.Fields("IsNewRegistered").Value)},
+                                        {fNum(rs.Fields("IsNew").Value)},
+                                        {fNum(rs.Fields("IsDisabled").Value)},
+                                        {fNum(rs.Fields("HomeCredit").Value)},
+                                        {fNum(rs.Fields("HomeCreditCount").Value)},
+                                        {fNum(rs.Fields("QRPay").Value)},
+                                        {fNum(rs.Fields("QRPayCount").Value)}
+                                   );"
+
+                conn.Execute(strSQL)
+                rs.MoveNext()
+            End While
+
+        End If
+
+    End Sub
+
+
+    Public Sub CreateTable_tbl_PS_GT_ZZ(pb As ProgressBar, l As Label)
+        Try
+            Dim createTableSql As String = "CREATE TABLE tbl_PS_GT_ZZ (
+                                                [Counter] TEXT(3) NOT NULL,
+                                                PSDate DATETIME NOT NULL,
+                                                ZZCount BYTE NOT NULL
+                                            );"
+
+            conn.Execute(createTableSql)
+            Collect_tbl_PS_GT_ZZ(pb, l)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "tbl_PS_GT_ZZ")
+            Application.Exit()
+        End Try
+    End Sub
+    Private Sub Collect_tbl_PS_GT_ZZ(pb As ProgressBar, l As Label)
+        Dim year As Integer = Now.Year - 5
+
+        rs = New ADODB.Recordset
+        rs.CursorLocation = ADODB.CursorLocationEnum.adUseClient
+        rs.Open($"select * from tbl_PS_GT_ZZ ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_PS_GT_ZZ :" & pb.Maximum & "/" & pb.Value
+                Application.DoEvents()
+                Dim strSQL As String = $"INSERT INTO tbl_PS_GT_ZZ 
+                                            ([Counter],
+                                            [PSDate],
+                                            ZZCount)
+                                    VALUES (
+                                        '{fSqlFormat(rs.Fields("Counter").Value)}',
+                                         {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())},
+                                        {fNum(rs.Fields("ZZCount").Value)}
+                                   );"
+
+                conn.Execute(strSQL)
+                rs.MoveNext()
+            End While
+
+        End If
+
+    End Sub
+    Public Sub CreateTable_tbl_PS_E_Journal(pb As ProgressBar, l As Label)
+        Try
+            Dim createTableSql As String = "CREATE TABLE tbl_PS_E_Journal (
+                                            PK INTEGER PRIMARY KEY,
+                                            PSNumber TEXT(15) NOT NULL,
+                                            PSDate DATETIME NOT NULL,
+                                            Cashier TEXT(3) NOT NULL,
+                                            [Counter] TEXT(3) NOT NULL,
+                                            Series TEXT(6) NOT NULL,
+                                            ExactDate DATETIME NOT NULL,
+                                            Amount DOUBLE NOT NULL,
+                                            SRem TEXT(50),
+                                            TotalQty DOUBLE NOT NULL,
+                                            TotalSales DOUBLE NOT NULL,
+                                            TotalDiscount DOUBLE NOT NULL,
+                                            TotalGC DOUBLE NOT NULL,
+                                            TotalCard DOUBLE NOT NULL,
+                                            TotalVPlus DOUBLE NOT NULL,
+                                            TotalATD DOUBLE NOT NULL,
+                                            Location TEXT(1) NOT NULL,
+                                            InvoiceNumber TEXT(15) NOT NULL,
+                                            VatPercent TEXT(10) NOT NULL,
+                                            VatSale DOUBLE NOT NULL,
+                                            Vat DOUBLE NOT NULL,
+                                            POSTableKey LONG NOT NULL,
+                                            TotalIncentiveCard DOUBLE NOT NULL,
+                                            IsZeroRated YESNO NOT NULL,
+                                            TotalCreditMemo DOUBLE NOT NULL,
+                                            TotalHomeCredit DOUBLE NOT NULL,
+                                            TotalQRPay DOUBLE
+                                        );"
+
+            conn.Execute(createTableSql)
+            Collect_tbl_PS_E_Journal(pb, l)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "tbl_PS_E_Journal")
+            Application.Exit()
+        End Try
+    End Sub
+    Private Sub Collect_tbl_PS_E_Journal(pb As ProgressBar, l As Label)
+        Dim year As Integer = Now.Year - 1
+        Dim toDate As String = Now.Date.ToShortDateString()
+        Dim FromDate As String = Now.Date.AddYears(-1).ToShortDateString()
+        rs = New ADODB.Recordset
+        rs.CursorLocation = ADODB.CursorLocationEnum.adUseClient
+        rs.Open($"select * from tbl_PS_E_Journal where PsDate between '{FromDate}' and '{toDate}' and  year(PSDate) between {year} and {Now.Year}  ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        Dim n As Integer = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_PS_E_Journal  :" & pb.Maximum & "/" & pb.Value
+                If n > 10000 Then
+                    n = 0
+                    Application.DoEvents()
+                End If
+                Dim strSQL As String = $"INSERT INTO tbl_PS_E_Journal  
+                                            (PK,
+                                            PSNumber,
+                                            PSDate,
+                                            Cashier,
+                                            [Counter],
+                                            Series,
+                                            ExactDate,
+                                            Amount,
+                                            SRem,
+                                            TotalQty,
+                                            TotalSales,
+                                            TotalDiscount,
+                                            TotalGC,
+                                            TotalCard,
+                                            TotalVPlus,
+                                            TotalATD,
+                                            Location,
+                                            InvoiceNumber,
+                                            VatPercent,
+                                            VatSale,
+                                            Vat,
+                                            POSTableKey,
+                                            TotalIncentiveCard,
+                                            IsZeroRated,
+                                            TotalCreditMemo,
+                                            TotalHomeCredit,
+                                            TotalQRPay)
+                                    VALUES (
+                                         {fNum(rs.Fields("PK").Value)},
+                                        '{fSqlFormat(rs.Fields("PSNumber").Value)}',
+                                         {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())},
+                                         '{fSqlFormat(rs.Fields("Cashier").Value)}',
+                                         '{fSqlFormat(rs.Fields("Counter").Value)}',
+                                         '{fSqlFormat(rs.Fields("Series").Value)}',
+                                         {fDateIsEmpty(rs.Fields("ExactDate").Value.ToString())},
+                                         {fNum(rs.Fields("Amount").Value)},
+                                         '{fSqlFormat(rs.Fields("SRem").Value)}',
+                                         {fNum(rs.Fields("TotalQty").Value)},
+                                         {fNum(rs.Fields("TotalSales").Value)},
+                                         {fNum(rs.Fields("TotalDiscount").Value)},
+                                         {fNum(rs.Fields("TotalGC").Value)},
+                                         {fNum(rs.Fields("TotalCard").Value)},
+                                         {fNum(rs.Fields("TotalVPlus").Value)},
+                                         {fNum(rs.Fields("TotalATD").Value)},
+                                         '{fSqlFormat(rs.Fields("Location").Value)}',
+                                         '{fSqlFormat(rs.Fields("InvoiceNumber").Value)}',
+                                         '{fSqlFormat(rs.Fields("VatPercent").Value)}',
+                                         {fNum(rs.Fields("VatSale").Value)},
+                                         {fNum(rs.Fields("Vat").Value)},
+                                         {fNum(rs.Fields("POSTableKey").Value)},
+                                         {fNum(rs.Fields("TotalIncentiveCard").Value)},
+                                         {fNum(rs.Fields("IsZeroRated").Value)},
+                                         {fNum(rs.Fields("TotalCreditMemo").Value)},
+                                         {fNum(rs.Fields("TotalHomeCredit").Value)},
+                                         {fNum(rs.Fields("TotalQRPay").Value)}
+                                   );"
+
+                conn.Execute(strSQL)
+                rs.MoveNext()
+            End While
+        End If
+    End Sub
+
+
+    Public Sub CreateTable_tbl_PS_E_Journal_Detail(pb As ProgressBar, l As Label)
+        Try
+            Dim createTableSql As String = "CREATE TABLE tbl_PS_E_Journal_Detail (
+                                            PK INTEGER PRIMARY KEY,
+                                            TransactionNumber TEXT(15) NOT NULL,
+                                            PSDate DATETIME NOT NULL,
+                                            [Counter] TEXT(3) NOT NULL,
+                                            Cashier TEXT(3) NOT NULL,
+                                            ItemCode TEXT(12) NOT NULL,
+                                            ItemDescription TEXT(50) NOT NULL,
+                                            Quantity DOUBLE NOT NULL,
+                                            GrossSRP DOUBLE NOT NULL,
+                                            Discount DOUBLE NOT NULL,
+                                            Surcharge DOUBLE NOT NULL,
+                                            TotalGross DOUBLE NOT NULL,
+                                            TotalDiscount DOUBLE NOT NULL,
+                                            TotalSurcharge DOUBLE NOT NULL,
+                                            TotalNet DOUBLE NOT NULL,
+                                            Location TEXT(1) NOT NULL,
+                                            POSTableKey LONG NOT NULL
+                                        );"
+
+            conn.Execute(createTableSql)
+            Collect_tbl_PS_E_Journal_Detail(pb, l)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "tbl_PS_E_Journal_Detail")
+            Application.Exit()
+        End Try
+    End Sub
+    Private Sub Collect_tbl_PS_E_Journal_Detail(pb As ProgressBar, l As Label)
+        Dim year As Integer = Now.Year - 1
+        Dim toDate As String = Now.Date.ToShortDateString()
+        Dim FromDate As String = Now.Date.AddYears(-1).ToShortDateString()
+        rs = New ADODB.Recordset
+        rs.CursorLocation = ADODB.CursorLocationEnum.adUseClient
+        rs.Open($"select d.* from tbl_PS_E_Journal_Detail as d  inner join tbl_PS_E_Journal as j on j.PSNumber = d.TransactionNumber where j.PsDate between '{FromDate}' and '{toDate}'  and  year(j.PsDate) between {year} and {Now.Year}  ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        Dim n As Integer = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_PS_E_Journal_Detail :" & pb.Maximum & "/" & pb.Value
+                If n > 10000 Then
+                    n = 0
+                    Application.DoEvents()
+                End If
+                Dim strSQL As String = $"INSERT INTO tbl_PS_E_Journal_Detail 
+                                            (PK,
+                                            TransactionNumber,
+                                            PSDate,
+                                            [Counter],
+                                            Cashier,
+                                            ItemCode,
+                                            ItemDescription,
+                                            Quantity,
+                                            GrossSRP,
+                                            Discount,
+                                            Surcharge,
+                                            TotalGross,
+                                            TotalDiscount,
+                                            TotalSurcharge,
+                                            TotalNet,
+                                            Location,
+                                            POSTableKey)
+                                            VALUES ({fNum(rs.Fields("PK").Value)},
+                                                    '{fSqlFormat(rs.Fields("TransactionNumber").Value)}',
+                                                    {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())},
+                                                   '{fSqlFormat(rs.Fields("Counter").Value)}',
+                                                   '{fSqlFormat(rs.Fields("Cashier").Value)}',
+                                                   '{fSqlFormat(rs.Fields("ItemCode").Value)}',
+                                                   '{fSqlFormat(rs.Fields("ItemDescription").Value)}',
+                                                    {fNum(rs.Fields("Quantity").Value)},
+                                                    {fNum(rs.Fields("GrossSRP").Value)},
+                                                    {fNum(rs.Fields("Discount").Value)},
+                                                    {fNum(rs.Fields("Surcharge").Value)},
+                                                    {fNum(rs.Fields("TotalGross").Value)},
+                                                    {fNum(rs.Fields("TotalDiscount").Value)},
+                                                    {fNum(rs.Fields("TotalSurcharge").Value)},
+                                                    {fNum(rs.Fields("TotalNet").Value)},
+                                                   '{fSqlFormat(rs.Fields("Location").Value)}',
+                                                    {fNum(rs.Fields("POSTableKey").Value)}
+                                               );"
+
+                conn.Execute(strSQL)
+                rs.MoveNext()
+            End While
+
+        End If
+
+    End Sub
+
+
+    Public Sub CreateTable_tbl_PS_GT_Adjustment_EJournal(pb As ProgressBar, l As Label)
+        Try
+            Dim createTableSql As String = "CREATE TABLE tbl_PS_GT_Adjustment_EJournal (
+                                            ID INTEGER PRIMARY KEY,
+                                            PSNumber TEXT(15) NOT NULL,
+                                            PSDate DATETIME NOT NULL,
+                                            Cashier TEXT(3) NOT NULL,
+                                            [Counter] TEXT(3) NOT NULL,
+                                            Series TEXT(6) NOT NULL,
+                                            ExactDate DATETIME NOT NULL,
+                                            Amount DOUBLE NOT NULL,
+                                            SRem TEXT(50),
+                                            TotalQty DOUBLE NOT NULL,
+                                            TotalSales CURRENCY NOT NULL,
+                                            TotalCash CURRENCY NOT NULL,
+                                            TotalCard CURRENCY NOT NULL,
+                                            TotalDiscount CURRENCY NOT NULL,
+                                            TotalGC CURRENCY NOT NULL,
+                                            TotalVPlus CURRENCY NOT NULL,
+                                            TotalATD CURRENCY NOT NULL,
+                                            Location TEXT(3) NOT NULL,
+                                            InvoiceNo TEXT(25) NOT NULL,
+                                            VatPercent TEXT(10) NOT NULL,
+                                            VatSale DOUBLE NOT NULL,
+                                            Vat DOUBLE NOT NULL,
+                                            POSTableKey LONG NOT NULL,
+                                            TotalIncentiveCard DOUBLE NOT NULL,
+                                            IsZeroRated YESNO NOT NULL,
+                                            UpdatedBy TEXT(50) NOT NULL,
+                                            LastUpdated DATETIME NOT NULL,
+                                            TotalCreditMemo DOUBLE NOT NULL
+                                        );"
+
+            conn.Execute(createTableSql)
+            Collect_tbl_PS_GT_Adjustment_EJournal(pb, l)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "tbl_PS_GT_Adjustment_EJournal")
+            Application.Exit()
+        End Try
+    End Sub
+    Private Sub Collect_tbl_PS_GT_Adjustment_EJournal(pb As ProgressBar, l As Label)
+        Dim year As Integer = Now.Year - 1
+        Dim toDate As String = Now.Date.ToShortDateString()
+        Dim FromDate As String = Now.Date.AddYears(-1).ToShortDateString()
+        rs = New ADODB.Recordset
+        rs.CursorLocation = ADODB.CursorLocationEnum.adUseClient
+        rs.Open($"select j.* from tbl_PS_GT_Adjustment_EJournal as j where j.PsDate between '{FromDate}' and '{toDate}'  and  year(j.PsDate) between {year} and {Now.Year}  ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        Dim n As Integer = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_PS_GT_Adjustment_EJournal :" & pb.Maximum & "/" & pb.Value
+                If n > 10000 Then
+                    n = 0
+                    Application.DoEvents()
+                End If
+                Dim strSQL As String = $"INSERT INTO tbl_PS_GT_Adjustment_EJournal 
+                                            (ID,
+                                            PSNumber,
+                                            PSDate,
+                                            Cashier,
+                                            [Counter],
+                                            Series,
+                                            ExactDate,
+                                            Amount,
+                                            SRem,
+                                            TotalQty,
+                                            TotalSales,
+                                            TotalCash,
+                                            TotalCard,
+                                            TotalDiscount,
+                                            TotalGC,
+                                            TotalVPlus,
+                                            TotalATD,
+                                            Location,
+                                            InvoiceNo,
+                                            VatPercent,
+                                            VatSale,
+                                            Vat,
+                                            POSTableKey,
+                                            TotalIncentiveCard,
+                                            IsZeroRated,
+                                            UpdatedBy,
+                                            LastUpdated,
+                                            TotalCreditMemo)
+                                            VALUES ({fNum(rs.Fields("ID").Value)},
+                                                   '{fSqlFormat(rs.Fields("PSNumber").Value)}',
+                                                   {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())},
+                                                   '{fSqlFormat(rs.Fields("Cashier").Value)}',
+                                                   '{fSqlFormat(rs.Fields("Counter").Value)}',                                      
+                                                   '{fSqlFormat(rs.Fields("Series").Value)}',
+                                                    {fDateIsEmpty(rs.Fields("ExactDate").Value.ToString())},
+                                                    {fNum(rs.Fields("Amount").Value)},
+                                                   '{fSqlFormat(rs.Fields("SRem").Value)}',
+                                                    {fNum(rs.Fields("TotalQty").Value)},
+                                                    {fNum(rs.Fields("TotalSales").Value)},
+                                                    {fNum(rs.Fields("TotalCash").Value)},
+                                                    {fNum(rs.Fields("TotalCard").Value)},
+                                                    {fNum(rs.Fields("TotalDiscount").Value)},
+                                                    {fNum(rs.Fields("TotalGC").Value)},
+                                                    {fNum(rs.Fields("TotalVPlus").Value)},
+                                                    {fNum(rs.Fields("TotalATD").Value)},
+                                                   '{fSqlFormat(rs.Fields("Location").Value)}',
+                                                   '{fSqlFormat(rs.Fields("InvoiceNo").Value)}',
+                                                   '{fSqlFormat(rs.Fields("VatPercent").Value)}',
+                                                    {fNum(rs.Fields("VatSale").Value)},
+                                                    {fNum(rs.Fields("Vat").Value)},
+                                                    {fNum(rs.Fields("POSTableKey").Value)},
+                                                    {fNum(rs.Fields("TotalIncentiveCard").Value)},
+                                                    {fNum(rs.Fields("IsZeroRated").Value)},
+                                                    '{fSqlFormat(rs.Fields("UpdatedBy").Value)}',
+                                                    {fDateIsEmpty(rs.Fields("LastUpdated").Value.ToString())},
+                                                    {fNum(rs.Fields("TotalCreditMemo").Value)}
+
+                                               );"
+
+                conn.Execute(strSQL)
+                rs.MoveNext()
+            End While
+
+        End If
+
+    End Sub
+
+
+
+    Public Sub CreateTable_tbl_PS_GT_Adjustment_EJournal_Detail(pb As ProgressBar, l As Label)
+        Try
+            Dim createTableSql As String = "CREATE TABLE tbl_PS_GT_Adjustment_EJournal_Detail (
+                                            ID INTEGER PRIMARY KEY,
+                                            TransactionNumber TEXT(15) NOT NULL,
+                                            PSDate DATETIME NOT NULL,
+                                            [Counter] TEXT(3) NOT NULL,
+                                            Cashier TEXT(3) NOT NULL,
+                                            ItemCode TEXT(12) NOT NULL,
+                                            ItemDescription TEXT(50) NOT NULL,
+                                            Quantity DOUBLE NOT NULL,
+                                            GrossSRP DOUBLE NOT NULL,
+                                            Discount DOUBLE NOT NULL,
+                                            Surcharge DOUBLE NOT NULL,
+                                            TotalGross DOUBLE NOT NULL,
+                                            TotalDiscount DOUBLE NOT NULL,
+                                            TotalSurcharge DOUBLE NOT NULL,
+                                            TotalNet DOUBLE NOT NULL,
+                                            Location TEXT(1) NOT NULL,
+                                            POSTableKey LONG NOT NULL
+                                        );"
+
+            conn.Execute(createTableSql)
+            Collect_tbl_PS_GT_Adjustment_EJournal_Detail(pb, l)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "tbl_PS_GT_Adjustment_EJournal_Detail ")
+            Application.Exit()
+        End Try
+    End Sub
+    Private Sub Collect_tbl_PS_GT_Adjustment_EJournal_Detail(pb As ProgressBar, l As Label)
+        Dim year As Integer = Now.Year - 1
+        Dim toDate As String = Now.Date.ToShortDateString()
+        Dim FromDate As String = Now.Date.AddYears(-1).ToShortDateString()
+        rs = New ADODB.Recordset
+        rs.CursorLocation = ADODB.CursorLocationEnum.adUseClient
+        rs.Open($"select d.* from tbl_PS_GT_Adjustment_EJournal_Detail as d inner join tbl_PS_GT_Adjustment_EJournal as j on  j.PSNumber = d.TransactionNumber where j.PsDate between '{FromDate}' and '{toDate}'  and  year(j.PsDate) between {year} and {Now.Year}  ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        Dim n As Integer = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_PS_GT_Adjustment_EJournal_Detail :" & pb.Maximum & "/" & pb.Value
+                If n > 10000 Then
+                    n = 0
+                    Application.DoEvents()
+                End If
+                Dim strSQL As String = $"INSERT INTO tbl_PS_GT_Adjustment_EJournal_Detail 
+                                            (ID,
+                                            TransactionNumber,
+                                            PSDate,
+                                            [Counter],
+                                            Cashier,                        
+                                            ItemCode,
+                                            ItemDescription,
+                                            Quantity,
+                                            GrossSRP,
+                                            Discount,
+                                            Surcharge,
+                                            TotalGross,
+                                            TotalDiscount,
+                                            TotalSurcharge,
+                                            TotalNet,
+                                            Location,
+                                            POSTableKey)
+                                            VALUES ({fNum(rs.Fields("ID").Value)},
+                                                   '{fSqlFormat(rs.Fields("TransactionNumber").Value)}',
+                                                    {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())},
+                                                   '{fSqlFormat(rs.Fields("Counter").Value)}',
+                                                   '{fSqlFormat(rs.Fields("Cashier").Value)}',                                      
+                                                   '{fSqlFormat(rs.Fields("ItemCode").Value)}',
+                                                   '{fSqlFormat(rs.Fields("ItemDescription").Value)}',
+                                                    {fNum(rs.Fields("Quantity").Value)},
+                                                    {fNum(rs.Fields("GrossSRP").Value)},
+                                                    {fNum(rs.Fields("Discount").Value)},
+                                                    {fNum(rs.Fields("Surcharge").Value)},
+                                                    {fNum(rs.Fields("TotalGross").Value)},
+                                                    {fNum(rs.Fields("TotalDiscount").Value)},
+                                                    {fNum(rs.Fields("TotalSurcharge").Value)},
+                                                    {fNum(rs.Fields("TotalNet").Value)},
+                                                   '{fSqlFormat(rs.Fields("Location").Value)}',
+                                                    {fNum(rs.Fields("POSTableKey").Value)}
+                                               );"
 
                 conn.Execute(strSQL)
                 rs.MoveNext()
