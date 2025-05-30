@@ -42,12 +42,12 @@ Public Class FrmBranch
                 Dim fileName As String = Path.GetFileName(sourceFilePath) ' file name
 
                 Dim str As String = getConnectionString(sourceFilePath)
-                conn = New ADODB.Connection()
-                conn.ConnectionTimeout = 30
-                conn.Open(str)
+                ConnLocal = New ADODB.Connection()
+                ConnLocal.ConnectionTimeout = 30
+                ConnLocal.Open(str)
                 SaveIt()
 
-                conn.Close()
+                ConnLocal.Close()
             Catch ex As Exception
                 MessageBox.Show("Error uploading file: " & ex.Message)
             End Try
@@ -55,6 +55,26 @@ Public Class FrmBranch
     End Sub
 
     Private Sub SaveIt()
+
+
+        Insert_tbl_Bank(pbMainLoading, lblMainLoading)
+        Insert_tbl_Banks(pbMainLoading, lblMainLoading)
+        Insert_tbl_Banks_Changes(pbMainLoading, lblMainLoading)
+        Insert_tbl_Bank_Changes(pbMainLoading, lblMainLoading)
+        Insert_tbl_Bank_Terms(pbMainLoading, lblMainLoading)
+        Insert_tbl_QRPay_Type(pbMainLoading, lblMainLoading)
+        Insert_tbl_GiftCert_List(pbMainLoading, lblMainLoading)
+        Insert_tbl_VPlus_Codes(pbMainLoading, lblMainLoading)
+        Insert_tbl_VPlus_Codes_Validity(pbMainLoading, lblMainLoading)
+        Insert_tbl_PCPOS_Cashiers_Changes(pbMainLoading, lblMainLoading)
+        Insert_tbl_Items_Changes(pbMainLoading, lblMainLoading)
+        Insert_tbl_ItemsForPLU_For_Effect(pbMainLoading, lblMainLoading)
+        Insert_tbl_Items(pbMainLoading, lblMainLoading)
+
+        Insert_tbl_PCPOS_Cashiers(pbMainLoading, lblMainLoading)
+        Insert_tbl_ItemsForPLU(pbMainLoading, lblMainLoading)
+
+
 
     End Sub
 

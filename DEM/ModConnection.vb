@@ -8,7 +8,7 @@ Module ModConnection
     Public IsConnected As Boolean
 
     Public rs As ADODB.Recordset
-    Public conn As New ADODB.Connection()
+    Public ConnLocal As New ADODB.Connection()
     Public GL_EXPORT_PATH As String
     Public Sub getConnection()
         ConnServer = New ADODB.Connection()

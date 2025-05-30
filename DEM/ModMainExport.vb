@@ -26,7 +26,7 @@ Module ModMainExport
                 Transfered BYTE NOT NULL
             )"
 
-            conn.Execute(createTableSql)
+            ConnLocal.Execute(createTableSql)
             Collect_tbl_PCPOS_Cashiers(pb, l)
         Catch ex As Exception
             MessageBox.Show(ex.Message, " tbl_PCPOS_Cashiers")
@@ -47,7 +47,7 @@ Module ModMainExport
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_PCPOS_Cashiers :" & pb.Maximum & "/" & pb.Value
                 Application.DoEvents()
-                conn.Execute($"INSERT INTO tbl_PCPOS_Cashiers 
+                ConnLocal.Execute($"INSERT INTO tbl_PCPOS_Cashiers 
                                     (CashierCode,
                                     [Password],
                                     Senior,
@@ -105,7 +105,7 @@ Module ModMainExport
                                             PromoTo DATETIME
                                 )"
 
-            conn.Execute(createTableSql)
+            ConnLocal.Execute(createTableSql)
             Collect_tbl_ItemsForPLU(pb, l)
         Catch ex As Exception
             MessageBox.Show(ex.Message, "tbl_ItemsForPLU")
@@ -145,7 +145,7 @@ Module ModMainExport
                                      {fDateIsEmpty(rs.Fields("PromoFrom").Value.ToString())},
                                      {fDateIsEmpty(rs.Fields("PromoTo").Value.ToString())}
                                 );"
-                conn.Execute(strSQL)
+                ConnLocal.Execute(strSQL)
                 rs.MoveNext()
             End While
 
@@ -172,7 +172,7 @@ Module ModMainExport
                                 );"
 
 
-            conn.Execute(createTableSql)
+            ConnLocal.Execute(createTableSql)
             Collect_tbl_Bank(pb, l)
         Catch ex As Exception
             MessageBox.Show(ex.Message, "tbl_Bank")
@@ -216,7 +216,7 @@ Module ModMainExport
                                     {rs.Fields("IsDefault").Value}
                             
                                 );"
-                conn.Execute(strSQL)
+                ConnLocal.Execute(strSQL)
                 rs.MoveNext()
             End While
 
@@ -237,7 +237,7 @@ Module ModMainExport
                                             [Description] TEXT(12) NOT NULL,
                                             Bank INTEGER NOT NULL
                                         );"
-            conn.Execute(createTableSql)
+            ConnLocal.Execute(createTableSql)
             Collect_tbl_Banks(pb, l)
         Catch ex As Exception
             MessageBox.Show(ex.Message, "tbl_Banks")
@@ -274,7 +274,7 @@ Module ModMainExport
                                     '{fSqlFormat(rs.Fields("Description").Value)}',
                                      {rs.Fields("Bank").Value}       
                                 );"
-                conn.Execute(strSQL)
+                ConnLocal.Execute(strSQL)
                 rs.MoveNext()
             End While
 
@@ -292,7 +292,7 @@ Module ModMainExport
                                                 [Changes] TEXT(50)
                                             );"
 
-            conn.Execute(createTableSql)
+            ConnLocal.Execute(createTableSql)
             Collect_tbl_Banks_Changes(pb, l)
         Catch ex As Exception
             MessageBox.Show(ex.Message, "tbl_Banks_Changes")
@@ -317,13 +317,13 @@ Module ModMainExport
                                     EffectDate,
                                     BankKey,
                                     [Changes])
-                                    VALUES ('{fSqlFormat(rs.Fields("PK").Value)}',  
+                                    VALUES ({fNum(rs.Fields("PK").Value)},  
                                     {fDateIsEmpty(rs.Fields("EffectDate").Value.ToString())},
                                     {fNum(rs.Fields("BankKey").Value)},    
                                     '{fSqlFormat(rs.Fields("Changes").Value)}'   
                                    );"
 
-                conn.Execute(strSQL)
+                ConnLocal.Execute(strSQL)
                 rs.MoveNext()
             End While
 
@@ -342,7 +342,7 @@ Module ModMainExport
                                                 [Changes] TEXT(50)
                                             );"
 
-            conn.Execute(createTableSql)
+            ConnLocal.Execute(createTableSql)
             Collect_tbl_Bank_Changes(pb, l)
         Catch ex As Exception
             MessageBox.Show(ex.Message, "tbl_Bank_Changes")
@@ -367,13 +367,13 @@ Module ModMainExport
                                     EffectDate,
                                     BankKey,
                                     [Changes])
-                                    VALUES ('{fSqlFormat(rs.Fields("PK").Value)}',  
+                                    VALUES ({fNum(rs.Fields("PK").Value)},  
                                     {fDateIsEmpty(rs.Fields("EffectDate").Value.ToString())},
                                     {fNum(rs.Fields("BankKey").Value)},    
                                     '{fSqlFormat(rs.Fields("Changes").Value)}'   
                                    );"
 
-                conn.Execute(strSQL)
+                ConnLocal.Execute(strSQL)
                 rs.MoveNext()
             End While
 
@@ -390,7 +390,7 @@ Module ModMainExport
                                             Terms TEXT(50) NOT NULL,
                                             TermsDescription TEXT(255) NOT NULL
                                         );"
-            conn.Execute(createTableSql)
+            ConnLocal.Execute(createTableSql)
             Collect_tbl_Bank_Terms(pb, l)
         Catch ex As Exception
             MessageBox.Show(ex.Message, "tbl_Bank_Terms")
@@ -423,7 +423,7 @@ Module ModMainExport
                                     '{fSqlFormat(rs.Fields("Terms").Value)}',
                                     '{fSqlFormat(rs.Fields("TermsDescription").Value)}'
                                 );"
-                conn.Execute(strSQL)
+                ConnLocal.Execute(strSQL)
                 rs.MoveNext()
             End While
 
@@ -440,7 +440,7 @@ Module ModMainExport
                                                 nSort INTEGER
                                             );"
 
-            conn.Execute(createTableSql)
+            ConnLocal.Execute(createTableSql)
             Collect_tbl_QRPay_Type(pb, l)
         Catch ex As Exception
             MessageBox.Show(ex.Message, "tbl_QRPay_Type")
@@ -470,7 +470,7 @@ Module ModMainExport
                                     {rs.Fields("nPercRate").Value},
                                     {rs.Fields("nSort").Value}
                                 );"
-                conn.Execute(strSQL)
+                ConnLocal.Execute(strSQL)
                 rs.MoveNext()
             End While
 
@@ -493,7 +493,7 @@ Module ModMainExport
                                                 DateUsed DATETIME
                                         );"
 
-            conn.Execute(createTableSql)
+            ConnLocal.Execute(createTableSql)
             Collect_tbl_GiftCert_List(pb, l)
         Catch ex As Exception
             MessageBox.Show(ex.Message, "tbl_GiftCert_List")
@@ -534,7 +534,7 @@ Module ModMainExport
                                     {rs.Fields("Used").Value},
                                     {fDateIsEmpty(rs.Fields("DateUsed").Value.ToString())}
                                 );"
-                conn.Execute(strSQL)
+                ConnLocal.Execute(strSQL)
                 rs.MoveNext()
             End While
 
@@ -561,7 +561,7 @@ Module ModMainExport
                                             Changes BYTE NOT NULL
                                         );"
 
-            conn.Execute(createTableSql)
+            ConnLocal.Execute(createTableSql)
             Collect_tbl_VPlus_Codes(pb, l)
         Catch ex As Exception
             MessageBox.Show(ex.Message, "tbl_VPlus_Codes")
@@ -613,7 +613,7 @@ Module ModMainExport
                                     {fDateIsEmpty(rs.Fields("DateExpired").Value.ToString())},
                                     {fDateIsEmpty(rs.Fields("DateModified").Value.ToString())},
                                     {rs.Fields("Changes").Value} );"
-                conn.Execute(strSQL)
+                ConnLocal.Execute(strSQL)
                 rs.MoveNext()
             End While
         End If
@@ -629,7 +629,7 @@ Module ModMainExport
                                             GracePeriod DATETIME NOT NULL
                                         );"
 
-            conn.Execute(createTableSql)
+            ConnLocal.Execute(createTableSql)
             Collect_tbl_VPlus_Codes_Validity(pb, l)
         Catch ex As Exception
             MessageBox.Show(ex.Message, "tbl_VPlus_Codes_Validity")
@@ -664,7 +664,7 @@ Module ModMainExport
                                     {fDateIsEmpty(rs.Fields("GracePeriod").Value.ToString())}   
                                    );"
 
-                conn.Execute(strSQL)
+                ConnLocal.Execute(strSQL)
                 rs.MoveNext()
             End While
 
@@ -682,7 +682,7 @@ Module ModMainExport
                                             [Changes] TEXT(50)
                                         );"
 
-            conn.Execute(createTableSql)
+            ConnLocal.Execute(createTableSql)
             Collect_tbl_PCPOS_Cashiers_Changes(pb, l)
         Catch ex As Exception
             MessageBox.Show(ex.Message, "tbl_PCPOS_Cashiers_Changes")
@@ -705,13 +705,13 @@ Module ModMainExport
                                     EffectDate,
                                     CashierPK,
                                     [Changes])
-                                    VALUES ('{fSqlFormat(rs.Fields("PK").Value)}',  
+                                    VALUES ({fNum(rs.Fields("PK").Value)},  
                                     {fDateIsEmpty(rs.Fields("EffectDate").Value.ToString())},
                                     {fNum(rs.Fields("CashierPK").Value)},    
                                     '{fSqlFormat(rs.Fields("Changes").Value)}'   
                                    );"
 
-                conn.Execute(strSQL)
+                ConnLocal.Execute(strSQL)
                 rs.MoveNext()
             End While
         End If
@@ -732,7 +732,7 @@ Module ModMainExport
                                                 ItemKey INTEGER
                                             );"
 
-            conn.Execute(createTableSql)
+            ConnLocal.Execute(createTableSql)
             Collect_tbl_Items_Changes(pb, l)
         Catch ex As Exception
             MessageBox.Show(ex.Message, "tbl_Items_Change")
@@ -773,7 +773,7 @@ Module ModMainExport
                                       {fNum(rs.Fields("ItemKey").Value)}                         
                                    );"
 
-                conn.Execute(strSQL)
+                ConnLocal.Execute(strSQL)
                 rs.MoveNext()
             End While
         End If
@@ -791,7 +791,7 @@ Module ModMainExport
                                                     PromoTo DATETIME
                                                 );"
 
-            conn.Execute(createTableSql)
+            ConnLocal.Execute(createTableSql)
             Collect_tbl_ItemsForPLU_For_Effect(pb, l)
         Catch ex As Exception
             MessageBox.Show(ex.Message, "tbl_ItemsForPLU_For_Effect")
@@ -831,7 +831,7 @@ Module ModMainExport
                                     {fDateIsEmpty(rs.Fields("PromoTo").Value.ToString())}                    
                                    );"
 
-                conn.Execute(strSQL)
+                ConnLocal.Execute(strSQL)
                 rs.MoveNext()
 
 
@@ -904,7 +904,7 @@ Module ModMainExport
                                             Status BYTE NOT NULL
                                         );"
 
-            conn.Execute(createTableSql)
+            ConnLocal.Execute(createTableSql)
             Collect_tbl_Items(pb, l)
         Catch ex As Exception
             MessageBox.Show(ex.Message, "tbl_Items")
@@ -1056,7 +1056,7 @@ Module ModMainExport
 
                                    );"
 
-                conn.Execute(strSQL)
+                ConnLocal.Execute(strSQL)
                 rs.MoveNext()
             End While
         End If
@@ -1132,7 +1132,7 @@ Module ModMainExport
                                             );
 "
 
-            conn.Execute(createTableSql)
+            ConnLocal.Execute(createTableSql)
             Collect_tbl_Concession_PCR(pb, l)
         Catch ex As Exception
             MessageBox.Show(ex.Message, "tbl_Concession_PCR")
@@ -1288,7 +1288,7 @@ Module ModMainExport
                                        {fNum(rs.Fields("Sel_PL").Value)}
                                    );"
 
-                conn.Execute(strSQL)
+                ConnLocal.Execute(strSQL)
                 rs.MoveNext()
 
 
@@ -1332,7 +1332,7 @@ Module ModMainExport
                                                 IsCurrentlyMarkdown BYTE NOT NULL
 );"
 
-            conn.Execute(createTableSql)
+            ConnLocal.Execute(createTableSql)
             Collect_tbl_Concession_PCR_Det(pb, l)
         Catch ex As Exception
             MessageBox.Show(ex.Message, "tbl_Concession_PCR_Det")
@@ -1420,7 +1420,7 @@ Module ModMainExport
                                     
                                    );"
 
-                conn.Execute(strSQL)
+                ConnLocal.Execute(strSQL)
                 rs.MoveNext()
 
 
@@ -1443,7 +1443,7 @@ Module ModMainExport
                                                     LastModifiedBy TEXT(100) NOT NULL
                                                 );"
 
-            conn.Execute(createTableSql)
+            ConnLocal.Execute(createTableSql)
             Collect_tbl_Concession_PCR_Effectivity(pb, l)
         Catch ex As Exception
             MessageBox.Show(ex.Message, "tbl_Concession_PCR_Effectivity")
@@ -1486,7 +1486,7 @@ Module ModMainExport
                                     {fNum(rs.Fields("LastModifiedBy").Value)}                   
                                    );"
 
-                conn.Execute(strSQL)
+                ConnLocal.Execute(strSQL)
                 rs.MoveNext()
 
             End While
@@ -1505,7 +1505,7 @@ Module ModMainExport
                                             Changes TEXT(50) NOT NULL
                                         );"
 
-            conn.Execute(createTableSql)
+            ConnLocal.Execute(createTableSql)
             Collect_tbl_GiftCert_Changes(pb, l)
         Catch ex As Exception
             MessageBox.Show(ex.Message, "tbl_GiftCert_Changes")
@@ -1538,7 +1538,7 @@ Module ModMainExport
                                     {rs.Fields("GCAmount").Value},
                                    '{fSqlFormat(rs.Fields("Changes").Value)}'
                                 );"
-                conn.Execute(strSQL)
+                ConnLocal.Execute(strSQL)
                 rs.MoveNext()
             End While
 
@@ -1552,7 +1552,7 @@ Module ModMainExport
                             StopUpload BYTE NOT NULL
                         );"
 
-            conn.Execute(createTableSql)
+            ConnLocal.Execute(createTableSql)
             Collect_tbl_PS_Upload_Utility(pb, l)
         Catch ex As Exception
             MessageBox.Show(ex.Message, "tbl_GiftCert_Changes")
@@ -1580,7 +1580,7 @@ Module ModMainExport
                                     {fDateIsEmpty(rs.Fields("EffectDate").Value.ToString())}, 
                                     {rs.Fields("StopUpload").Value}
                                 );"
-                conn.Execute(strSQL)
+                ConnLocal.Execute(strSQL)
                 rs.MoveNext()
             End While
 
@@ -1595,7 +1595,7 @@ Module ModMainExport
                                             DateChange DATETIME NOT NULL
                                         );"
 
-            conn.Execute(createTableSql)
+            ConnLocal.Execute(createTableSql)
             Collect_tbl_VPlus_Codes_Changes(pb, l)
         Catch ex As Exception
             MessageBox.Show(ex.Message, "tbl_VPlus_Codes_Changes")
@@ -1626,7 +1626,7 @@ Module ModMainExport
                                     {fDateIsEmpty(rs.Fields("DateChange").Value.ToString())}   
                                    );"
 
-                conn.Execute(strSQL)
+                ConnLocal.Execute(strSQL)
                 rs.MoveNext()
             End While
 
@@ -1649,7 +1649,7 @@ Module ModMainExport
                                             OutPoints DOUBLE NOT NULL
                                         );"
 
-            conn.Execute(createTableSql)
+            ConnLocal.Execute(createTableSql)
             Collect_tbl_VPlus_Summary(pb, l)
         Catch ex As Exception
             MessageBox.Show(ex.Message, "tbl_VPlus_Summary")
@@ -1698,7 +1698,7 @@ Module ModMainExport
                                         {fNum(rs.Fields("OutPoints").Value)} 
                                    );"
 
-                conn.Execute(strSQL)
+                ConnLocal.Execute(strSQL)
                 rs.MoveNext()
             End While
 
@@ -1714,7 +1714,7 @@ Module ModMainExport
                                             CreatedOn DATETIME NOT NULL
                                         );"
 
-            conn.Execute(createTableSql)
+            ConnLocal.Execute(createTableSql)
             Collect_tbl_VPlus_Codes_For_Offline(pb, l)
         Catch ex As Exception
             MessageBox.Show(ex.Message, "tbl_VPlus_Codes_For_Offline")
@@ -1750,7 +1750,7 @@ Module ModMainExport
                                          {fDateIsEmpty(rs.Fields("CreatedOn").Value.ToString())}
                                    );"
 
-                conn.Execute(strSQL)
+                ConnLocal.Execute(strSQL)
                 rs.MoveNext()
             End While
 
@@ -1763,7 +1763,7 @@ Module ModMainExport
                                             PLU TEXT(12) Not NULL
                                         );"
 
-            conn.Execute(createTableSql)
+            ConnLocal.Execute(createTableSql)
             Collect_tbl_VPlus_App(pb, l)
         Catch ex As Exception
             MessageBox.Show(ex.Message, "tbl_VPlus_App")
@@ -1789,7 +1789,7 @@ Module ModMainExport
                                         '{fSqlFormat(rs.Fields("PLU").Value)}'
                                    );"
 
-                conn.Execute(strSQL)
+                ConnLocal.Execute(strSQL)
                 rs.MoveNext()
             End While
 
@@ -1803,7 +1803,7 @@ Module ModMainExport
                                                 [ForRetrieval] DECIMAL(18, 0) NOT NULL
                                             );"
 
-            conn.Execute(createTableSql)
+            ConnLocal.Execute(createTableSql)
             Collect_tbl_RetrieveHistoryForLocal(pb, l)
         Catch ex As Exception
             MessageBox.Show(ex.Message, "tbl_RetrieveHistoryForLocal")
@@ -1831,7 +1831,7 @@ Module ModMainExport
                                         {fNum(rs.Fields("ForRetrieval").Value)}
                                    );"
 
-                conn.Execute(strSQL)
+                ConnLocal.Execute(strSQL)
                 rs.MoveNext()
             End While
 
@@ -1907,7 +1907,7 @@ Module ModMainExport
 
                                                 "
 
-            conn.Execute(createTableSql)
+            ConnLocal.Execute(createTableSql)
             Collect_tbl_PS_GT(pb, l)
         Catch ex As Exception
             MessageBox.Show(ex.Message, "tbl_PS_GT")
@@ -2055,7 +2055,7 @@ Module ModMainExport
                                         {fNum(rs.Fields("QRPayCount").Value)}
                                    );"
 
-                conn.Execute(strSQL)
+                ConnLocal.Execute(strSQL)
                 rs.MoveNext()
             End While
 
@@ -2072,7 +2072,7 @@ Module ModMainExport
                                                 ZZCount BYTE NOT NULL
                                             );"
 
-            conn.Execute(createTableSql)
+            ConnLocal.Execute(createTableSql)
             Collect_tbl_PS_GT_ZZ(pb, l)
         Catch ex As Exception
             MessageBox.Show(ex.Message, "tbl_PS_GT_ZZ")
@@ -2103,7 +2103,7 @@ Module ModMainExport
                                         {fNum(rs.Fields("ZZCount").Value)}
                                    );"
 
-                conn.Execute(strSQL)
+                ConnLocal.Execute(strSQL)
                 rs.MoveNext()
             End While
 
@@ -2142,7 +2142,7 @@ Module ModMainExport
                                             TotalQRPay DOUBLE
                                         );"
 
-            conn.Execute(createTableSql)
+            ConnLocal.Execute(createTableSql)
             Collect_tbl_PS_E_Journal(pb, l)
         Catch ex As Exception
             MessageBox.Show(ex.Message, "tbl_PS_E_Journal")
@@ -2226,7 +2226,7 @@ Module ModMainExport
                                          {fNum(rs.Fields("TotalQRPay").Value)}
                                    );"
 
-                conn.Execute(strSQL)
+                ConnLocal.Execute(strSQL)
                 rs.MoveNext()
             End While
         End If
@@ -2255,7 +2255,7 @@ Module ModMainExport
                                             POSTableKey LONG NOT NULL
                                         );"
 
-            conn.Execute(createTableSql)
+            ConnLocal.Execute(createTableSql)
             Collect_tbl_PS_E_Journal_Detail(pb, l)
         Catch ex As Exception
             MessageBox.Show(ex.Message, "tbl_PS_E_Journal_Detail")
@@ -2318,7 +2318,7 @@ Module ModMainExport
                                                     {fNum(rs.Fields("POSTableKey").Value)}
                                                );"
 
-                conn.Execute(strSQL)
+                ConnLocal.Execute(strSQL)
                 rs.MoveNext()
             End While
 
@@ -2360,7 +2360,7 @@ Module ModMainExport
                                             TotalCreditMemo DOUBLE NOT NULL
                                         );"
 
-            conn.Execute(createTableSql)
+            ConnLocal.Execute(createTableSql)
             Collect_tbl_PS_GT_Adjustment_EJournal(pb, l)
         Catch ex As Exception
             MessageBox.Show(ex.Message, "tbl_PS_GT_Adjustment_EJournal")
@@ -2446,7 +2446,7 @@ Module ModMainExport
 
                                                );"
 
-                conn.Execute(strSQL)
+                ConnLocal.Execute(strSQL)
                 rs.MoveNext()
             End While
 
@@ -2478,7 +2478,7 @@ Module ModMainExport
                                             POSTableKey LONG NOT NULL
                                         );"
 
-            conn.Execute(createTableSql)
+            ConnLocal.Execute(createTableSql)
             Collect_tbl_PS_GT_Adjustment_EJournal_Detail(pb, l)
         Catch ex As Exception
             MessageBox.Show(ex.Message, "tbl_PS_GT_Adjustment_EJournal_Detail ")
@@ -2541,7 +2541,7 @@ Module ModMainExport
                                                     {fNum(rs.Fields("POSTableKey").Value)}
                                                );"
 
-                conn.Execute(strSQL)
+                ConnLocal.Execute(strSQL)
                 rs.MoveNext()
             End While
 

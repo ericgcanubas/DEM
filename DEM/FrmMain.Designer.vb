@@ -35,6 +35,8 @@ Partial Class FrmMain
         Me.Label6 = New System.Windows.Forms.Label()
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
         Me.lblClose = New System.Windows.Forms.LinkLabel()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.Label7 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'lblLoading
@@ -172,6 +174,28 @@ Partial Class FrmMain
         Me.lblClose.TabStop = True
         Me.lblClose.Text = "X"
         '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.BackColor = System.Drawing.Color.Transparent
+        Me.Label8.Font = New System.Drawing.Font("Microsoft Tai Le", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label8.Location = New System.Drawing.Point(104, 402)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(171, 16)
+        Me.Label8.TabIndex = 29
+        Me.Label8.Text = "Developed By ; Eric G. Canubas"
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.BackColor = System.Drawing.Color.Transparent
+        Me.Label7.Font = New System.Drawing.Font("Microsoft Tai Le", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label7.Location = New System.Drawing.Point(104, 386)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(193, 16)
+        Me.Label7.TabIndex = 28
+        Me.Label7.Text = "Southwood Mindanao Corporation"
+        '
         'FrmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -181,6 +205,8 @@ Partial Class FrmMain
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ClientSize = New System.Drawing.Size(704, 447)
         Me.ControlBox = False
+        Me.Controls.Add(Me.Label8)
+        Me.Controls.Add(Me.Label7)
         Me.Controls.Add(Me.lblClose)
         Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.ProgressBar1)
@@ -216,4 +242,6 @@ Partial Class FrmMain
     Friend WithEvents Label6 As Label
     Friend WithEvents ProgressBar1 As ProgressBar
     Friend WithEvents lblClose As LinkLabel
+    Friend WithEvents Label8 As Label
+    Friend WithEvents Label7 As Label
 End Class

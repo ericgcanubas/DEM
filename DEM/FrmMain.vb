@@ -36,9 +36,9 @@ Public Class FrmMain
                 btnExport.Enabled = False
 
                 Dim str As String = getConString(DBNAME)
-                conn = New ADODB.Connection()
-                conn.ConnectionTimeout = 30
-                conn.Open(str)
+                ConnLocal = New ADODB.Connection()
+                ConnLocal.ConnectionTimeout = 30
+                ConnLocal.Open(str)
 
 
                 CreateTable_tbl_banks(pbLoading, lblLoading)
@@ -100,7 +100,7 @@ Public Class FrmMain
             End If
 
             Try
-                conn.Close()
+                ConnLocal.Close()
             Catch ex As Exception
 
             End Try
@@ -131,7 +131,7 @@ Public Class FrmMain
 
 
         Try
-            conn.Close()
+            ConnLocal.Close()
         Catch ex As Exception
 
         End Try

@@ -34,3 +34,11 @@ D:\Source Code\DEM\DEM\obj\Debug\DEM.FrmMain.resources
 D:\Source Code\DEM\DEM\obj\Debug\DEM.Resources.resources
 D:\Source Code\DEM\DEM\obj\Debug\DEM.vbproj.GenerateResource.Cache
 D:\Source Code\DEM\DEM\obj\Debug\DEM.FrmBranch.resources
+C:\developer\DEM\DEM\bin\Debug\DEM.exe
+C:\developer\DEM\DEM\bin\Debug\DEM.pdb
+C:\developer\DEM\DEM\bin\Debug\DEM.xml
+C:\developer\DEM\DEM\obj\Debug\DEM.vbprojResolveAssemblyReference.cache
+C:\developer\DEM\DEM\obj\Debug\DEM.FrmBranch.resources
+C:\developer\DEM\DEM\obj\Debug\DEM.FrmMain.resources
+C:\developer\DEM\DEM\obj\Debug\DEM.Resources.resources
+C:\developer\DEM\DEM\obj\Debug\DEM.vbproj.GenerateResource.Cache

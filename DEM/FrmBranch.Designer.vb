@@ -29,8 +29,8 @@ Partial Class FrmBranch
         Me.btnDownload = New System.Windows.Forms.Button()
         Me.SaveFileDialog2 = New System.Windows.Forms.SaveFileDialog()
         Me.lblClose = New System.Windows.Forms.LinkLabel()
-        Me.Label6 = New System.Windows.Forms.Label()
-        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
+        Me.lblMainLoading = New System.Windows.Forms.Label()
+        Me.pbMainLoading = New System.Windows.Forms.ProgressBar()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
@@ -38,6 +38,8 @@ Partial Class FrmBranch
         Me.Label1 = New System.Windows.Forms.Label()
         Me.DateTimePicker1 = New System.Windows.Forms.DateTimePicker()
         Me.Label7 = New System.Windows.Forms.Label()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.Label8 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'lblLoading
@@ -99,24 +101,24 @@ Partial Class FrmBranch
         Me.lblClose.TabStop = True
         Me.lblClose.Text = "X"
         '
-        'Label6
+        'lblMainLoading
         '
-        Me.Label6.BackColor = System.Drawing.Color.Transparent
-        Me.Label6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Label6.Location = New System.Drawing.Point(387, 249)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(287, 23)
-        Me.Label6.TabIndex = 22
-        Me.Label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblMainLoading.BackColor = System.Drawing.Color.Transparent
+        Me.lblMainLoading.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblMainLoading.Location = New System.Drawing.Point(387, 249)
+        Me.lblMainLoading.Name = "lblMainLoading"
+        Me.lblMainLoading.Size = New System.Drawing.Size(287, 23)
+        Me.lblMainLoading.TabIndex = 22
+        Me.lblMainLoading.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'ProgressBar1
+        'pbMainLoading
         '
-        Me.ProgressBar1.ForeColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.ProgressBar1.Location = New System.Drawing.Point(387, 223)
-        Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(287, 23)
-        Me.ProgressBar1.Step = 1
-        Me.ProgressBar1.TabIndex = 21
+        Me.pbMainLoading.ForeColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer))
+        Me.pbMainLoading.Location = New System.Drawing.Point(387, 223)
+        Me.pbMainLoading.Name = "pbMainLoading"
+        Me.pbMainLoading.Size = New System.Drawing.Size(287, 23)
+        Me.pbMainLoading.Step = 1
+        Me.pbMainLoading.TabIndex = 21
         '
         'Label5
         '
@@ -194,6 +196,28 @@ Partial Class FrmBranch
         Me.Label7.TabIndex = 25
         Me.Label7.Text = "Date Transaction : "
         '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.BackColor = System.Drawing.Color.Transparent
+        Me.Label6.Font = New System.Drawing.Font("Microsoft Tai Le", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label6.Location = New System.Drawing.Point(128, 385)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(193, 16)
+        Me.Label6.TabIndex = 26
+        Me.Label6.Text = "Southwood Mindanao Corporation"
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.BackColor = System.Drawing.Color.Transparent
+        Me.Label8.Font = New System.Drawing.Font("Microsoft Tai Le", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label8.Location = New System.Drawing.Point(128, 401)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(171, 16)
+        Me.Label8.TabIndex = 27
+        Me.Label8.Text = "Developed By : Eric G. Canubas"
+        '
         'FrmBranch
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -202,6 +226,8 @@ Partial Class FrmBranch
         Me.BackgroundImage = Global.DEM.My.Resources.Resources.orange
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ClientSize = New System.Drawing.Size(704, 447)
+        Me.Controls.Add(Me.Label8)
+        Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.Label7)
         Me.Controls.Add(Me.DateTimePicker1)
         Me.Controls.Add(Me.lblLoading)
@@ -209,8 +235,8 @@ Partial Class FrmBranch
         Me.Controls.Add(Me.pbLoading)
         Me.Controls.Add(Me.btnDownload)
         Me.Controls.Add(Me.lblClose)
-        Me.Controls.Add(Me.Label6)
-        Me.Controls.Add(Me.ProgressBar1)
+        Me.Controls.Add(Me.lblMainLoading)
+        Me.Controls.Add(Me.pbMainLoading)
         Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.Label3)
@@ -237,8 +263,8 @@ Partial Class FrmBranch
     Friend WithEvents btnDownload As Button
     Friend WithEvents SaveFileDialog2 As SaveFileDialog
     Friend WithEvents lblClose As LinkLabel
-    Friend WithEvents Label6 As Label
-    Friend WithEvents ProgressBar1 As ProgressBar
+    Friend WithEvents lblMainLoading As Label
+    Friend WithEvents pbMainLoading As ProgressBar
     Friend WithEvents Label5 As Label
     Friend WithEvents Label4 As Label
     Friend WithEvents Label3 As Label
@@ -246,4 +272,6 @@ Partial Class FrmBranch
     Friend WithEvents Label1 As Label
     Friend WithEvents DateTimePicker1 As DateTimePicker
     Friend WithEvents Label7 As Label
+    Friend WithEvents Label6 As Label
+    Friend WithEvents Label8 As Label
 End Class
