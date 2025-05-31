@@ -25,6 +25,57 @@ Public Class FrmBranch
     Private Sub btnDownload_Click(sender As Object, e As EventArgs) Handles btnDownload.Click
 
 
+        Dim saveFileDialog As New SaveFileDialog()
+
+        ' Optional: Set filters and default settings
+        ' Set filter for .mdb files
+        saveFileDialog.Filter = ""
+        saveFileDialog.Title = "Save data"
+        saveFileDialog.DefaultExt = ""
+        saveFileDialog.FileName = $"branch{gbl_Counter}_" & DateTime.Now.ToString("yyyyMMddHHmmss").ToLower() & ""
+
+        If saveFileDialog.ShowDialog() = DialogResult.OK Then
+            ' Get the selected file path
+            GL_EXPORT_PATH = saveFileDialog.FileName
+            Dim DBNAME As String = CreateData()
+
+            If DBNAME <> "" Then
+
+                Dim str As String = getConString(DBNAME)
+                ConnLocal = New ADODB.Connection()
+                ConnLocal.ConnectionTimeout = 30
+                ConnLocal.Open(str)
+
+                Branch_CreateTable_tbl_GiftCert_List(pbBranchLoading, lblBranchLoading, dtpDate.Value)
+                Branch_CreateTable_tbl_VPlus_Codes(pbBranchLoading, lblBranchLoading, dtpDate.Value)
+                Branch_CreateTable_tbl_VPlus_Codes_Validity(pbBranchLoading, lblBranchLoading, dtpDate.Value)
+                Branch_CreateTable_tbl_PS_GT(pbBranchLoading, lblBranchLoading)
+                Branch_CreateTable_tbl_PS_GT_ZZ(pbBranchLoading, lblBranchLoading)
+                Branch_CreateTable_tbl_PS_E_Journal(pbBranchLoading, lblBranchLoading, dtpDate.Value)
+                Branch_CreateTable_tbl_PS_E_Journal_Detail(pbBranchLoading, lblBranchLoading, dtpDate.Value)
+
+
+
+                Dim result As DialogResult = MessageBox.Show(
+                "File saved successfully at:" & vbCrLf & GL_EXPORT_PATH & vbCrLf & vbCrLf &
+                "Do you want to open the location?",
+                "File Saved",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            )
+                If result = DialogResult.Yes Then
+                    Process.Start("explorer.exe", "/select,""" & GL_EXPORT_PATH & """")
+                End If
+            End If
+
+            Try
+                ConnLocal.Close()
+            Catch ex As Exception
+
+            End Try
+
+
+        End If
 
 
     End Sub
@@ -66,10 +117,34 @@ Public Class FrmBranch
         Insert_tbl_GiftCert_List(pbMainLoading, lblMainLoading)
         Insert_tbl_VPlus_Codes(pbMainLoading, lblMainLoading)
         Insert_tbl_VPlus_Codes_Validity(pbMainLoading, lblMainLoading)
+        Insert_tbl_VPlus_Codes_Changes(pbMainLoading, lblMainLoading)
+
         Insert_tbl_PCPOS_Cashiers_Changes(pbMainLoading, lblMainLoading)
         Insert_tbl_Items_Changes(pbMainLoading, lblMainLoading)
         Insert_tbl_ItemsForPLU_For_Effect(pbMainLoading, lblMainLoading)
         Insert_tbl_Items(pbMainLoading, lblMainLoading)
+
+
+        Insert_tbl_Concession_PCR(pbMainLoading, lblMainLoading)
+        Insert_tbl_Concession_PCR_Det(pbMainLoading, lblMainLoading)
+        Insert_tbl_Concession_PCR_Effectivity(pbMainLoading, lblMainLoading)
+
+        Insert_tbl_GiftCert_Changes(pbMainLoading, lblMainLoading)
+        Insert_tbl_PS_Upload_Utility(pbMainLoading, lblMainLoading)
+
+        Insert_tbl_VPlus_Summary(pbMainLoading, lblMainLoading)
+        Insert_tbl_VPlus_Codes_For_Offline(pbMainLoading, lblMainLoading)
+        Insert_tbl_VPlus_App(pbMainLoading, lblMainLoading)
+        Insert_tbl_RetrieveHistoryForLocal(pbMainLoading, lblMainLoading)
+
+        Insert_tbl_PS_GT(pbMainLoading, lblMainLoading)
+        Insert_tbl_PS_GT_ZZ(pbMainLoading, lblMainLoading)
+
+        Insert_tbl_PS_E_Journal(pbMainLoading, lblMainLoading)
+        Insert_tbl_PS_E_Journal_Detail(pbMainLoading, lblMainLoading)
+
+        Insert_tbl_PS_GT_Adjustment_EJournal(pbMainLoading, lblMainLoading)
+        Insert_tbl_PS_GT_Adjustment_EJournal_Detail(pbMainLoading, lblMainLoading)
 
         Insert_tbl_PCPOS_Cashiers(pbMainLoading, lblMainLoading)
         Insert_tbl_ItemsForPLU(pbMainLoading, lblMainLoading)
@@ -79,8 +154,10 @@ Public Class FrmBranch
     End Sub
 
     Private Sub FrmBranch_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        gbl_Server = GetSetting("SYNCRONIZER", "MODE", "SERVER")
-        gbl_Database = GetSetting("SYNCRONIZER", "MODE", "DATABASE")
+        gbl_Server = GetSetting("DEM", "MODE", "SERVER")
+        gbl_Database = GetSetting("DEM", "MODE", "DATABASE")
+        gbl_Counter = GetSetting("DEM", "MODE", "COUNTER")
+
         getConnection()
     End Sub
 End Class

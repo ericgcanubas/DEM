@@ -23,9 +23,9 @@ Partial Class FrmBranch
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
-        Me.lblLoading = New System.Windows.Forms.Label()
+        Me.lblBranchLoading = New System.Windows.Forms.Label()
         Me.btnUpload = New System.Windows.Forms.Button()
-        Me.pbLoading = New System.Windows.Forms.ProgressBar()
+        Me.pbBranchLoading = New System.Windows.Forms.ProgressBar()
         Me.btnDownload = New System.Windows.Forms.Button()
         Me.SaveFileDialog2 = New System.Windows.Forms.SaveFileDialog()
         Me.lblClose = New System.Windows.Forms.LinkLabel()
@@ -36,21 +36,21 @@ Partial Class FrmBranch
         Me.Label3 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.DateTimePicker1 = New System.Windows.Forms.DateTimePicker()
+        Me.dtpDate = New System.Windows.Forms.DateTimePicker()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
-        'lblLoading
+        'lblBranchLoading
         '
-        Me.lblLoading.BackColor = System.Drawing.Color.Transparent
-        Me.lblLoading.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblLoading.Location = New System.Drawing.Point(42, 249)
-        Me.lblLoading.Name = "lblLoading"
-        Me.lblLoading.Size = New System.Drawing.Size(287, 23)
-        Me.lblLoading.TabIndex = 15
-        Me.lblLoading.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblBranchLoading.BackColor = System.Drawing.Color.Transparent
+        Me.lblBranchLoading.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblBranchLoading.Location = New System.Drawing.Point(42, 249)
+        Me.lblBranchLoading.Name = "lblBranchLoading"
+        Me.lblBranchLoading.Size = New System.Drawing.Size(287, 23)
+        Me.lblBranchLoading.TabIndex = 15
+        Me.lblBranchLoading.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'btnUpload
         '
@@ -65,14 +65,14 @@ Partial Class FrmBranch
         Me.btnUpload.Text = "Upload"
         Me.btnUpload.UseVisualStyleBackColor = False
         '
-        'pbLoading
+        'pbBranchLoading
         '
-        Me.pbLoading.ForeColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.pbLoading.Location = New System.Drawing.Point(42, 223)
-        Me.pbLoading.Name = "pbLoading"
-        Me.pbLoading.Size = New System.Drawing.Size(287, 23)
-        Me.pbLoading.Step = 1
-        Me.pbLoading.TabIndex = 14
+        Me.pbBranchLoading.ForeColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer))
+        Me.pbBranchLoading.Location = New System.Drawing.Point(42, 223)
+        Me.pbBranchLoading.Name = "pbBranchLoading"
+        Me.pbBranchLoading.Size = New System.Drawing.Size(287, 23)
+        Me.pbBranchLoading.Step = 1
+        Me.pbBranchLoading.TabIndex = 14
         '
         'btnDownload
         '
@@ -177,13 +177,13 @@ Partial Class FrmBranch
         Me.Label1.TabIndex = 16
         Me.Label1.Text = "Main Data"
         '
-        'DateTimePicker1
+        'dtpDate
         '
-        Me.DateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.DateTimePicker1.Location = New System.Drawing.Point(162, 152)
-        Me.DateTimePicker1.Name = "DateTimePicker1"
-        Me.DateTimePicker1.Size = New System.Drawing.Size(125, 20)
-        Me.DateTimePicker1.TabIndex = 24
+        Me.dtpDate.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.dtpDate.Location = New System.Drawing.Point(162, 152)
+        Me.dtpDate.Name = "dtpDate"
+        Me.dtpDate.Size = New System.Drawing.Size(125, 20)
+        Me.dtpDate.TabIndex = 24
         '
         'Label7
         '
@@ -229,10 +229,10 @@ Partial Class FrmBranch
         Me.Controls.Add(Me.Label8)
         Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.Label7)
-        Me.Controls.Add(Me.DateTimePicker1)
-        Me.Controls.Add(Me.lblLoading)
+        Me.Controls.Add(Me.dtpDate)
+        Me.Controls.Add(Me.lblBranchLoading)
         Me.Controls.Add(Me.btnUpload)
-        Me.Controls.Add(Me.pbLoading)
+        Me.Controls.Add(Me.pbBranchLoading)
         Me.Controls.Add(Me.btnDownload)
         Me.Controls.Add(Me.lblClose)
         Me.Controls.Add(Me.lblMainLoading)
@@ -257,9 +257,9 @@ Partial Class FrmBranch
 
     End Sub
     Friend WithEvents SaveFileDialog1 As SaveFileDialog
-    Friend WithEvents lblLoading As Label
+    Friend WithEvents lblBranchLoading As Label
     Friend WithEvents btnUpload As Button
-    Friend WithEvents pbLoading As ProgressBar
+    Friend WithEvents pbBranchLoading As ProgressBar
     Friend WithEvents btnDownload As Button
     Friend WithEvents SaveFileDialog2 As SaveFileDialog
     Friend WithEvents lblClose As LinkLabel
@@ -270,7 +270,7 @@ Partial Class FrmBranch
     Friend WithEvents Label3 As Label
     Friend WithEvents Label2 As Label
     Friend WithEvents Label1 As Label
-    Friend WithEvents DateTimePicker1 As DateTimePicker
+    Friend WithEvents dtpDate As DateTimePicker
     Friend WithEvents Label7 As Label
     Friend WithEvents Label6 As Label
     Friend WithEvents Label8 As Label

@@ -22,8 +22,8 @@ Partial Class FrmMain
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Me.lblLoading = New System.Windows.Forms.Label()
-        Me.pbLoading = New System.Windows.Forms.ProgressBar()
+        Me.lblMainLoading = New System.Windows.Forms.Label()
+        Me.pbMainLoading = New System.Windows.Forms.ProgressBar()
         Me.btnImport = New System.Windows.Forms.Button()
         Me.btnExport = New System.Windows.Forms.Button()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
@@ -32,31 +32,31 @@ Partial Class FrmMain
         Me.Label3 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
-        Me.Label6 = New System.Windows.Forms.Label()
-        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
+        Me.lblBranchLoading = New System.Windows.Forms.Label()
+        Me.pbBranchLoading = New System.Windows.Forms.ProgressBar()
         Me.lblClose = New System.Windows.Forms.LinkLabel()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
-        'lblLoading
+        'lblMainLoading
         '
-        Me.lblLoading.BackColor = System.Drawing.Color.Transparent
-        Me.lblLoading.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblLoading.Location = New System.Drawing.Point(31, 235)
-        Me.lblLoading.Name = "lblLoading"
-        Me.lblLoading.Size = New System.Drawing.Size(287, 23)
-        Me.lblLoading.TabIndex = 3
-        Me.lblLoading.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblMainLoading.BackColor = System.Drawing.Color.Transparent
+        Me.lblMainLoading.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblMainLoading.Location = New System.Drawing.Point(31, 235)
+        Me.lblMainLoading.Name = "lblMainLoading"
+        Me.lblMainLoading.Size = New System.Drawing.Size(287, 23)
+        Me.lblMainLoading.TabIndex = 3
+        Me.lblMainLoading.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'pbLoading
+        'pbMainLoading
         '
-        Me.pbLoading.ForeColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.pbLoading.Location = New System.Drawing.Point(31, 209)
-        Me.pbLoading.Name = "pbLoading"
-        Me.pbLoading.Size = New System.Drawing.Size(287, 23)
-        Me.pbLoading.Step = 1
-        Me.pbLoading.TabIndex = 2
+        Me.pbMainLoading.ForeColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer))
+        Me.pbMainLoading.Location = New System.Drawing.Point(31, 209)
+        Me.pbMainLoading.Name = "pbMainLoading"
+        Me.pbMainLoading.Size = New System.Drawing.Size(287, 23)
+        Me.pbMainLoading.Step = 1
+        Me.pbMainLoading.TabIndex = 2
         '
         'btnImport
         '
@@ -141,24 +141,24 @@ Partial Class FrmMain
         Me.Label5.TabIndex = 8
         Me.Label5.Text = "Apps"
         '
-        'Label6
+        'lblBranchLoading
         '
-        Me.Label6.BackColor = System.Drawing.Color.Transparent
-        Me.Label6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Label6.Location = New System.Drawing.Point(376, 235)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(287, 23)
-        Me.Label6.TabIndex = 10
-        Me.Label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblBranchLoading.BackColor = System.Drawing.Color.Transparent
+        Me.lblBranchLoading.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblBranchLoading.Location = New System.Drawing.Point(376, 235)
+        Me.lblBranchLoading.Name = "lblBranchLoading"
+        Me.lblBranchLoading.Size = New System.Drawing.Size(287, 23)
+        Me.lblBranchLoading.TabIndex = 10
+        Me.lblBranchLoading.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'ProgressBar1
+        'pbBranchLoading
         '
-        Me.ProgressBar1.ForeColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.ProgressBar1.Location = New System.Drawing.Point(376, 209)
-        Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(287, 23)
-        Me.ProgressBar1.Step = 1
-        Me.ProgressBar1.TabIndex = 9
+        Me.pbBranchLoading.ForeColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer))
+        Me.pbBranchLoading.Location = New System.Drawing.Point(376, 209)
+        Me.pbBranchLoading.Name = "pbBranchLoading"
+        Me.pbBranchLoading.Size = New System.Drawing.Size(287, 23)
+        Me.pbBranchLoading.Step = 1
+        Me.pbBranchLoading.TabIndex = 9
         '
         'lblClose
         '
@@ -208,16 +208,16 @@ Partial Class FrmMain
         Me.Controls.Add(Me.Label8)
         Me.Controls.Add(Me.Label7)
         Me.Controls.Add(Me.lblClose)
-        Me.Controls.Add(Me.Label6)
-        Me.Controls.Add(Me.ProgressBar1)
+        Me.Controls.Add(Me.lblBranchLoading)
+        Me.Controls.Add(Me.pbBranchLoading)
         Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.lblLoading)
+        Me.Controls.Add(Me.lblMainLoading)
         Me.Controls.Add(Me.btnExport)
-        Me.Controls.Add(Me.pbLoading)
+        Me.Controls.Add(Me.pbMainLoading)
         Me.Controls.Add(Me.btnImport)
         Me.DoubleBuffered = True
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
@@ -231,16 +231,16 @@ Partial Class FrmMain
     End Sub
     Friend WithEvents btnImport As Button
     Friend WithEvents btnExport As Button
-    Friend WithEvents pbLoading As ProgressBar
-    Friend WithEvents lblLoading As Label
+    Friend WithEvents pbMainLoading As ProgressBar
+    Friend WithEvents lblMainLoading As Label
     Friend WithEvents SaveFileDialog1 As SaveFileDialog
     Friend WithEvents Label1 As Label
     Friend WithEvents Label2 As Label
     Friend WithEvents Label3 As Label
     Friend WithEvents Label4 As Label
     Friend WithEvents Label5 As Label
-    Friend WithEvents Label6 As Label
-    Friend WithEvents ProgressBar1 As ProgressBar
+    Friend WithEvents lblBranchLoading As Label
+    Friend WithEvents pbBranchLoading As ProgressBar
     Friend WithEvents lblClose As LinkLabel
     Friend WithEvents Label8 As Label
     Friend WithEvents Label7 As Label

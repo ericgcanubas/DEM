@@ -1548,9 +1548,9 @@ Module ModMainExport
     Public Sub CreateTable_tbl_PS_Upload_Utility(pb As ProgressBar, l As Label)
         Try
             Dim createTableSql As String = "CREATE TABLE tbl_PS_Upload_Utility (
-                            EffectDate DATETIME NOT NULL,
-                            StopUpload BYTE NOT NULL
-                        );"
+                                                EffectDate DATETIME NOT NULL,
+                                                StopUpload BYTE NOT NULL
+                                            );"
 
             ConnLocal.Execute(createTableSql)
             Collect_tbl_PS_Upload_Utility(pb, l)

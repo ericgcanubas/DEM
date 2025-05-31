@@ -40,51 +40,50 @@ Public Class FrmMain
                 ConnLocal.ConnectionTimeout = 30
                 ConnLocal.Open(str)
 
+                CreateTable_tbl_banks(pbMainLoading, lblMainLoading)
+                CreateTable_tbl_Banks_Changes(pbMainLoading, lblMainLoading)
 
-                CreateTable_tbl_banks(pbLoading, lblLoading)
-                CreateTable_tbl_Banks_Changes(pbLoading, lblLoading)
+                CreateTable_tbl_bank(pbMainLoading, lblMainLoading)
+                CreateTable_tbl_Bank_Terms(pbMainLoading, lblMainLoading)
+                CreateTable_tbl_Bank_Changes(pbMainLoading, lblMainLoading)
 
-                CreateTable_tbl_bank(pbLoading, lblLoading)
-                CreateTable_tbl_Bank_Terms(pbLoading, lblLoading)
-                CreateTable_tbl_Bank_Changes(pbLoading, lblLoading)
+                CreateTable_tbl_QRPay_Type(pbMainLoading, lblMainLoading)
 
-                CreateTable_tbl_QRPay_Type(pbLoading, lblLoading)
+                CreateTable_tbl_GiftCert_List(pbMainLoading, lblMainLoading)
+                CreateTable_tbl_GiftCert_Changes(pbMainLoading, lblMainLoading)
 
-                CreateTable_tbl_GiftCert_List(pbLoading, lblLoading)
-                CreateTable_tbl_GiftCert_Changes(pbLoading, lblLoading)
+                CreateTable_tbl_VPlus_Codes(pbMainLoading, lblMainLoading)
+                CreateTable_tbl_VPlus_Codes_Validity(pbMainLoading, lblMainLoading)
+                CreateTable_tbl_VPlus_Codes_Changes(pbMainLoading, lblMainLoading)
+                CreateTable_tbl_VPlus_Summary(pbMainLoading, lblMainLoading)
+                CreateTable_tbl_VPlus_Codes_For_Offline(pbMainLoading, lblMainLoading)
+                CreateTable_tbl_VPlus_App(pbMainLoading, lblMainLoading)
 
-                CreateTable_tbl_VPlus_Codes(pbLoading, lblLoading)
-                CreateTable_tbl_VPlus_Codes_Validity(pbLoading, lblLoading)
-                CreateTable_tbl_VPlus_Codes_Changes(pbLoading, lblLoading)
-                CreateTable_tbl_VPlus_Summary(pbLoading, lblLoading)
-                CreateTable_tbl_VPlus_Codes_For_Offline(pbLoading, lblLoading)
-                CreateTable_tbl_VPlus_App(pbLoading, lblLoading)
+                CreateTable_tbl_PS_GT_Adjustment_EJournal_Detail(pbMainLoading, lblMainLoading)
+                CreateTable_tbl_PS_GT_Adjustment_EJournal(pbMainLoading, lblMainLoading)
+                CreateTable_tbl_PS_E_Journal(pbMainLoading, lblMainLoading)
+                CreateTable_tbl_PS_E_Journal_Detail(pbMainLoading, lblMainLoading)
 
-                CreateTable_tbl_PS_GT_Adjustment_EJournal_Detail(pbLoading, lblLoading)
-                CreateTable_tbl_PS_GT_Adjustment_EJournal(pbLoading, lblLoading)
-                CreateTable_tbl_PS_E_Journal(pbLoading, lblLoading)
-                CreateTable_tbl_PS_E_Journal_Detail(pbLoading, lblLoading)
+                CreateTable_tbl_PS_GT(pbMainLoading, lblMainLoading)
+                CreateTable_tbl_PS_GT_ZZ(pbMainLoading, lblMainLoading)
 
-                CreateTable_tbl_PS_GT(pbLoading, lblLoading)
-                CreateTable_tbl_PS_GT_ZZ(pbLoading, lblLoading)
+                CreateTable_tbl_PS_Upload_Utility(pbMainLoading, lblMainLoading)
 
-                CreateTable_tbl_PS_Upload_Utility(pbLoading, lblLoading)
+                CreateTable_tbl_PCPOS_Cashiers(pbMainLoading, lblMainLoading)
+                CreateTable_tbl_PCPOS_Cashiers_Changes(pbMainLoading, lblMainLoading)
 
-                CreateTable_tbl_PCPOS_Cashiers(pbLoading, lblLoading)
-                CreateTable_tbl_PCPOS_Cashiers_Changes(pbLoading, lblLoading)
+                CreateTable_tbl_Concession_PCR_Effectivity(pbMainLoading, lblMainLoading)
+                CreateTable_tbl_Concession_PCR(pbMainLoading, lblMainLoading)
+                CreateTable_tbl_Concession_PCR_Det(pbMainLoading, lblMainLoading)
 
-                CreateTable_tbl_Concession_PCR_Effectivity(pbLoading, lblLoading)
-                CreateTable_tbl_Concession_PCR(pbLoading, lblLoading)
-                CreateTable_tbl_Concession_PCR_Det(pbLoading, lblLoading)
+                CreateTable_tbl_RetrieveHistoryForLocal(pbMainLoading, lblMainLoading)
 
-                CreateTable_tbl_RetrieveHistoryForLocal(pbLoading, lblLoading)
+                CreateTable_tbl_Items(pbMainLoading, lblMainLoading)
+                CreateTable_tbl_Items_Change(pbMainLoading, lblMainLoading)
+                CreateTable_tbl_ItemsForPLU(pbMainLoading, lblMainLoading)
+                CreateTable_tbl_ItemsForPLU_For_Effect(pbMainLoading, lblMainLoading)
 
-                CreateTable_tbl_Items(pbLoading, lblLoading)
-                CreateTable_tbl_Items_Change(pbLoading, lblLoading)
-                CreateTable_tbl_ItemsForPLU(pbLoading, lblLoading)
-                CreateTable_tbl_ItemsForPLU_For_Effect(pbLoading, lblLoading)
-
-                lblLoading.Text = ""
+                lblMainLoading.Text = ""
                 btnExport.Enabled = True
 
                 Dim result As DialogResult = MessageBox.Show(
@@ -115,15 +114,15 @@ Public Class FrmMain
         getConnection()
     End Sub
 
-    Private Sub pbLoading_Click(sender As Object, e As EventArgs) Handles pbLoading.Click
+    Private Sub pbLoading_Click(sender As Object, e As EventArgs) Handles pbMainLoading.Click
 
     End Sub
 
-    Private Sub pbLoading_TextChanged(sender As Object, e As EventArgs) Handles pbLoading.TextChanged
+    Private Sub pbLoading_TextChanged(sender As Object, e As EventArgs) Handles pbMainLoading.TextChanged
 
     End Sub
 
-    Private Sub pbLoading_RegionChanged(sender As Object, e As EventArgs) Handles pbLoading.RegionChanged
+    Private Sub pbLoading_RegionChanged(sender As Object, e As EventArgs) Handles pbMainLoading.RegionChanged
 
     End Sub
 

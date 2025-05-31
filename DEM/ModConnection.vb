@@ -2,6 +2,7 @@
 Module ModConnection
 
     Public ConnServer As ADODB.Connection
+    Public gbl_Counter As String
 
     Public gbl_Database As String
     Public gbl_Server As String

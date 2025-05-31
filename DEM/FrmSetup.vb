@@ -1,7 +1,7 @@
 ﻿Public Class FrmSetup
     Private Sub FrmSetup_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        Dim Type As String = GetSetting("SYNCRONIZER", "MODE", "TYPE")
+        Dim Type As String = GetSetting("DEM", "MODE", "TYPE")
 
         If Type <> "" Then
             If Type = False Then
@@ -25,18 +25,41 @@
         ElseIf (txtDatabase.Text.Length = 0) Then
             MessageBox.Show("Please enter database")
         Else
+
             If rdBranch.Checked = True Then
-                SaveSetting("SYNCRONIZER", "MODE", "TYPE", "0")
-            Else
-                SaveSetting("SYNCRONIZER", "MODE", "TYPE", "1")
+                If (txtCounter.Text.Trim().Length = 0) Then
+                    MessageBox.Show("Please enter Counter/POS Name")
+                    Exit Sub
+                End If
             End If
 
-            SaveSetting("SYNCRONIZER", "MODE", "SERVER", txtServer.Text)
-            SaveSetting("SYNCRONIZER", "MODE", "DATABASE", txtDatabase.Text)
 
+            If rdBranch.Checked = True Then
+                SaveSetting("DEM", "MODE", "TYPE", "0")
+            Else
+                SaveSetting("DEM", "MODE", "TYPE", "1")
+            End If
+
+            SaveSetting("DEM", "MODE", "SERVER", txtServer.Text)
+            SaveSetting("DEM", "MODE", "DATABASE", txtDatabase.Text)
+            SaveSetting("DEM", "MODE", "COUNTER", txtCounter.Text)
 
             MessageBox.Show("Save please try run again")
             Application.Exit()
         End If
+    End Sub
+
+    Private Sub rdBranch_CheckedChanged(sender As Object, e As EventArgs) Handles rdBranch.CheckedChanged
+        txtCounter.Enabled = True
+    End Sub
+
+    Private Sub rdMainOffice_CheckedChanged(sender As Object, e As EventArgs) Handles rdMainOffice.CheckedChanged
+        txtCounter.Enabled = False
+        txtCounter.Clear()
+
+    End Sub
+
+    Private Sub lblClose_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles lblClose.LinkClicked
+        End
     End Sub
 End Class
