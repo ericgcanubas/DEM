@@ -109,8 +109,8 @@ Public Class FrmMain
 
     End Sub
     Private Sub FrmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        gbl_Server = GetSetting("SYNCRONIZER", "MODE", "SERVER")
-        gbl_Database = GetSetting("SYNCRONIZER", "MODE", "DATABASE")
+        gbl_Server = GetSetting("DEM", "MODE", "SERVER")
+        gbl_Database = GetSetting("DEM", "MODE", "DATABASE")
         getConnection()
     End Sub
 

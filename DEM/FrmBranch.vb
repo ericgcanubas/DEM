@@ -46,15 +46,31 @@ Public Class FrmBranch
                 ConnLocal.ConnectionTimeout = 30
                 ConnLocal.Open(str)
 
-                Branch_CreateTable_tbl_GiftCert_List(pbBranchLoading, lblBranchLoading, dtpDate.Value)
+
                 Branch_CreateTable_tbl_VPlus_Codes(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_VPlus_Codes_Validity(pbBranchLoading, lblBranchLoading, dtpDate.Value)
+                Branch_CreateTable_tbl_VPlus_Purchases_Points(pbBranchLoading, lblBranchLoading, dtpDate.Value)
+
                 Branch_CreateTable_tbl_PS_GT(pbBranchLoading, lblBranchLoading)
                 Branch_CreateTable_tbl_PS_GT_ZZ(pbBranchLoading, lblBranchLoading)
+
                 Branch_CreateTable_tbl_PS_E_Journal(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_PS_E_Journal_Detail(pbBranchLoading, lblBranchLoading, dtpDate.Value)
 
+                Branch_CreateTable_tbl_PS_EmployeeATD(pbBranchLoading, lblBranchLoading, dtpDate.Value)
 
+                Branch_CreateTable_tbl_GiftCert_List(pbBranchLoading, lblBranchLoading, dtpDate.Value)
+                Branch_CreateTable_tbl_GiftCert_Payment(pbBranchLoading, lblBranchLoading, dtpDate.Value)
+
+                Branch_CreateTable_tbl_PS_Tmp(pbBranchLoading, lblBranchLoading, dtpDate.Value)
+                Branch_CreateTable_tbl_PS_ItemsSold_Tmp(pbBranchLoading, lblBranchLoading, dtpDate.Value)
+                Branch_CreateTable_tbl_PS_ItemsSold_Voided(pbBranchLoading, lblBranchLoading, dtpDate.Value)
+                Branch_CreateTable_tbl_PS_MiscPay_Tmp(pbBranchLoading, lblBranchLoading, dtpDate.Value)
+                Branch_CreateTable_tbl_PS_MiscPay_Voided(pbBranchLoading, lblBranchLoading, dtpDate.Value)
+
+
+                ConnLocal.Close()
+                ConnLocal = Nothing
 
                 Dim result As DialogResult = MessageBox.Show(
                 "File saved successfully at:" & vbCrLf & GL_EXPORT_PATH & vbCrLf & vbCrLf &
@@ -68,11 +84,7 @@ Public Class FrmBranch
                 End If
             End If
 
-            Try
-                ConnLocal.Close()
-            Catch ex As Exception
 
-            End Try
 
 
         End If

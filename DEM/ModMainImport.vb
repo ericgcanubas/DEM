@@ -1831,8 +1831,7 @@ Module ModMainImport
                     ConnServer.Execute(strSQL)
 
                 Else
-                    Dim strSQL As String = $"
-                            UPDATE tbl_PS_GT_Adjustment_EJournal SET
+                    Dim strSQL As String = $"UPDATE tbl_PS_GT_Adjustment_EJournal SET
                                 PSNumber = '{fSqlFormat(rs.Fields("PSNumber").Value)}',
                                 PSDate = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())},
                                 Cashier = '{fSqlFormat(rs.Fields("Cashier").Value)}',
@@ -1872,7 +1871,7 @@ Module ModMainImport
     End Sub
     Public Sub Insert_tbl_PS_GT_Adjustment_EJournal_Detail(pb As ProgressBar, l As Label)
 
-        rs = New ADODB.Recordset
+        rs = New Recordset
         rs.CursorLocation = ADODB.CursorLocationEnum.adUseClient
         rs.Open($"SELECT * from tbl_PS_GT_Adjustment_EJournal_Detail WHERE  [Counter] = '{gbl_Counter}'  ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount

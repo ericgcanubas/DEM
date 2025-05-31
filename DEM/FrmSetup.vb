@@ -1,4 +1,15 @@
-﻿Public Class FrmSetup
+﻿Imports System.Runtime.InteropServices
+Public Class FrmSetup
+    <DllImport("user32.dll")>
+    Public Shared Function ReleaseCapture() As Boolean
+    End Function
+
+    <DllImport("user32.dll")>
+    Public Shared Function SendMessage(hWnd As IntPtr, wMsg As Integer, wParam As Integer, lParam As Integer) As Integer
+    End Function
+
+    Const WM_NCLBUTTONDOWN As Integer = &HA1
+    Const HTCAPTION As Integer = 2
     Private Sub FrmSetup_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         Dim Type As String = GetSetting("DEM", "MODE", "TYPE")
@@ -32,8 +43,6 @@
                     Exit Sub
                 End If
             End If
-
-
             If rdBranch.Checked = True Then
                 SaveSetting("DEM", "MODE", "TYPE", "0")
             Else
@@ -43,6 +52,9 @@
             SaveSetting("DEM", "MODE", "SERVER", txtServer.Text)
             SaveSetting("DEM", "MODE", "DATABASE", txtDatabase.Text)
             SaveSetting("DEM", "MODE", "COUNTER", txtCounter.Text)
+
+            SaveSetting("DEM", "MODE", "UPLOAD_LOG", "")
+            SaveSetting("DEM", "MODE", "DOWNLOAD_LOG", "")
 
             MessageBox.Show("Save please try run again")
             Application.Exit()
@@ -61,5 +73,12 @@
 
     Private Sub lblClose_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles lblClose.LinkClicked
         End
+    End Sub
+
+    Private Sub FrmSetup_MouseDown(sender As Object, e As MouseEventArgs) Handles MyBase.MouseDown
+        If e.Button = MouseButtons.Left Then
+            ReleaseCapture()
+            SendMessage(Handle, WM_NCLBUTTONDOWN, HTCAPTION, 0)
+        End If
     End Sub
 End Class
