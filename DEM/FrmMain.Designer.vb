@@ -37,6 +37,7 @@ Partial Class FrmMain
         Me.lblClose = New System.Windows.Forms.LinkLabel()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.Label7 = New System.Windows.Forms.Label()
+        Me.cmbType = New System.Windows.Forms.ComboBox()
         Me.SuspendLayout()
         '
         'lblMainLoading
@@ -89,22 +90,22 @@ Partial Class FrmMain
         Me.Label1.AutoSize = True
         Me.Label1.BackColor = System.Drawing.Color.Transparent
         Me.Label1.Font = New System.Drawing.Font("Segoe UI", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(30, 113)
+        Me.Label1.Location = New System.Drawing.Point(26, 134)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(114, 30)
+        Me.Label1.Size = New System.Drawing.Size(63, 30)
         Me.Label1.TabIndex = 4
-        Me.Label1.Text = "Main Data"
+        Me.Label1.Text = "Main"
         '
         'Label2
         '
         Me.Label2.AutoSize = True
         Me.Label2.BackColor = System.Drawing.Color.Transparent
         Me.Label2.Font = New System.Drawing.Font("Segoe UI", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(381, 113)
+        Me.Label2.Location = New System.Drawing.Point(370, 130)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(132, 30)
+        Me.Label2.Size = New System.Drawing.Size(81, 30)
         Me.Label2.TabIndex = 5
-        Me.Label2.Text = "Branch Data"
+        Me.Label2.Text = "Branch"
         '
         'Label3
         '
@@ -196,6 +197,14 @@ Partial Class FrmMain
         Me.Label7.TabIndex = 28
         Me.Label7.Text = "Southwood Mindanao Corporation"
         '
+        'cmbType
+        '
+        Me.cmbType.FormattingEnabled = True
+        Me.cmbType.Location = New System.Drawing.Point(95, 140)
+        Me.cmbType.Name = "cmbType"
+        Me.cmbType.Size = New System.Drawing.Size(223, 21)
+        Me.cmbType.TabIndex = 30
+        '
         'FrmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -205,6 +214,7 @@ Partial Class FrmMain
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ClientSize = New System.Drawing.Size(704, 447)
         Me.ControlBox = False
+        Me.Controls.Add(Me.cmbType)
         Me.Controls.Add(Me.Label8)
         Me.Controls.Add(Me.Label7)
         Me.Controls.Add(Me.lblClose)
@@ -244,4 +254,5 @@ Partial Class FrmMain
     Friend WithEvents lblClose As LinkLabel
     Friend WithEvents Label8 As Label
     Friend WithEvents Label7 As Label
+    Friend WithEvents cmbType As ComboBox
 End Class

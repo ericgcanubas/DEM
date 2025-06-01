@@ -32,7 +32,8 @@ Public Class FrmBranch
         saveFileDialog.Filter = ""
         saveFileDialog.Title = "Save data"
         saveFileDialog.DefaultExt = ""
-        saveFileDialog.FileName = $"branch{gbl_Counter}_" & DateTime.Now.ToString("yyyyMMddHHmmss").ToLower() & ""
+        Dim refFile As String = DateTime.Now.ToString("yyyyMMddHHmmss").ToLower()
+        saveFileDialog.FileName = $"branch{gbl_Counter}_" & refFile
 
         If saveFileDialog.ShowDialog() = DialogResult.OK Then
             ' Get the selected file path
@@ -46,6 +47,7 @@ Public Class FrmBranch
                 ConnLocal.ConnectionTimeout = 30
                 ConnLocal.Open(str)
 
+                Branch_CreateTable_tbl_info(dtpDate.Value, refFile)
 
                 Branch_CreateTable_tbl_VPlus_Codes(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_VPlus_Codes_Validity(pbBranchLoading, lblBranchLoading, dtpDate.Value)
@@ -68,6 +70,8 @@ Public Class FrmBranch
                 Branch_CreateTable_tbl_PS_MiscPay_Tmp(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_PS_MiscPay_Voided(pbBranchLoading, lblBranchLoading, dtpDate.Value)
 
+                Branch_CreateTable_tbl_PaidOutTransactions(pbBranchLoading, lblBranchLoading, dtpDate.Value)
+                Branch_CreateTable_tbl_PaidOutTransactions_Det(pbBranchLoading, lblBranchLoading, dtpDate.Value)
 
                 ConnLocal.Close()
                 ConnLocal = Nothing
@@ -83,13 +87,7 @@ Public Class FrmBranch
                     Process.Start("explorer.exe", "/select,""" & GL_EXPORT_PATH & """")
                 End If
             End If
-
-
-
-
         End If
-
-
     End Sub
 
     Private Sub btnUpload_Click(sender As Object, e As EventArgs) Handles btnUpload.Click
@@ -111,6 +109,7 @@ Public Class FrmBranch
                 SaveIt()
 
                 ConnLocal.Close()
+                MessageBox.Show("Successfully Main Data Upload", "Upload Message", MessageBoxButtons.OK, MessageBoxIcon.Information)
             Catch ex As Exception
                 MessageBox.Show("Error uploading file: " & ex.Message)
             End Try
@@ -125,13 +124,16 @@ Public Class FrmBranch
         Insert_tbl_Banks_Changes(pbMainLoading, lblMainLoading)
         Insert_tbl_Bank_Changes(pbMainLoading, lblMainLoading)
         Insert_tbl_Bank_Terms(pbMainLoading, lblMainLoading)
+
         Insert_tbl_QRPay_Type(pbMainLoading, lblMainLoading)
         Insert_tbl_GiftCert_List(pbMainLoading, lblMainLoading)
+
         Insert_tbl_VPlus_Codes(pbMainLoading, lblMainLoading)
         Insert_tbl_VPlus_Codes_Validity(pbMainLoading, lblMainLoading)
         Insert_tbl_VPlus_Codes_Changes(pbMainLoading, lblMainLoading)
 
         Insert_tbl_PCPOS_Cashiers_Changes(pbMainLoading, lblMainLoading)
+
         Insert_tbl_Items_Changes(pbMainLoading, lblMainLoading)
         Insert_tbl_ItemsForPLU_For_Effect(pbMainLoading, lblMainLoading)
         Insert_tbl_Items(pbMainLoading, lblMainLoading)
@@ -161,7 +163,11 @@ Public Class FrmBranch
         Insert_tbl_PCPOS_Cashiers(pbMainLoading, lblMainLoading)
         Insert_tbl_ItemsForPLU(pbMainLoading, lblMainLoading)
 
+        Insert_tbl_PaidOutDenominations(pbMainLoading, lblMainLoading)
+        Insert_tbl_PaidOutTransactions(pbMainLoading, lblMainLoading)
 
+        lblMainLoading.Text = ""
+        pbMainLoading.Value = 0
 
     End Sub
 

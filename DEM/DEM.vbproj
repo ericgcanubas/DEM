@@ -90,6 +90,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ModBranchExport.vb" />
+    <Compile Include="ModBranchImport.vb" />
     <Compile Include="ModConnection.vb" />
     <Compile Include="ModMainExport.vb" />
     <Compile Include="ModMainImport.vb" />

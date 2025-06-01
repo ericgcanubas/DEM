@@ -2268,7 +2268,7 @@ Module ModMainExport
         Dim FromDate As String = Now.Date.AddYears(-1).ToShortDateString()
         rs = New ADODB.Recordset
         rs.CursorLocation = ADODB.CursorLocationEnum.adUseClient
-        rs.Open($"select d.* from tbl_PS_E_Journal_Detail as d  inner join tbl_PS_E_Journal as j on j.PSNumber = d.TransactionNumber where j.PsDate between '{FromDate}' and '{toDate}'  and  year(j.PsDate) between {year} and {Now.Year}  ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select d.* from tbl_PS_E_Journal_Detail as d inner join tbl_PS_E_Journal as j on j.PSNumber = d.TransactionNumber WHERE j.PsDate between '{FromDate}' and '{toDate}'  and  year(j.PsDate) between {year} and {Now.Year}  ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -2453,9 +2453,6 @@ Module ModMainExport
         End If
 
     End Sub
-
-
-
     Public Sub CreateTable_tbl_PS_GT_Adjustment_EJournal_Detail(pb As ProgressBar, l As Label)
         Try
             Dim createTableSql As String = "CREATE TABLE tbl_PS_GT_Adjustment_EJournal_Detail (
@@ -2544,7 +2541,149 @@ Module ModMainExport
                 ConnLocal.Execute(strSQL)
                 rs.MoveNext()
             End While
+        End If
+    End Sub
+    Public Sub CreateTable_tbl_PaidOutDenominations(pb As ProgressBar, l As Label)
+        Try
+            Dim createTableSql As String = "CREATE TABLE tbl_PaidOutDenominations (
+                                                DenomPK INTEGER PRIMARY KEY,
+                                                Denominations_Code TEXT(5),
+                                                Denominations CURRENCY,
+                                                Type BYTE NOT NULL,
+                                                Active BYTE NOT NULL
+                                            );"
 
+            ConnLocal.Execute(createTableSql)
+            Collect_tbl_PaidOutDenominations(pb, l)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "tbl_PaidOutDenominations")
+            Application.Exit()
+        End Try
+    End Sub
+    Private Sub Collect_tbl_PaidOutDenominations(pb As ProgressBar, l As Label)
+        Dim year As Integer = Now.Year - 5
+
+        rs = New ADODB.Recordset
+        rs.CursorLocation = ADODB.CursorLocationEnum.adUseClient
+        rs.Open($"select * from tbl_PaidOutDenominations ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_PaidOutDenominations :" & pb.Maximum & "/" & pb.Value
+                Application.DoEvents()
+                Dim strSQL As String = $"INSERT INTO tbl_PaidOutDenominations 
+                                            ([DenomPK],
+                                            [Denominations_Code],
+                                            Denominations,
+                                            [Type],
+                                            [Active]  )
+                                    VALUES (
+                                        {fNum(rs.Fields("DenomPK").Value)},
+                                        '{fSqlFormat(rs.Fields("Denominations_Code").Value)}',
+                                        {fNum(rs.Fields("Denominations").Value)},
+                                        {fNum(rs.Fields("Type").Value)},
+                                        {fNum(rs.Fields("Active").Value)}
+                                   );"
+
+                ConnLocal.Execute(strSQL)
+                rs.MoveNext()
+            End While
+
+        End If
+
+    End Sub
+    Public Sub CreateTable_tbl_PaidOutTransactions(pb As ProgressBar, l As Label)
+        Try
+            Dim createTableSql As String = "CREATE TABLE tbl_PaidOutTransactions (
+                                            PaidOutPK INTEGER PRIMARY KEY,
+                                            TransDate DATE NOT NULL,
+                                            TransTime TEXT(15),
+                                            CtrlNo TEXT(15) NOT NULL,
+                                            OOrder INTEGER NOT NULL,
+                                            CashierCode TEXT(5) NOT NULL,
+                                            CashierName TEXT(50) NOT NULL,
+                                            CollectorCode TEXT(5) NOT NULL,
+                                            CollectorName TEXT(50) NOT NULL,
+                                            MachineNo TEXT(10) NOT NULL,
+                                            Total CURRENCY NOT NULL,
+                                            YYear INTEGER NOT NULL,
+                                            Series INTEGER NOT NULL,
+                                            IsPosted BYTE NOT NULL,
+                                            IsChecked BYTE NOT NULL,
+                                            Total_Previous CURRENCY NOT NULL,
+                                            SessionPK INTEGER,
+                                            IsUsed BYTE
+);"
+
+            ConnLocal.Execute(createTableSql)
+            Collect_tbl_PaidOutTransactions(pb, l)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "tbl_PaidOutTransactions  ")
+            Application.Exit()
+        End Try
+    End Sub
+    Private Sub Collect_tbl_PaidOutTransactions(pb As ProgressBar, l As Label)
+        Dim year As Integer = Now.Year - 1
+        Dim n As Integer = 0
+        rs = New ADODB.Recordset
+        rs.Open($"select * from tbl_PaidOutTransactions  where year(TransDate) >= {year} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_PaidOutTransactions  :" & pb.Maximum & "/" & pb.Value
+                If n > 10000 Then
+                    n = 0
+                    Application.DoEvents()
+                End If
+                Dim strSQL As String = $"INSERT INTO tbl_PaidOutTransactions 
+                                                    (   PaidOutPK,
+                                                        TransDate,
+                                                        TransTime,
+                                                        CtrlNo,
+                                                        OOrder,
+                                                        CashierCode,
+                                                        CashierName,
+                                                        CollectorCode,
+                                                        CollectorName,
+                                                        MachineNo,
+                                                        Total,
+                                                        YYear,
+                                                        Series,
+                                                        IsPosted,
+                                                        IsChecked,
+                                                        Total_Previous,
+                                                        SessionPK,
+                                                        IsUsed)
+                                                VALUES ({fNum(rs.Fields("PaidOutPK").Value)},      
+                                                         {fDateIsEmpty(rs.Fields("TransDate").Value.ToString())},
+                                                        '{fSqlFormat(rs.Fields("TransTime").Value)}',
+                                                        '{fSqlFormat(rs.Fields("CtrlNo").Value)}',
+                                                         {fNum(rs.Fields("OOrder").Value)},                                                     '{fSqlFormat(rs.Fields("Track1").Value)}',
+                                                        '{fSqlFormat(rs.Fields("CashierCode").Value)}',
+                                                        '{fSqlFormat(rs.Fields("Type").Value)}',
+                                                        '{fSqlFormat(rs.Fields("CashierName").Value)}',
+                                                        '{fSqlFormat(rs.Fields("CollectorCode").Value)}',
+                                                        '{fSqlFormat(rs.Fields("CollectorName").Value)}',      
+                                                        '{fSqlFormat(rs.Fields("MachineNo").Value)}',     
+                                                         {fNum(rs.Fields("Total").Value)},
+                                                         {fNum(rs.Fields("YYear").Value)},                                  
+                                                         {fNum(rs.Fields("Series").Value)},
+                                                         {fNum(rs.Fields("IsPosted").Value)},
+                                                         {fNum(rs.Fields("IsChecked").Value)},
+                                                         {fNum(rs.Fields("Total_Previous").Value)},
+                                                         {fNum(rs.Fields("SessionPK").Value)},
+                                                         {fNum(rs.Fields("IsUsed").Value)}
+                                                );"
+
+                ConnLocal.Execute(strSQL)
+                rs.MoveNext()
+            End While
         End If
 
     End Sub

@@ -1,4 +1,5 @@
-﻿Imports System.Runtime.InteropServices
+﻿Imports System.IO
+Imports System.Runtime.InteropServices
 Public Class FrmMain
     <DllImport("user32.dll")>
     Public Shared Function ReleaseCapture() As Boolean
@@ -83,6 +84,9 @@ Public Class FrmMain
                 CreateTable_tbl_ItemsForPLU(pbMainLoading, lblMainLoading)
                 CreateTable_tbl_ItemsForPLU_For_Effect(pbMainLoading, lblMainLoading)
 
+                CreateTable_tbl_PaidOutDenominations(pbMainLoading, lblMainLoading)
+                CreateTable_tbl_PaidOutTransactions(pbMainLoading, lblMainLoading)
+
                 lblMainLoading.Text = ""
                 btnExport.Enabled = True
 
@@ -146,4 +150,50 @@ Public Class FrmMain
     Private Sub lblClose_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles lblClose.LinkClicked
         End
     End Sub
+
+    Private Sub btnImport_Click(sender As Object, e As EventArgs) Handles btnImport.Click
+        branchInsert()
+    End Sub
+
+    Private Sub branchInsert()
+        Dim ofd As New OpenFileDialog()
+        ofd.Title = "Select a file to upload"
+        ofd.Filter = "All Files (*.*)|*.*"
+
+        ' Show the dialog and check if the user selected a file
+        If ofd.ShowDialog() = DialogResult.OK Then
+            Try
+                Dim sourceFilePath As String = ofd.FileName
+                Dim fileName As String = Path.GetFileName(sourceFilePath) ' file name
+
+                Dim str As String = getConnectionString(sourceFilePath)
+                ConnLocal = New ADODB.Connection()
+                ConnLocal.ConnectionTimeout = 30
+                ConnLocal.Open(str)
+
+                Branch_Insert_tbl_GiftCert_List(pbBranchLoading, lblBranchLoading)
+                Branch_Insert_tbl_VPlus_Codes(pbBranchLoading, lblBranchLoading)
+                Branch_Insert_tbl_VPlus_Codes_Validity(pbBranchLoading, lblBranchLoading)
+                Branch_Insert_tbl_PS_GT(pbBranchLoading, lblBranchLoading)
+                Branch_Insert_tbl_PS_GT_ZZ(pbBranchLoading, lblBranchLoading)
+                Branch_Insert_tbl_PS_E_Journal(pbBranchLoading, lblBranchLoading)
+                Branch_Insert_tbl_PS_E_Journal_Detail(pbBranchLoading, lblBranchLoading)
+                Branch_Insert_tbl_PS_EmployeeATD(pbBranchLoading, lblBranchLoading)
+                Branch_Insert_tbl_GiftCert_Payment(pbBranchLoading, lblBranchLoading)
+                Branch_Insert_tbl_VPlus_Purchases_Points(pbBranchLoading, lblBranchLoading)
+                Branch_Insert_tbl_PS_Tmp(pbBranchLoading, lblBranchLoading)
+                Branch_Insert_tbl_PS_ItemsSold_Tmp(pbBranchLoading, lblBranchLoading)
+                Branch_Insert_tbl_PS_ItemsSold_Voided(pbBranchLoading, lblBranchLoading)
+                Branch_Insert_tbl_PS_MiscPay_Tmp(pbBranchLoading, lblBranchLoading)
+                Branch_Insert_tbl_PS_MiscPay_Voided(pbBranchLoading, lblBranchLoading)
+                Branch_Insert_tbl_PaidOutTransactions(pbBranchLoading, lblBranchLoading)
+
+                ConnLocal.Close()
+                MessageBox.Show("Successfully Branch Data Upload", "Upload Message", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            Catch ex As Exception
+                MessageBox.Show("Error uploading file: " & ex.Message)
+            End Try
+        End If
+    End Sub
+
 End Class

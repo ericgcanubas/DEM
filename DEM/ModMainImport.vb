@@ -1546,8 +1546,7 @@ Module ModMainImport
                                             ([Counter],
                                             [PSDate],
                                             ZZCount)
-                                    VALUES (
-                                        '{fSqlFormat(rs.Fields("Counter").Value)}',
+                                    VALUES ('{fSqlFormat(rs.Fields("Counter").Value)}',
                                          {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())},
                                         {fNum(rs.Fields("ZZCount").Value)}
                                    );"
@@ -1557,7 +1556,7 @@ Module ModMainImport
                     [PSDate] = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())},
                     ZZCount = {fNum(rs.Fields("ZZCount").Value)}
                     WHERE  [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}';"
-
+                    ConnServer.Execute(strSQL)
                 End If
                 rs.MoveNext()
             End While
@@ -1967,6 +1966,117 @@ Module ModMainImport
                 rs.MoveNext()
             End While
 
+        End If
+
+    End Sub
+
+    Public Sub Insert_tbl_PaidOutDenominations(pb As ProgressBar, l As Label)
+        ConnServer.Execute("SET IDENTITY_INSERT tbl_PaidOutDenominations ON;")
+        rs = New ADODB.Recordset
+        rs.CursorLocation = ADODB.CursorLocationEnum.adUseClient
+        rs.Open($"select * from tbl_PaidOutDenominations ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_PaidOutDenominations :" & pb.Maximum & "/" & pb.Value
+                Application.DoEvents()
+
+                Dim rx As New Recordset
+                rx.Open($"select TOP 1 * from tbl_PaidOutDenominations  where [DenomPK] = {fNum(rs.Fields("DenomPK").Value)} ", ConnServer, CursorTypeEnum.adOpenStatic)
+                If rx.RecordCount = 0 Then
+                    Dim strSQL As String = $"INSERT INTO tbl_PaidOutDenominations 
+                                            ([DenomPK],
+                                            [Denominations_Code],
+                                            Denominations,
+                                            [Type],
+                                            [Active]  )
+                                    VALUES (
+                                        {fNum(rs.Fields("DenomPK").Value)},
+                                        '{fSqlFormat(rs.Fields("Denominations_Code").Value)}',
+                                        {fNum(rs.Fields("Denominations").Value)},
+                                        {fNum(rs.Fields("Type").Value)},
+                                        {fNum(rs.Fields("Active").Value)}
+                                   );"
+
+                    ConnServer.Execute(strSQL)
+                End If
+
+
+                rs.MoveNext()
+            End While
+
+        End If
+        ConnServer.Execute("SET IDENTITY_INSERT tbl_PaidOutDenominations OFF;")
+    End Sub
+
+    Public Sub Insert_tbl_PaidOutTransactions(pb As ProgressBar, l As Label)
+        Dim year As Integer = Now.Year - 1
+        Dim n As Integer = 0
+        rs = New ADODB.Recordset
+        rs.Open($"select * from tbl_PaidOutTransactions WHERE MachineNo = '{gbl_Counter}'", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_PaidOutTransactions  :" & pb.Maximum & "/" & pb.Value
+                If n > 10000 Then
+                    n = 0
+                    Application.DoEvents()
+                End If
+
+                Dim rx As New Recordset
+                rx.Open($"SELECT * FROM tbl_PaidOutTransactions WHERE TransDate =  {fDateIsEmpty(rs.Fields("TransDate").Value.ToString())} and TransTime = '{fSqlFormat(rs.Fields("TransTime").Value)}'  and MachineNo = '{fSqlFormat(rs.Fields("MachineNo").Value)}' ", ConnServer, CursorTypeEnum.adOpenStatic)
+                If rx.RecordCount = 0 Then
+                    Dim strSQL As String = $"INSERT INTO tbl_PaidOutTransactions 
+                                                (   PaidOutPK,
+                                                    TransDate,
+                                                    TransTime,
+                                                    CtrlNo,
+                                                    OOrder,
+                                                    CashierCode,
+                                                    CashierName,
+                                                    CollectorCode,
+                                                    CollectorName,
+                                                    MachineNo,
+                                                    Total,
+                                                    YYear,
+                                                    Series,
+                                                    IsPosted,
+                                                    IsChecked,
+                                                    Total_Previous,
+                                                    SessionPK,
+                                                    IsUsed)
+                                                VALUES ({fNum(rs.Fields("PaidOutPK").Value)},      
+                                                         {fDateIsEmpty(rs.Fields("TransDate").Value.ToString())},
+                                                        '{fSqlFormat(rs.Fields("TransTime").Value)}',
+                                                        '{fSqlFormat(rs.Fields("CtrlNo").Value)}',
+                                                         {fNum(rs.Fields("OOrder").Value)},                                                     '{fSqlFormat(rs.Fields("Track1").Value)}',
+                                                        '{fSqlFormat(rs.Fields("CashierCode").Value)}',
+                                                        '{fSqlFormat(rs.Fields("Type").Value)}',
+                                                        '{fSqlFormat(rs.Fields("CashierName").Value)}',
+                                                        '{fSqlFormat(rs.Fields("CollectorCode").Value)}',
+                                                        '{fSqlFormat(rs.Fields("CollectorName").Value)}',      
+                                                        '{fSqlFormat(rs.Fields("MachineNo").Value)}',     
+                                                         {fNum(rs.Fields("Total").Value)},
+                                                         {fNum(rs.Fields("YYear").Value)},                                  
+                                                         {fNum(rs.Fields("Series").Value)},
+                                                         {fNum(rs.Fields("IsPosted").Value)},
+                                                         {fNum(rs.Fields("IsChecked").Value)},
+                                                         {fNum(rs.Fields("Total_Previous").Value)},
+                                                         {fNum(rs.Fields("SessionPK").Value)},
+                                                         {fNum(rs.Fields("IsUsed").Value)}
+                                                );"
+
+                    ConnServer.Execute(strSQL)
+                End If
+
+                rs.MoveNext()
+            End While
         End If
 
     End Sub
