@@ -2,6 +2,10 @@
 Module ModConnection
 
     Public ConnServer As ADODB.Connection
+    Public ConnLocal As New ADODB.Connection()
+
+    Public ConnTemp As New ADODB.Connection()
+
     Public gbl_Counter As String
 
     Public gbl_Database As String
@@ -9,7 +13,7 @@ Module ModConnection
     Public IsConnected As Boolean
 
     Public rs As ADODB.Recordset
-    Public ConnLocal As New ADODB.Connection()
+
     Public GL_EXPORT_PATH As String
     Public Sub getConnection()
         ConnServer = New ADODB.Connection()
@@ -31,8 +35,33 @@ Module ModConnection
 
     End Sub
 
+    Public Function GetParameter(ParameterName As String) As String
 
+        Dim rx As New ADODB.Recordset
+        rx.Open($"select ParameterValue from tbl_parameter WHERE ParameterName ='{ParameterName}' ", ConnTemp, ADODB.CursorTypeEnum.adOpenStatic)
+        If rx.RecordCount = 0 Then
+            GetParameter = ""
+            SetParamter(ParameterName, "")
+        Else
+            GetParameter = rx.Fields("ParameterValue").Value
+        End If
+    End Function
+    Public Sub SetParamter(ParameterName As String, ParamterValue As String)
+        Dim rx As New ADODB.Recordset
 
+        Try
+            rx.Open($"select ParameterValue from tbl_parameter WHERE ParameterName ='{ParameterName}' ", ConnTemp, ADODB.CursorTypeEnum.adOpenStatic)
+            If rx.RecordCount = 0 Then
+                ConnTemp.Execute($"INSERT INTO tbl_parameter (ParameterName,ParameterValue) VALUES('{ParameterName}','{ParamterValue}')")
+                MessageBox.Show($"NEW PARAMATER = [{ParameterName}]")
+            Else
+                ConnTemp.Execute($"UPDATE tbl_parameter SET ParameterValue='{ParamterValue}' WHERE ParameterName = '{ParameterName}' ")
+            End If
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "Paramter Message", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+
+    End Sub
     Public Function CreateData() As String
 
         Try
@@ -46,6 +75,26 @@ Module ModConnection
         Catch ex As Exception
             MessageBox.Show("Error: " & ex.Message)
             CreateData = ""
+        End Try
+
+
+    End Function
+
+
+    Public Function CreateDBMain()
+        Dim connectionString As String = ""
+        Try
+            Dim catalog As New Catalog()
+
+            Dim strDBName As String = "Main"
+
+            Dim dbPath As String = $"{Application.StartupPath}\{strDBName}"
+            connectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" & dbPath
+            catalog.Create(connectionString)
+            CreateDBMain = connectionString
+
+        Catch ex As Exception
+            CreateDBMain = connectionString
         End Try
 
 
@@ -92,5 +141,39 @@ Module ModConnection
 
     End Function
 
+    Public Sub Local_CreateTable_tbl_info(dt As Date, fileRef As String, Counter As String)
+        Try
+            Dim createTableSql As String = "CREATE TABLE tbl_info (
+                                                [Counter] TEXT(5) NOT NULL,
+                                                DateTransaction DATETIME NOT NULL,        
+                                                DateAdded DATETIME NOT NULL,
+                                                TimeAdded TEXT(30) NOT NULL,
+                                                [Reference] TEXT(30) NOT NULL
+                                        );"
 
+
+
+            ConnLocal.Execute(createTableSql)
+
+            Dim dtadded As Date = Now.Date
+            Dim tmadded As TimeSpan = Now.TimeOfDay()
+
+            ConnLocal.Execute($"INSERT INTO tbl_info 
+                                            ([Counter],
+                                            DateTransaction,
+                                            DateAdded,
+                                            TimeAdded,
+                                            [Reference]) 
+                                            VALUES('{Counter}',
+                                            {fDateIsEmpty(dt.ToShortDateString())},
+                                            '{dtadded.ToShortDateString()}',
+                                            '{tmadded.ToString()}',
+                                            '{fileRef}') ")
+
+
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "tbl_info")
+            Application.Exit()
+        End Try
+    End Sub
 End Module

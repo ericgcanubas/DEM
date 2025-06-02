@@ -83,6 +83,12 @@
     <Compile Include="FrmMain.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmMainSetup.Designer.vb">
+      <DependentUpon>FrmMainSetup.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmMainSetup.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmSetup.Designer.vb">
       <DependentUpon>FrmSetup.vb</DependentUpon>
     </Compile>
@@ -116,6 +122,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmMain.resx">
       <DependentUpon>FrmMain.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMainSetup.resx">
+      <DependentUpon>FrmMainSetup.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmSetup.resx">
       <DependentUpon>FrmSetup.vb</DependentUpon>
@@ -179,6 +188,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\orange.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cog_icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

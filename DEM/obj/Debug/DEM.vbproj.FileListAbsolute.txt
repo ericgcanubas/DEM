@@ -44,3 +44,4 @@ C:\developer\DEM\DEM\obj\Debug\DEM.Resources.resources
 C:\developer\DEM\DEM\obj\Debug\DEM.vbproj.GenerateResource.Cache
 D:\Source Code\DEM\DEM\obj\Debug\DEM.FrmSetup.resources
 C:\developer\DEM\DEM\obj\Debug\DEM.FrmSetup.resources
+D:\Source Code\DEM\DEM\obj\Debug\DEM.FrmMainSetup.resources

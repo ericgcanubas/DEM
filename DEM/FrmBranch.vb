@@ -47,7 +47,7 @@ Public Class FrmBranch
                 ConnLocal.ConnectionTimeout = 30
                 ConnLocal.Open(str)
 
-                Branch_CreateTable_tbl_info(dtpDate.Value, refFile)
+                Local_CreateTable_tbl_info(dtpDate.Value, refFile, gbl_Counter)
 
                 Branch_CreateTable_tbl_VPlus_Codes(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_VPlus_Codes_Validity(pbBranchLoading, lblBranchLoading, dtpDate.Value)

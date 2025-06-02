@@ -37,7 +37,8 @@ Partial Class FrmMain
         Me.lblClose = New System.Windows.Forms.LinkLabel()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.Label7 = New System.Windows.Forms.Label()
-        Me.cmbType = New System.Windows.Forms.ComboBox()
+        Me.picOpenMain = New System.Windows.Forms.PictureBox()
+        CType(Me.picOpenMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'lblMainLoading
@@ -90,7 +91,7 @@ Partial Class FrmMain
         Me.Label1.AutoSize = True
         Me.Label1.BackColor = System.Drawing.Color.Transparent
         Me.Label1.Font = New System.Drawing.Font("Segoe UI", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(26, 134)
+        Me.Label1.Location = New System.Drawing.Point(26, 130)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(63, 30)
         Me.Label1.TabIndex = 4
@@ -197,13 +198,17 @@ Partial Class FrmMain
         Me.Label7.TabIndex = 28
         Me.Label7.Text = "Southwood Mindanao Corporation"
         '
-        'cmbType
+        'picOpenMain
         '
-        Me.cmbType.FormattingEnabled = True
-        Me.cmbType.Location = New System.Drawing.Point(95, 140)
-        Me.cmbType.Name = "cmbType"
-        Me.cmbType.Size = New System.Drawing.Size(223, 21)
-        Me.cmbType.TabIndex = 30
+        Me.picOpenMain.BackColor = System.Drawing.Color.Transparent
+        Me.picOpenMain.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.picOpenMain.Image = Global.DEM.My.Resources.Resources.cog_icon
+        Me.picOpenMain.Location = New System.Drawing.Point(87, 137)
+        Me.picOpenMain.Name = "picOpenMain"
+        Me.picOpenMain.Size = New System.Drawing.Size(25, 23)
+        Me.picOpenMain.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.picOpenMain.TabIndex = 30
+        Me.picOpenMain.TabStop = False
         '
         'FrmMain
         '
@@ -214,7 +219,7 @@ Partial Class FrmMain
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ClientSize = New System.Drawing.Size(704, 447)
         Me.ControlBox = False
-        Me.Controls.Add(Me.cmbType)
+        Me.Controls.Add(Me.picOpenMain)
         Me.Controls.Add(Me.Label8)
         Me.Controls.Add(Me.Label7)
         Me.Controls.Add(Me.lblClose)
@@ -235,6 +240,7 @@ Partial Class FrmMain
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "DEM App"
         Me.TransparencyKey = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        CType(Me.picOpenMain, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -254,5 +260,5 @@ Partial Class FrmMain
     Friend WithEvents lblClose As LinkLabel
     Friend WithEvents Label8 As Label
     Friend WithEvents Label7 As Label
-    Friend WithEvents cmbType As ComboBox
+    Friend WithEvents picOpenMain As PictureBox
 End Class

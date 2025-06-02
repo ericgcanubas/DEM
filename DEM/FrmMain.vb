@@ -1,6 +1,9 @@
 ﻿Imports System.IO
 Imports System.Runtime.InteropServices
 Public Class FrmMain
+    Dim NGenType As Integer
+
+
     <DllImport("user32.dll")>
     Public Shared Function ReleaseCapture() As Boolean
     End Function
@@ -26,13 +29,13 @@ Public Class FrmMain
         saveFileDialog.Filter = ""
         saveFileDialog.Title = "Save data"
         saveFileDialog.DefaultExt = ""
-        saveFileDialog.FileName = "main" & DateTime.Now.ToString("yyyyMMddHHmmss").ToLower() & ""
+        Dim ref As String = DateTime.Now.ToString("yyyyMMddHHmmss").ToLower()
+        saveFileDialog.FileName = "main" & ref
 
         If saveFileDialog.ShowDialog() = DialogResult.OK Then
             ' Get the selected file path
             GL_EXPORT_PATH = saveFileDialog.FileName
             Dim DBNAME As String = CreateData()
-
             If DBNAME <> "" Then
                 btnExport.Enabled = False
 
@@ -40,6 +43,11 @@ Public Class FrmMain
                 ConnLocal = New ADODB.Connection()
                 ConnLocal.ConnectionTimeout = 30
                 ConnLocal.Open(str)
+
+                Local_CreateTable_tbl_info(Now.Date, ref, "Main")
+
+                NGenType = Val(GetParameter("GenerateType"))
+
 
                 CreateTable_tbl_banks(pbMainLoading, lblMainLoading)
                 CreateTable_tbl_Banks_Changes(pbMainLoading, lblMainLoading)
@@ -60,8 +68,10 @@ Public Class FrmMain
                 CreateTable_tbl_VPlus_Codes_For_Offline(pbMainLoading, lblMainLoading)
                 CreateTable_tbl_VPlus_App(pbMainLoading, lblMainLoading)
 
-                CreateTable_tbl_PS_GT_Adjustment_EJournal_Detail(pbMainLoading, lblMainLoading)
+
                 CreateTable_tbl_PS_GT_Adjustment_EJournal(pbMainLoading, lblMainLoading)
+                CreateTable_tbl_PS_GT_Adjustment_EJournal_Detail(pbMainLoading, lblMainLoading)
+
                 CreateTable_tbl_PS_E_Journal(pbMainLoading, lblMainLoading)
                 CreateTable_tbl_PS_E_Journal_Detail(pbMainLoading, lblMainLoading)
 
@@ -73,19 +83,22 @@ Public Class FrmMain
                 CreateTable_tbl_PCPOS_Cashiers(pbMainLoading, lblMainLoading)
                 CreateTable_tbl_PCPOS_Cashiers_Changes(pbMainLoading, lblMainLoading)
 
-                CreateTable_tbl_Concession_PCR_Effectivity(pbMainLoading, lblMainLoading)
+
                 CreateTable_tbl_Concession_PCR(pbMainLoading, lblMainLoading)
                 CreateTable_tbl_Concession_PCR_Det(pbMainLoading, lblMainLoading)
+                CreateTable_tbl_Concession_PCR_Effectivity(pbMainLoading, lblMainLoading)
 
                 CreateTable_tbl_RetrieveHistoryForLocal(pbMainLoading, lblMainLoading)
 
-                CreateTable_tbl_Items(pbMainLoading, lblMainLoading)
+                CreateTable_tbl_Items(pbMainLoading, lblMainLoading, NGenType)
                 CreateTable_tbl_Items_Change(pbMainLoading, lblMainLoading)
-                CreateTable_tbl_ItemsForPLU(pbMainLoading, lblMainLoading)
+
+                CreateTable_tbl_ItemsForPLU(pbMainLoading, lblMainLoading, NGenType)
                 CreateTable_tbl_ItemsForPLU_For_Effect(pbMainLoading, lblMainLoading)
 
                 CreateTable_tbl_PaidOutDenominations(pbMainLoading, lblMainLoading)
                 CreateTable_tbl_PaidOutTransactions(pbMainLoading, lblMainLoading)
+
 
                 lblMainLoading.Text = ""
                 btnExport.Enabled = True
@@ -116,7 +129,45 @@ Public Class FrmMain
         gbl_Server = GetSetting("DEM", "MODE", "SERVER")
         gbl_Database = GetSetting("DEM", "MODE", "DATABASE")
         getConnection()
+
+        Dim str As String = CreateDBMain()
+
+        ConnTemp = New ADODB.Connection()
+        ConnTemp.ConnectionTimeout = 30
+        ConnTemp.Open(str)
+        Maketbl_COUNTER()
+        Maketbl_PARAMETER()
+        NGenType = Val(GetParameter("GenerateType"))
     End Sub
+    Private Sub Maketbl_COUNTER()
+
+        Try
+            Dim createTableSql As String = "CREATE TABLE tbl_counter_list (
+                                                [Counter] TEXT(5) PRIMARY KEY,
+                                                DateUpload DATETIME,        
+                                                [Reference] TEXT(15)
+                                        );"
+
+            ConnTemp.Execute(createTableSql)
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+    Private Sub Maketbl_PARAMETER()
+
+        Try
+            Dim createTableSql As String = "CREATE TABLE tbl_parameter (
+                                                ParameterName TEXT(15) PRIMARY KEY,
+                                                ParameterValue TEXT(50)                                                   
+                                        );"
+            ConnTemp.Execute(createTableSql)
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
 
     Private Sub pbLoading_Click(sender As Object, e As EventArgs) Handles pbMainLoading.Click
 
@@ -196,4 +247,8 @@ Public Class FrmMain
         End If
     End Sub
 
+    Private Sub picOpenMain_Click(sender As Object, e As EventArgs) Handles picOpenMain.Click
+        FrmMainSetup.ShowDialog()
+        FrmMainSetup = Nothing
+    End Sub
 End Class

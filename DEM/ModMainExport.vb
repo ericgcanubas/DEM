@@ -2,6 +2,25 @@
 
 Module ModMainExport
 
+
+    Private Function getCounterList() As String
+
+        Dim rx As New ADODB.Recordset
+        rx.Open("select [Counter] from tbl_Counter_list ", ConnTemp, ADODB.CursorTypeEnum.adOpenStatic)
+        Dim strCollect As String = ""
+        While Not rx.EOF
+            If strCollect = "" Then
+                strCollect = $"'{rx.Fields("Counter").Value}'"
+            Else
+                strCollect = strCollect & $",'{rx.Fields("Counter").Value}'"
+            End If
+            rx.MoveNext()
+        End While
+
+        getCounterList = strCollect
+
+    End Function
+
     Public Sub CreateTable_tbl_PCPOS_Cashiers(pb As ProgressBar, l As Label)
 
         Try
@@ -93,7 +112,7 @@ Module ModMainExport
 
     End Sub
 
-    Public Sub CreateTable_tbl_ItemsForPLU(pb As ProgressBar, l As Label)
+    Public Sub CreateTable_tbl_ItemsForPLU(pb As ProgressBar, l As Label, DownloadType As Integer)
         Try
             Dim createTableSql As String = "CREATE TABLE tbl_ItemsForPLU (
                                             ItemCode TEXT(12),
@@ -106,16 +125,45 @@ Module ModMainExport
                                 )"
 
             ConnLocal.Execute(createTableSql)
-            Collect_tbl_ItemsForPLU(pb, l)
+            Collect_tbl_ItemsForPLU(pb, l, DownloadType)
         Catch ex As Exception
             MessageBox.Show(ex.Message, "tbl_ItemsForPLU")
             Application.Exit()
         End Try
 
     End Sub
-    Private Sub Collect_tbl_ItemsForPLU(pb As ProgressBar, l As Label)
+    Private Sub Collect_tbl_ItemsForPLU(pb As ProgressBar, l As Label, DownloadType As Integer)
         rs = New ADODB.Recordset
-        rs.Open("select tbl_ItemsForPLU.*  FROM tbl_ItemsForPLU inner join  tbl_Items on  [tbl_Items].ItemCode = tbl_ItemsForPLU.ItemCode join tbl_Suppliers on tbl_Suppliers.PK = tbl_Items.SupplierKey  where [tbl_Items].[status] = 0 and tbl_Suppliers.SStatus = 0 ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+
+        If DownloadType = 0 Then
+            rs.Open("select tbl_ItemsForPLU.*  FROM tbl_ItemsForPLU inner join  tbl_Items on  [tbl_Items].ItemCode = tbl_ItemsForPLU.ItemCode join tbl_Suppliers on tbl_Suppliers.PK = tbl_Items.SupplierKey  where [tbl_Items].[status] = 0 and tbl_Suppliers.SStatus = 0 ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        Else
+            rs.Open($" select
+  
+               tbl_ItemsForPLU.ItemCode,
+	            tbl_ItemsForPLU.ECRDescription,
+	            tbl_ItemsForPLU.ItemDescription,
+	            tbl_ItemsForPLU.GrossSRP,
+	            tbl_ItemsForPLU.PromoDisc,
+	            tbl_ItemsForPLU.PromoFrom,
+	            tbl_ItemsForPLU.PromoTo
+               FROM tbl_ItemsForPLU 
+               inner join tbl_Items on [tbl_Items].ItemCode = tbl_ItemsForPLU.ItemCode
+               inner join tbl_Suppliers on tbl_Suppliers.PK = tbl_Items.SupplierKey
+               inner join tbl_Items_Change on tbl_Items_Change.ItemCode = tbl_ItemsForPLU.ItemCode
+               where [tbl_Items].[status] = 0 and tbl_Suppliers.SStatus = 0 and year(tbl_Items_Change.[DateChange]) >= 2010
+	             group by 
+		               tbl_ItemsForPLU.ItemCode,
+			            tbl_ItemsForPLU.ECRDescription,
+			            tbl_ItemsForPLU.ItemDescription,
+			            tbl_ItemsForPLU.GrossSRP,
+			            tbl_ItemsForPLU.PromoDisc,
+			            tbl_ItemsForPLU.PromoFrom,
+			            tbl_ItemsForPLU.PromoTo
+            ",
+                    ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+
+        End If
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -124,10 +172,8 @@ Module ModMainExport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_ItemsForPLU :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+                n = 0
+                Application.DoEvents()
                 n = n + 1
                 Dim strSQL As String = $" INSERT INTO tbl_ItemsForPLU 
                                     (ItemCode,
@@ -580,10 +626,7 @@ Module ModMainExport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_VPlus_Codes :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+                Application.DoEvents()
                 Dim strSQL As String = $"INSERT INTO tbl_VPlus_Codes 
                                     (Codes,
                                     Customer,
@@ -649,10 +692,10 @@ Module ModMainExport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_VPlus_Codes_Validity :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                n = 0
+                Application.DoEvents()
+
                 Dim strSQL As String = $"INSERT INTO tbl_VPlus_Codes_Validity 
                                     (Codes,
                                     DateStarted,
@@ -839,7 +882,7 @@ Module ModMainExport
         End If
     End Sub
 
-    Public Sub CreateTable_tbl_Items(pb As ProgressBar, l As Label)
+    Public Sub CreateTable_tbl_Items(pb As ProgressBar, l As Label, DownLoadType As Integer)
         Try
             Dim createTableSql As String = "CREATE TABLE tbl_Items (
                                             PK INTEGER PRIMARY KEY,
@@ -905,18 +948,23 @@ Module ModMainExport
                                         );"
 
             ConnLocal.Execute(createTableSql)
-            Collect_tbl_Items(pb, l)
+            Collect_tbl_Items(pb, l, DownLoadType)
         Catch ex As Exception
             MessageBox.Show(ex.Message, "tbl_Items")
             Application.Exit()
         End Try
     End Sub
 
-    Private Sub Collect_tbl_Items(pb As ProgressBar, l As Label)
+    Private Sub Collect_tbl_Items(pb As ProgressBar, l As Label, DownLoadType As Integer)
         Dim year As Integer = Now.Year - 1
 
         rs = New ADODB.Recordset
-        rs.Open($"select i.* from tbl_Items as i join tbl_Suppliers as s on s.PK = i.SupplierKey where i.Status = 0  and s.SStatus = 0", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        If DownLoadType = 0 Then
+            rs.Open($"select i.* from tbl_Items as i join tbl_Suppliers as s on s.PK = i.SupplierKey where i.Status = 0  and s.SStatus = 0", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        Else
+            rs.Open("select tbl_Items.[PK], tbl_Items.ItemCode, tbl_Items.ItemDescription, tbl_Items.ItemType, tbl_Items.ECRDescription, tbl_Items.StockNumber, tbl_Items.UnitOfMeasure, tbl_Items.ClassKey, tbl_Items.SupplierKey, tbl_Items.[Discount], tbl_Items.Commission, tbl_Items.Terms, tbl_Items.Remarks, tbl_Items.ForeignCost, tbl_Items.GrossCost, tbl_Items.[Vat], tbl_Items.[MarkUp], tbl_Items.GrossSRP, tbl_Items.LastModifiedBy, PhasedOut, tbl_Items.BrandKey, tbl_Items.ProdLineKey, tbl_Items.OldCode, tbl_Items.SeasonCode, tbl_Items.[Change], tbl_Items.MinQty, tbl_Items.MaxQty, tbl_Items.ReOrder, tbl_Items.Category, tbl_Items.PromoDisc, tbl_Items.PromoDiscAmt, tbl_Items.PromoFrom, tbl_Items.PromoTo, tbl_Items.PromoDiscLocked, tbl_Items.Level1, tbl_Items.Level2, tbl_Items.Level3, tbl_Items.Level4, tbl_Items.Level5, tbl_Items.Disc1, tbl_Items.Disc2, tbl_Items.Disc3, tbl_Items.Disc4, tbl_Items.Disc5, tbl_Items.LastCost, tbl_Items.LastSRP, tbl_Items.[Color], tbl_Items.StoreLocation, tbl_Items.[PO], tbl_Items.Date_Encoded, tbl_Items.User_Action, tbl_Items.User_Encoded, tbl_Items.[Changes], tbl_Items.RefNoID, tbl_Items.NotIncludeInSale, tbl_Items.[Active], tbl_Items.ActiveAsOf, tbl_Items.[Discounted], tbl_Items.[MarkDown], tbl_Items.[Status] from  tbl_Items inner join tbl_Suppliers on tbl_Suppliers.PK = tbl_Items.SupplierKey inner join tbl_Items_Change  on  tbl_Items_Change.ItemCode = tbl_Items.ItemCode where [tbl_Items].[status] = 0 and tbl_Suppliers.SStatus = 0 and year(tbl_Items_Change.[DateChange]) >= 2010 group by tbl_Items.[PK], tbl_Items.ItemCode, tbl_Items.ItemDescription, tbl_Items.ItemType, tbl_Items.ECRDescription, tbl_Items.StockNumber, tbl_Items.UnitOfMeasure, tbl_Items.ClassKey, tbl_Items.SupplierKey, tbl_Items.[Discount], tbl_Items.Commission, tbl_Items.Terms, tbl_Items.Remarks, tbl_Items.ForeignCost, tbl_Items.GrossCost, tbl_Items.[Vat], tbl_Items.[MarkUp], tbl_Items.GrossSRP, tbl_Items.LastModifiedBy, PhasedOut, tbl_Items.BrandKey, tbl_Items.ProdLineKey, tbl_Items.OldCode, tbl_Items.SeasonCode, tbl_Items.[Change], tbl_Items.MinQty, tbl_Items.MaxQty, tbl_Items.ReOrder, tbl_Items.Category, tbl_Items.PromoDisc, tbl_Items.PromoDiscAmt, tbl_Items.PromoFrom, tbl_Items.PromoTo, tbl_Items.PromoDiscLocked, tbl_Items.Level1, tbl_Items.Level2, tbl_Items.Level3, tbl_Items.Level4, tbl_Items.Level5, tbl_Items.Disc1, tbl_Items.Disc2, tbl_Items.Disc3, tbl_Items.Disc4, tbl_Items.Disc5, tbl_Items.LastCost, tbl_Items.LastSRP, tbl_Items.[Color], tbl_Items.StoreLocation, tbl_Items.[PO], tbl_Items.Date_Encoded, tbl_Items.User_Action, tbl_Items.User_Encoded, tbl_Items.[Changes], tbl_Items.RefNoID, tbl_Items.NotIncludeInSale, tbl_Items.[Active], tbl_Items.ActiveAsOf, tbl_Items.[Discounted], tbl_Items.[MarkDown], tbl_Items.[Status]", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        End If
+
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -926,10 +974,8 @@ Module ModMainExport
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_Items :" & pb.Maximum & "/" & pb.Value
 
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+                n = 0
+                Application.DoEvents()
                 n = n + 1
 
                 Dim strSQL As String = $"INSERT INTO tbl_Items 
@@ -1140,9 +1186,9 @@ Module ModMainExport
         End Try
     End Sub
     Private Sub Collect_tbl_Concession_PCR(pb As ProgressBar, l As Label)
-        Dim year As Integer = Now.Year - 5
+        Dim year As Integer = Now.Year - 1
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_Concession_PCR where YYear > '{year}' ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_Concession_PCR where YYear >= '{year}' ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -1151,10 +1197,9 @@ Module ModMainExport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_Concession_PCR :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                Application.DoEvents()
+
                 Dim strSQL As String = $"INSERT INTO tbl_Concession_PCR 
                                     (PK,
                                     CtrlNo,
@@ -1341,9 +1386,9 @@ Module ModMainExport
     End Sub
 
     Private Sub Collect_tbl_Concession_PCR_Det(pb As ProgressBar, l As Label)
-        Dim year As Integer = Now.Year - 5
+        Dim year As Integer = Now.Year - 1
         rs = New ADODB.Recordset
-        rs.Open($"select dd.* from [tbl_Concession_PCR_Det] as dd INNER JOIN tbl_Concession_PCR on tbl_Concession_PCR.PK = dd.ConcPCRKey WHERE tbl_Concession_PCR.YYear >'{year}' ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select dd.* from [tbl_Concession_PCR_Det] as dd INNER JOIN tbl_Concession_PCR on tbl_Concession_PCR.PK = dd.ConcPCRKey WHERE tbl_Concession_PCR.YYear >='{year}' ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -1352,10 +1397,9 @@ Module ModMainExport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_Concession_PCR_Det :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                Application.DoEvents()
+
                 Dim strSQL As String = $"INSERT INTO tbl_Concession_PCR_Det 
                                                 (PK,
                                                 ConcPCRKey,
@@ -1452,9 +1496,9 @@ Module ModMainExport
     End Sub
 
     Private Sub Collect_tbl_Concession_PCR_Effectivity(pb As ProgressBar, l As Label)
-        Dim year As Integer = Now.Year - 5
+        Dim year As Integer = Now.Year - 1
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_Concession_PCR_Effectivity where YEAR(Effect_To) > {year} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_Concession_PCR_Effectivity where YEAR(Effect_To) >= {year} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -1463,10 +1507,9 @@ Module ModMainExport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_Concession_PCR_Effectivity :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                Application.DoEvents()
+
                 Dim strSQL As String = $"INSERT INTO tbl_Concession_PCR_Effectivity 
                                     (PK,
                                     ConcPCRKey,
@@ -1541,9 +1584,7 @@ Module ModMainExport
                 ConnLocal.Execute(strSQL)
                 rs.MoveNext()
             End While
-
         End If
-
     End Sub
     Public Sub CreateTable_tbl_PS_Upload_Utility(pb As ProgressBar, l As Label)
         Try
@@ -1555,7 +1596,7 @@ Module ModMainExport
             ConnLocal.Execute(createTableSql)
             Collect_tbl_PS_Upload_Utility(pb, l)
         Catch ex As Exception
-            MessageBox.Show(ex.Message, "tbl_GiftCert_Changes")
+            MessageBox.Show(ex.Message, "tbl_PS_Upload_Utility")
             Application.Exit()
         End Try
     End Sub
@@ -1603,22 +1644,21 @@ Module ModMainExport
         End Try
     End Sub
     Private Sub Collect_tbl_VPlus_Codes_Changes(pb As ProgressBar, l As Label)
-        Dim year As Integer = Now.Year - 5
+        Dim year As Integer = Now.Year - 1
 
         rs = New ADODB.Recordset
         rs.Open($"select * from tbl_VPlus_Codes_Changes where year(DateChange) >= {year}   ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
-        Dim n As Integer = 0
+
         If rs.RecordCount > 0 Then
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_VPlus_Codes_Changes :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                Application.DoEvents()
+
                 Dim strSQL As String = $"INSERT INTO tbl_VPlus_Codes_Changes 
                                     (Codes,
                                     DateChange)
@@ -1657,7 +1697,7 @@ Module ModMainExport
         End Try
     End Sub
     Private Sub Collect_tbl_VPlus_Summary(pb As ProgressBar, l As Label)
-        Dim year As Integer = Now.Year - 5
+        Dim year As Integer = Now.Year - 1
 
         rs = New ADODB.Recordset
         rs.Open($"select * from tbl_VPlus_Summary where year(TransDate) >= {year} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
@@ -1669,10 +1709,9 @@ Module ModMainExport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_VPlus_Summary :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                Application.DoEvents()
+
                 Dim strSQL As String = $"INSERT INTO tbl_VPlus_Summary 
                                             (PK,
                                             VPlusCode,
@@ -1722,8 +1761,7 @@ Module ModMainExport
         End Try
     End Sub
     Private Sub Collect_tbl_VPlus_Codes_For_Offline(pb As ProgressBar, l As Label)
-        Dim year As Integer = Now.Year - 5
-
+        Dim year As Integer = Now.Year - 1
         rs = New ADODB.Recordset
         rs.Open($"select * from tbl_VPlus_Codes_For_Offline where year(CreatedOn) >= {year} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
@@ -1734,10 +1772,9 @@ Module ModMainExport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_VPlus_Codes_For_Offline :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                Application.DoEvents()
+
                 Dim strSQL As String = $"INSERT INTO tbl_VPlus_Codes_For_Offline 
                                             (Codes,
                                             POSName,
@@ -2154,8 +2191,18 @@ Module ModMainExport
         Dim toDate As String = Now.Date.ToShortDateString()
         Dim FromDate As String = Now.Date.AddYears(-1).ToShortDateString()
         rs = New ADODB.Recordset
+
+        Dim CounterList As String = getCounterList()
+
+        If CounterList = "" Then
+            MessageBox.Show("Counter not found")
+            Exit Sub
+        End If
+
+
+
         rs.CursorLocation = ADODB.CursorLocationEnum.adUseClient
-        rs.Open($"select * from tbl_PS_E_Journal where PsDate between '{FromDate}' and '{toDate}' and  year(PSDate) between {year} and {Now.Year}  ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_PS_E_Journal where [Counter] in ({CounterList}) and PsDate between '{FromDate}' and '{toDate}' and  year(PSDate) between {year} and {Now.Year}  ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -2164,10 +2211,10 @@ Module ModMainExport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_PS_E_Journal  :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                n = 0
+                Application.DoEvents()
+
                 Dim strSQL As String = $"INSERT INTO tbl_PS_E_Journal  
                                             (PK,
                                             PSNumber,
@@ -2263,12 +2310,19 @@ Module ModMainExport
         End Try
     End Sub
     Private Sub Collect_tbl_PS_E_Journal_Detail(pb As ProgressBar, l As Label)
+
+        Dim CounterList As String = getCounterList()
+
+        If CounterList = "" Then
+            MessageBox.Show("Counter not found")
+            Exit Sub
+        End If
         Dim year As Integer = Now.Year - 1
         Dim toDate As String = Now.Date.ToShortDateString()
         Dim FromDate As String = Now.Date.AddYears(-1).ToShortDateString()
         rs = New ADODB.Recordset
         rs.CursorLocation = ADODB.CursorLocationEnum.adUseClient
-        rs.Open($"select d.* from tbl_PS_E_Journal_Detail as d inner join tbl_PS_E_Journal as j on j.PSNumber = d.TransactionNumber WHERE j.PsDate between '{FromDate}' and '{toDate}'  and  year(j.PsDate) between {year} and {Now.Year}  ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select d.* from tbl_PS_E_Journal_Detail as d inner join tbl_PS_E_Journal as j on j.PSNumber = d.TransactionNumber WHERE j.[Counter] in ({CounterList}) and j.PsDate between '{FromDate}' and '{toDate}'  and  year(j.PsDate) between {year} and {Now.Year}  ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -2277,10 +2331,9 @@ Module ModMainExport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_PS_E_Journal_Detail :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                Application.DoEvents()
+
                 Dim strSQL As String = $"INSERT INTO tbl_PS_E_Journal_Detail 
                                             (PK,
                                             TransactionNumber,
@@ -2371,9 +2424,16 @@ Module ModMainExport
         Dim year As Integer = Now.Year - 1
         Dim toDate As String = Now.Date.ToShortDateString()
         Dim FromDate As String = Now.Date.AddYears(-1).ToShortDateString()
+        Dim CounterList As String = getCounterList()
+
+        If CounterList = "" Then
+            MessageBox.Show("Counter not found")
+            Exit Sub
+        End If
+
         rs = New ADODB.Recordset
         rs.CursorLocation = ADODB.CursorLocationEnum.adUseClient
-        rs.Open($"select j.* from tbl_PS_GT_Adjustment_EJournal as j where j.PsDate between '{FromDate}' and '{toDate}'  and  year(j.PsDate) between {year} and {Now.Year}  ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select j.* from tbl_PS_GT_Adjustment_EJournal as j WHERE j.[Counter] in ({CounterList})  and j.PsDate between '{FromDate}' and '{toDate}'  and  year(j.PsDate) between {year} and {Now.Year}  ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -2382,10 +2442,9 @@ Module ModMainExport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_PS_GT_Adjustment_EJournal :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                Application.DoEvents()
+
                 Dim strSQL As String = $"INSERT INTO tbl_PS_GT_Adjustment_EJournal 
                                             (ID,
                                             PSNumber,
@@ -2455,6 +2514,9 @@ Module ModMainExport
     End Sub
     Public Sub CreateTable_tbl_PS_GT_Adjustment_EJournal_Detail(pb As ProgressBar, l As Label)
         Try
+
+
+
             Dim createTableSql As String = "CREATE TABLE tbl_PS_GT_Adjustment_EJournal_Detail (
                                             ID INTEGER PRIMARY KEY,
                                             TransactionNumber TEXT(15) NOT NULL,
@@ -2486,9 +2548,18 @@ Module ModMainExport
         Dim year As Integer = Now.Year - 1
         Dim toDate As String = Now.Date.ToShortDateString()
         Dim FromDate As String = Now.Date.AddYears(-1).ToShortDateString()
+
+        Dim CounterList As String = getCounterList()
+
+        If CounterList = "" Then
+            MessageBox.Show("Counter not found")
+            Exit Sub
+        End If
+
+
         rs = New ADODB.Recordset
         rs.CursorLocation = ADODB.CursorLocationEnum.adUseClient
-        rs.Open($"select d.* from tbl_PS_GT_Adjustment_EJournal_Detail as d inner join tbl_PS_GT_Adjustment_EJournal as j on  j.PSNumber = d.TransactionNumber where j.PsDate between '{FromDate}' and '{toDate}'  and  year(j.PsDate) between {year} and {Now.Year}  ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select d.* from tbl_PS_GT_Adjustment_EJournal_Detail as d inner join tbl_PS_GT_Adjustment_EJournal as j on  j.PSNumber = d.TransactionNumber where j.[Counter] in ({CounterList})  and j.PsDate between '{FromDate}' and '{toDate}'  and  year(j.PsDate) between {year} and {Now.Year}  ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -2497,10 +2568,9 @@ Module ModMainExport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_PS_GT_Adjustment_EJournal_Detail :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                Application.DoEvents()
+
                 Dim strSQL As String = $"INSERT INTO tbl_PS_GT_Adjustment_EJournal_Detail 
                                             (ID,
                                             TransactionNumber,
@@ -2561,7 +2631,7 @@ Module ModMainExport
         End Try
     End Sub
     Private Sub Collect_tbl_PaidOutDenominations(pb As ProgressBar, l As Label)
-        Dim year As Integer = Now.Year - 5
+
 
         rs = New ADODB.Recordset
         rs.CursorLocation = ADODB.CursorLocationEnum.adUseClient
@@ -2600,7 +2670,7 @@ Module ModMainExport
             Dim createTableSql As String = "CREATE TABLE tbl_PaidOutTransactions (
                                             PaidOutPK INTEGER PRIMARY KEY,
                                             TransDate DATE NOT NULL,
-                                            TransTime TEXT(15),
+                                            TransTime TEXT(30),
                                             CtrlNo TEXT(15) NOT NULL,
                                             OOrder INTEGER NOT NULL,
                                             CashierCode TEXT(5) NOT NULL,
@@ -2608,15 +2678,14 @@ Module ModMainExport
                                             CollectorCode TEXT(5) NOT NULL,
                                             CollectorName TEXT(50) NOT NULL,
                                             MachineNo TEXT(10) NOT NULL,
-                                            Total CURRENCY NOT NULL,
-                                            YYear INTEGER NOT NULL,
-                                            Series INTEGER NOT NULL,
+                                            [Total] CURRENCY NOT NULL,
+                                            [YYear] INTEGER NOT NULL,
+                                            [Series] INTEGER NOT NULL,
                                             IsPosted BYTE NOT NULL,
                                             IsChecked BYTE NOT NULL,
                                             Total_Previous CURRENCY NOT NULL,
                                             SessionPK INTEGER,
-                                            IsUsed BYTE
-);"
+                                            IsUsed BYTE);"
 
             ConnLocal.Execute(createTableSql)
             Collect_tbl_PaidOutTransactions(pb, l)
@@ -2627,9 +2696,15 @@ Module ModMainExport
     End Sub
     Private Sub Collect_tbl_PaidOutTransactions(pb As ProgressBar, l As Label)
         Dim year As Integer = Now.Year - 1
-        Dim n As Integer = 0
+        Dim CounterList As String = getCounterList()
+
+        If CounterList = "" Then
+            MessageBox.Show("Counter not found")
+            Exit Sub
+        End If
+
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_PaidOutTransactions  where year(TransDate) >= {year} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_PaidOutTransactions  where MachineNo in ({CounterList}) and year(TransDate) >= {year} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -2637,10 +2712,7 @@ Module ModMainExport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_PaidOutTransactions  :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+                Application.DoEvents()
                 Dim strSQL As String = $"INSERT INTO tbl_PaidOutTransactions 
                                                     (   PaidOutPK,
                                                         TransDate,
@@ -2654,7 +2726,7 @@ Module ModMainExport
                                                         MachineNo,
                                                         Total,
                                                         YYear,
-                                                        Series,
+                                                        [Series],
                                                         IsPosted,
                                                         IsChecked,
                                                         Total_Previous,
@@ -2664,9 +2736,8 @@ Module ModMainExport
                                                          {fDateIsEmpty(rs.Fields("TransDate").Value.ToString())},
                                                         '{fSqlFormat(rs.Fields("TransTime").Value)}',
                                                         '{fSqlFormat(rs.Fields("CtrlNo").Value)}',
-                                                         {fNum(rs.Fields("OOrder").Value)},                                                     '{fSqlFormat(rs.Fields("Track1").Value)}',
+                                                         {fNum(rs.Fields("OOrder").Value)},                                                   
                                                         '{fSqlFormat(rs.Fields("CashierCode").Value)}',
-                                                        '{fSqlFormat(rs.Fields("Type").Value)}',
                                                         '{fSqlFormat(rs.Fields("CashierName").Value)}',
                                                         '{fSqlFormat(rs.Fields("CollectorCode").Value)}',
                                                         '{fSqlFormat(rs.Fields("CollectorName").Value)}',      

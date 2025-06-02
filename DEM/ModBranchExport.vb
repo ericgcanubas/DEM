@@ -1,40 +1,6 @@
 ﻿Module ModBranchExport
 
-    Public Sub Branch_CreateTable_tbl_info(dt As Date, fileRef As String)
-        Try
-            Dim createTableSql As String = "CREATE TABLE tbl_branch_info (
-                                                [Counter] TEXT(5) NOT NULL,
-                                                DateTransaction DATETIME NOT NULL,        
-                                                DateAdded DATETIME NOT NULL,
-                                                TimeAdded TEXT(13) NOT NULL,
-                                                [Reference] TEXT(15) NOT NULL
-                                        );"
 
-
-
-            ConnLocal.Execute(createTableSql)
-
-            Dim dtadded As Date = Now.Date
-            Dim tmadded As TimeSpan = Now.TimeOfDay()
-
-            ConnLocal.Execute($"INSERT INTO tbl_branch_info 
-                                            ([Counter],
-                                            DateTransaction,
-                                            DateAdded,
-                                            TimeAdded,
-                                            [Reference]) 
-                                            VALUES('{gbl_Counter}',
-                                            {fDateIsEmpty(dt)},
-                                            '{dtadded.ToShortDateString()}',
-                                            '{tmadded.ToString()}',
-                                            '{fileRef}') ")
-
-
-        Catch ex As Exception
-            MessageBox.Show(ex.Message, "tbl_branch_info")
-            Application.Exit()
-        End Try
-    End Sub
 
     Public Sub Branch_CreateTable_tbl_GiftCert_List(pb As ProgressBar, l As Label, dt As DateTime)
         Try

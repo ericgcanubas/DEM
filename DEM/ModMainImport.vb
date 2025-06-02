@@ -2055,7 +2055,7 @@ Module ModMainImport
                                                          {fDateIsEmpty(rs.Fields("TransDate").Value.ToString())},
                                                         '{fSqlFormat(rs.Fields("TransTime").Value)}',
                                                         '{fSqlFormat(rs.Fields("CtrlNo").Value)}',
-                                                         {fNum(rs.Fields("OOrder").Value)},                                                     '{fSqlFormat(rs.Fields("Track1").Value)}',
+                                                         {fNum(rs.Fields("OOrder").Value)},                             
                                                         '{fSqlFormat(rs.Fields("CashierCode").Value)}',
                                                         '{fSqlFormat(rs.Fields("Type").Value)}',
                                                         '{fSqlFormat(rs.Fields("CashierName").Value)}',
