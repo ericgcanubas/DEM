@@ -32,6 +32,7 @@ Partial Class FrmMainSetup
         Me.btnDelete = New System.Windows.Forms.Button()
         Me.btnRefresh = New System.Windows.Forms.Button()
         Me.chkGenerateType = New System.Windows.Forms.CheckBox()
+        Me.chkItemNotInclude = New System.Windows.Forms.CheckBox()
         Me.SuspendLayout()
         '
         'LvLIst
@@ -123,12 +124,23 @@ Partial Class FrmMainSetup
         Me.chkGenerateType.Text = "Download always Optimize Data"
         Me.chkGenerateType.UseVisualStyleBackColor = True
         '
+        'chkItemNotInclude
+        '
+        Me.chkItemNotInclude.AutoSize = True
+        Me.chkItemNotInclude.Location = New System.Drawing.Point(12, 341)
+        Me.chkItemNotInclude.Name = "chkItemNotInclude"
+        Me.chkItemNotInclude.Size = New System.Drawing.Size(155, 17)
+        Me.chkItemNotInclude.TabIndex = 8
+        Me.chkItemNotInclude.Text = "Download Not Include Item"
+        Me.chkItemNotInclude.UseVisualStyleBackColor = True
+        '
         'FrmMainSetup
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(128, Byte), Integer))
         Me.ClientSize = New System.Drawing.Size(464, 370)
+        Me.Controls.Add(Me.chkItemNotInclude)
         Me.Controls.Add(Me.chkGenerateType)
         Me.Controls.Add(Me.LvLIst)
         Me.Controls.Add(Me.btnRefresh)
@@ -156,4 +168,5 @@ Partial Class FrmMainSetup
     Friend WithEvents ColumnHeader2 As ColumnHeader
     Friend WithEvents LvLIst As ListView
     Friend WithEvents chkGenerateType As CheckBox
+    Friend WithEvents chkItemNotInclude As CheckBox
 End Class

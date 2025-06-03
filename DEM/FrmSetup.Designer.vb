@@ -22,6 +22,7 @@ Partial Class FrmSetup
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmSetup))
         Me.rdBranch = New System.Windows.Forms.RadioButton()
         Me.rdMainOffice = New System.Windows.Forms.RadioButton()
         Me.btnSave = New System.Windows.Forms.Button()
@@ -224,6 +225,7 @@ Partial Class FrmSetup
         Me.DoubleBuffered = True
         Me.Font = New System.Drawing.Font("Tahoma", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.MaximizeBox = False
         Me.MinimizeBox = False

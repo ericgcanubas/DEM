@@ -3,16 +3,12 @@
         RefreshList()
 
         chkGenerateType.Checked = Val(GetParameter("GenerateType"))
+        chkItemNotInclude.Checked = Val(GetParameter("ItemNotInclude"))
     End Sub
     Private Sub RefreshList()
         LvLIst.Items.Clear()
-
-
         Dim rx As New ADODB.Recordset
         rx.Open("SELECT * FROM tbl_counter_list", ConnTemp, ADODB.CursorTypeEnum.adOpenStatic)
-
-
-
         ' Add rows to the ListView
         Do While Not rx.EOF
             ' Create a ListViewItem for the first column
@@ -74,6 +70,14 @@
             SetParamter("GenerateType", "1")
         Else
             SetParamter("GenerateType", "0")
+        End If
+    End Sub
+
+    Private Sub chkItemNotInclude_CheckedChanged(sender As Object, e As EventArgs) Handles chkItemNotInclude.CheckedChanged
+        If (chkItemNotInclude.Checked = True) Then
+            SetParamter("ItemNotInclude", "1")
+        Else
+            SetParamter("ItemNotInclude", "0")
         End If
     End Sub
 End Class

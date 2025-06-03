@@ -22,6 +22,7 @@ Partial Class FrmBranch
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmBranch))
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
         Me.lblBranchLoading = New System.Windows.Forms.Label()
         Me.btnUpload = New System.Windows.Forms.Button()
@@ -244,6 +245,7 @@ Partial Class FrmBranch
         Me.Controls.Add(Me.Label1)
         Me.DoubleBuffered = True
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "FrmBranch"

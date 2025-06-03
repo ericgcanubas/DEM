@@ -176,4 +176,15 @@ Module ModConnection
             Application.Exit()
         End Try
     End Sub
+    Public Sub Locat_Get_info(counter As String)
+
+        Dim rx As New ADODB.Recordset
+        rx.Open($"SELECT * FROM tbl_info WHERE [COUNTER] = '{counter}'", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
+        If rx.RecordCount = 0 Then
+
+        Else
+
+        End If
+
+    End Sub
 End Module

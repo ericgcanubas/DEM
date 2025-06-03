@@ -1295,16 +1295,30 @@ Module ModBranchImport
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_PaidOutTransactions  :" & pb.Maximum & "/" & pb.Value
 
+
+
+
                 Application.DoEvents()
 
                 Dim rx As New Recordset
                 rx.Open($"SELECT TOP 1 * FROM tbl_PaidOutTransactions WHERE TransDate = {fDateIsEmpty(rs.Fields("TransDate").Value.ToString())} and 
                                                                             TransTime = '{fSqlFormat(rs.Fields("TransTime").Value)}' and  
-                                                                            CtrlNo =  '{fSqlFormat(rs.Fields("CtrlNo").Value)}' and 
-                                                                            OOrder =  {fNum(rs.Fields("OOrder").Value)} and 
                                                                             CashierCode = '{fSqlFormat(rs.Fields("CashierCode").Value)}' and 
                                                                             MachineNo = '{fSqlFormat(rs.Fields("MachineNo").Value)}' ", ConnServer, CursorTypeEnum.adOpenStatic)
                 If rx.RecordCount = 0 Then
+
+                    Dim Series As Integer = 0
+                    Dim s As String = "SELECT TOP(1)  Series  FROM tbl_PaidOutTransactions  WHERE (YYear = " & CDbl(Format({fDateIsEmpty(rs.Fields("TransDate").Value.ToString())}, "YYYY")) & ")  ORDER BY Series Desc "
+                    Dim r As New Recordset
+                    r.Open(s, ConnServer, CursorTypeEnum.adOpenStatic)
+                    If rs.RecordCount > 0 Then
+                        Series = Val(r.Fields("Series").Value) + 1
+                    Else
+                        Series = 1
+                    End If
+
+
+
                     Dim OldPK As Integer = fNum(rs.Fields("PaidOutPK").Value)
                     Dim strSQL As String = $"INSERT INTO tbl_PaidOutTransactions 
                                                     (   TransDate,
@@ -1326,7 +1340,7 @@ Module ModBranchImport
                                                         IsUsed)
                                                 VALUES ( {fDateIsEmpty(rs.Fields("TransDate").Value.ToString())},
                                                         '{fSqlFormat(rs.Fields("TransTime").Value)}',
-                                                        '{fSqlFormat(rs.Fields("CtrlNo").Value)}',
+                                                        '{CDbl(Format(rs.Fields("TransDate").Value.ToString(), "YYYY")) & Format(Series, "000000#")}',
                                                          {fNum(rs.Fields("OOrder").Value)},                                                  
                                                         '{fSqlFormat(rs.Fields("CashierCode").Value)}',
                                                         '{fSqlFormat(rs.Fields("Type").Value)}',
@@ -1336,7 +1350,7 @@ Module ModBranchImport
                                                         '{fSqlFormat(rs.Fields("MachineNo").Value)}',     
                                                          {fNum(rs.Fields("Total").Value)},
                                                          {fNum(rs.Fields("YYear").Value)},                                  
-                                                         {fNum(rs.Fields("Series").Value)},
+                                                         {Series},
                                                          {fNum(rs.Fields("IsPosted").Value)},
                                                          {fNum(rs.Fields("IsChecked").Value)},
                                                          {fNum(rs.Fields("Total_Previous").Value)},

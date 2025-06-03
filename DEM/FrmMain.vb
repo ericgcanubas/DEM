@@ -2,7 +2,7 @@
 Imports System.Runtime.InteropServices
 Public Class FrmMain
     Dim NGenType As Integer
-
+    Dim NNoInclude As Integer
 
     <DllImport("user32.dll")>
     Public Shared Function ReleaseCapture() As Boolean
@@ -47,6 +47,8 @@ Public Class FrmMain
                 Local_CreateTable_tbl_info(Now.Date, ref, "Main")
 
                 NGenType = Val(GetParameter("GenerateType"))
+
+
 
 
                 CreateTable_tbl_banks(pbMainLoading, lblMainLoading)
@@ -138,6 +140,8 @@ Public Class FrmMain
         Maketbl_COUNTER()
         Maketbl_PARAMETER()
         NGenType = Val(GetParameter("GenerateType"))
+        NNoInclude = Val(GetParameter("ItemNotInclude"))
+
     End Sub
     Private Sub Maketbl_COUNTER()
 

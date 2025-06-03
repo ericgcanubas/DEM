@@ -75,10 +75,9 @@ Module ModMainImport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_ItemsForPLU :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                Application.DoEvents()
+
                 n = n + 1
                 Dim rx As New ADODB.Recordset
                 rx.Open($"select top 1 tbl_ItemsForPLU.*  FROM tbl_ItemsForPLU  where ItemCode='{rs.Fields("ItemCode").Value}' ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
@@ -393,10 +392,9 @@ Module ModMainImport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_VPlus_Codes :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                Application.DoEvents()
+
 
                 Dim rx As New Recordset
                 rx.Open($"select TOP 1 * from tbl_VPlus_Codes where Codes = '{fSqlFormat(rs.Fields("Codes").Value)}' ", ConnServer, CursorTypeEnum.adOpenStatic)
@@ -449,10 +447,9 @@ Module ModMainImport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_VPlus_Codes_Validity :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                Application.DoEvents()
+
 
                 Dim rx As New Recordset
                 rx.Open($"select TOP 1 * from tbl_VPlus_Codes_Validity where Codes = '{fSqlFormat(rs.Fields("Codes").Value)}'", ConnServer, CursorTypeEnum.adOpenStatic)
@@ -613,10 +610,9 @@ Module ModMainImport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_Items :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                Application.DoEvents()
+
                 n = n + 1
                 Dim rx As New Recordset
                 rx.Open($"SELECT TOP 1 * FROM tbl_Items as i WHERE i.PK = {rs.Fields("PK").Value}", ConnServer, CursorTypeEnum.adOpenStatic)
@@ -767,10 +763,9 @@ Module ModMainImport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_VPlus_Codes_Changes :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                Application.DoEvents()
+
                 Dim rx As New Recordset
 
                 Dim strSQL As String = $"INSERT INTO tbl_VPlus_Codes_Changes 
@@ -803,10 +798,9 @@ Module ModMainImport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_Concession_PCR :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                Application.DoEvents()
+
 
                 Dim rx As New Recordset
                 rx.Open($"select TOP 1 * from tbl_Concession_PCR WHERE PK ={rs.Fields("PK").Value} ", ConnServer, CursorTypeEnum.adOpenStatic)
@@ -966,10 +960,9 @@ Module ModMainImport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_Concession_PCR_Det :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                Application.DoEvents()
+
                 Dim rx As New Recordset
                 rx.Open($"select TOP 1 dd.* from [tbl_Concession_PCR_Det] as dd  where dd.PK = {fNum(rs.Fields("PK").Value)} ", ConnServer, CursorTypeEnum.adOpenStatic)
                 If rx.RecordCount = 0 Then
@@ -1057,10 +1050,9 @@ Module ModMainImport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_Concession_PCR_Effectivity :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                Application.DoEvents()
+
 
                 Dim rx As New Recordset
                 rx.Open($"select TOP 1 * from tbl_Concession_PCR_Effectivity WHERE PK = {fNum(rs.Fields("PK").Value)}", ConnServer, CursorTypeEnum.adOpenStatic)
@@ -1174,10 +1166,9 @@ Module ModMainImport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_VPlus_Summary :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                Application.DoEvents()
+
                 Dim rx As New Recordset
                 rx.Open($"select TOP 1 * from tbl_VPlus_Summary WHERE PK = {fNum(rs.Fields("PK").Value)}", ConnServer, CursorTypeEnum.adOpenStatic)
                 If rx.RecordCount = 0 Then
@@ -1226,10 +1217,9 @@ Module ModMainImport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_VPlus_Codes_For_Offline :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                Application.DoEvents()
+
                 Dim strSQL As String = $"INSERT INTO tbl_VPlus_Codes_For_Offline 
                                             (Codes,
                                             POSName,
@@ -1575,10 +1565,9 @@ Module ModMainImport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_PS_E_Journal  :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                Application.DoEvents()
+
                 Dim rx As New Recordset
                 rx.Open($"SELECT TOP 1 * FROM tbl_PS_E_Journal WHERE 
                                             PSNumber = '{fSqlFormat(rs.Fields("PSNumber").Value)}' and 
@@ -1661,13 +1650,12 @@ Module ModMainImport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_PS_E_Journal_Detail :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                Application.DoEvents()
+
                 Dim rx As New Recordset
                 rx.Open($"SELECT TOP 1 * from tbl_PS_E_Journal_Detail 
-                                            WHERE TransactionNumber={fSqlFormat(rs.Fields("TransactionNumber").Value)} and 
+                                            WHERE TransactionNumber='{fSqlFormat(rs.Fields("TransactionNumber").Value)}' and 
                                                     [Counter] ='{gbl_Counter}' and
                                                     PSDate= {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and 
                                                     Cashier = '{fSqlFormat(rs.Fields("Cashier").Value)}' and 
@@ -1731,7 +1719,7 @@ Module ModMainImport
                         TotalNet = {fNum(rs.Fields("TotalNet").Value)},
                         Location = '{fSqlFormat(rs.Fields("Location").Value)}',
                         POSTableKey = {fNum(rs.Fields("POSTableKey").Value)}
-                        WHERE  TransactionNumber={fSqlFormat(rs.Fields("TransactionNumber").Value)} and 
+                        WHERE  TransactionNumber='{fSqlFormat(rs.Fields("TransactionNumber").Value)}' and 
                                 [Counter] ='{gbl_Counter}' and
                                 PSDate= {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and 
                                 Cashier = '{fSqlFormat(rs.Fields("Cashier").Value)}' and 
@@ -1760,10 +1748,9 @@ Module ModMainImport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_PS_GT_Adjustment_EJournal :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                Application.DoEvents()
+
                 Dim rx As New Recordset
                 rx.Open($"select TOP 1 * from tbl_PS_GT_Adjustment_EJournal WHERE 
                                             PSNumber = '{fSqlFormat(rs.Fields("PSNumber").Value)}' and 
@@ -1881,10 +1868,9 @@ Module ModMainImport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_PS_GT_Adjustment_EJournal_Detail :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                Application.DoEvents()
+
 
                 Dim rx As New Recordset
                 rx.Open($"SELECT TOP 1 * from tbl_PS_GT_Adjustment_EJournal_Detail 
@@ -2013,6 +1999,7 @@ Module ModMainImport
     End Sub
 
     Public Sub Insert_tbl_PaidOutTransactions(pb As ProgressBar, l As Label)
+        ConnServer.Execute("SET IDENTITY_INSERT tbl_PaidOutTransactions ON;")
         Dim year As Integer = Now.Year - 1
         Dim n As Integer = 0
         rs = New ADODB.Recordset
@@ -2024,13 +2011,11 @@ Module ModMainImport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_PaidOutTransactions  :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
-
+                Application.DoEvents()
                 Dim rx As New Recordset
-                rx.Open($"SELECT * FROM tbl_PaidOutTransactions WHERE TransDate =  {fDateIsEmpty(rs.Fields("TransDate").Value.ToString())} and TransTime = '{fSqlFormat(rs.Fields("TransTime").Value)}'  and MachineNo = '{fSqlFormat(rs.Fields("MachineNo").Value)}' ", ConnServer, CursorTypeEnum.adOpenStatic)
+                rx.Open($"SELECT * FROM tbl_PaidOutTransactions WHERE TransDate =  {fDateIsEmpty(rs.Fields("TransDate").Value.ToString())} and
+                        TransTime = '{fSqlFormat(rs.Fields("TransTime").Value)}'  and 
+                        MachineNo = '{fSqlFormat(rs.Fields("MachineNo").Value)}' ", ConnServer, CursorTypeEnum.adOpenStatic)
                 If rx.RecordCount = 0 Then
                     Dim strSQL As String = $"INSERT INTO tbl_PaidOutTransactions 
                                                 (   PaidOutPK,
@@ -2056,8 +2041,7 @@ Module ModMainImport
                                                         '{fSqlFormat(rs.Fields("TransTime").Value)}',
                                                         '{fSqlFormat(rs.Fields("CtrlNo").Value)}',
                                                          {fNum(rs.Fields("OOrder").Value)},                             
-                                                        '{fSqlFormat(rs.Fields("CashierCode").Value)}',
-                                                        '{fSqlFormat(rs.Fields("Type").Value)}',
+                                                        '{fSqlFormat(rs.Fields("CashierCode").Value)}',                                                  
                                                         '{fSqlFormat(rs.Fields("CashierName").Value)}',
                                                         '{fSqlFormat(rs.Fields("CollectorCode").Value)}',
                                                         '{fSqlFormat(rs.Fields("CollectorName").Value)}',      
@@ -2073,12 +2057,109 @@ Module ModMainImport
                                                 );"
 
                     ConnServer.Execute(strSQL)
+
+                Else
+                    Dim strSQL As String = $" UPDATE tbl_PaidOutTransactions SET                                     
+                                                            CtrlNo = '{fSqlFormat(rs.Fields("CtrlNo").Value)}',
+                                                            OOrder = {fNum(rs.Fields("OOrder").Value)},         
+                                                            Total = {fNum(rs.Fields("Total").Value)},
+                                                            YYear = {fNum(rs.Fields("YYear").Value)},
+                                                            Series = {fNum(rs.Fields("Series").Value)},
+                                                            IsPosted = {fNum(rs.Fields("IsPosted").Value)},
+                                                            IsChecked = {fNum(rs.Fields("IsChecked").Value)},
+                                                            Total_Previous = {fNum(rs.Fields("Total_Previous").Value)},
+                                                            SessionPK = {fNum(rs.Fields("SessionPK").Value)},
+                                                            IsUsed = {fNum(rs.Fields("IsUsed").Value)}
+                                                            WHERE TransDate =  {fDateIsEmpty(rs.Fields("TransDate").Value.ToString())} and
+                                                            TransTime = '{fSqlFormat(rs.Fields("TransTime").Value)}'  and 
+                                                            MachineNo = '{fSqlFormat(rs.Fields("MachineNo").Value)}';"
+                    ConnServer.Execute(strSQL)
+
                 End If
 
                 rs.MoveNext()
             End While
         End If
-
+        ConnServer.Execute("SET IDENTITY_INSERT tbl_PaidOutTransactions OFF;")
     End Sub
+    Public Function GetMainInfo() As Boolean
+        Dim isHave As Boolean
+        Try
+            Dim rx As New Recordset
+            rx.Open($"SELECT * FROM tbl_info WHERE Counter='Main'", ConnLocal, CursorTypeEnum.adOpenStatic)
+            If rx.RecordCount <> 0 Then
+                isHave = True
+            Else
+                isHave = False
+            End If
 
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "Error Upload", MessageBoxButtons.OK, MessageBoxIcon.Asterisk)
+        End Try
+
+
+        GetMainInfo = isHave
+
+    End Function
+
+    Private Sub Collect_tbl_PaidOutTransactions_Det(pb As ProgressBar, l As Label)
+
+        ConnServer.Execute("SET IDENTITY_INSERT tbl_PaidOutTransactions_Det ON;")
+        Dim n As Integer = 0
+        rs = New ADODB.Recordset
+        rs.Open($"select * from tbl_PaidOutTransactions_Det  ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_PaidOutTransactions_Det  :" & pb.Maximum & "/" & pb.Value
+                Application.DoEvents()
+
+                Dim rx As New Recordset
+                rx.Open("", ConnServer, CursorTypeEnum.adOpenStatic)
+                Dim strSQL As String = $"INSERT INTO tbl_PaidOutTransactions_Det 
+                                                (   PK,
+                                                    PaidOutPK,
+                                                    DenomPK,
+                                                    Qty,
+                                                    DenomAmount,
+                                                    Total,
+                                                    STN_Qty,
+                                                    STN_Amount,
+                                                    IsChecked,
+                                                    Old_Qty,
+                                                    Old_Amount,
+                                                    Remarks,
+                                                    AdjustedBy,
+                                                    WitnessedBy,
+                                                    ApprovedBy,
+                                                    Old_Qty_tmp,
+                                                    DenomCode)
+                                                VALUES ({fNum(rs.Fields("PK").Value)},    
+                                                        {fNum(rs.Fields("PaidOutPK").Value)}, 
+                                                        {fNum(rs.Fields("DenomPK").Value)},   
+                                                        {fNum(rs.Fields("Qty").Value)},
+                                                        {fNum(rs.Fields("DenomAmount").Value)},
+                                                        {fNum(rs.Fields("Total").Value)},
+                                                        {fNum(rs.Fields("STN_Qty").Value)},
+                                                        {fNum(rs.Fields("STN_Amount").Value)},
+                                                        {fNum(rs.Fields("IsChecked").Value)},
+                                                        {fNum(rs.Fields("Old_Qty").Value)},
+                                                        {fNum(rs.Fields("Old_Amount").Value)},                                                       
+                                                        '{fSqlFormat(rs.Fields("Remarks").Value)}',     
+                                                        '{fSqlFormat(rs.Fields("AdjustedBy").Value)}',   
+                                                        '{fSqlFormat(rs.Fields("WitnessedBy").Value)}',                                               
+                                                        '{fSqlFormat(rs.Fields("ApprovedBy").Value)}',    
+                                                         {fNum(rs.Fields("Old_Qty_tmp").Value)},
+                                                        '{fSqlFormat(rs.Fields("DenomCode").Value)}');"
+
+                ConnServer.Execute(strSQL)
+                rs.MoveNext()
+            End While
+        End If
+
+        ConnServer.Execute("SET IDENTITY_INSERT tbl_PaidOutTransactions_Det OFF;")
+    End Sub
 End Module

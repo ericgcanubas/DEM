@@ -33,7 +33,7 @@ Public Class FrmBranch
         saveFileDialog.Title = "Save data"
         saveFileDialog.DefaultExt = ""
         Dim refFile As String = DateTime.Now.ToString("yyyyMMddHHmmss").ToLower()
-        saveFileDialog.FileName = $"branch{gbl_Counter}_" & refFile
+        saveFileDialog.FileName = $"{gbl_Counter}_" & refFile
 
         If saveFileDialog.ShowDialog() = DialogResult.OK Then
             ' Get the selected file path
@@ -106,10 +106,17 @@ Public Class FrmBranch
                 ConnLocal = New ADODB.Connection()
                 ConnLocal.ConnectionTimeout = 30
                 ConnLocal.Open(str)
-                SaveIt()
 
-                ConnLocal.Close()
-                MessageBox.Show("Successfully Main Data Upload", "Upload Message", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                If GetMainInfo() = True Then
+                    SaveIt()
+                    ConnLocal.Close()
+                    MessageBox.Show("Successfully Main Data Upload", "Upload Message", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                Else
+                    MessageBox.Show("Main data not found", "Upload Message", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                End If
+
+
+
             Catch ex As Exception
                 MessageBox.Show("Error uploading file: " & ex.Message)
             End Try
@@ -118,6 +125,9 @@ Public Class FrmBranch
 
     Private Sub SaveIt()
 
+
+        Insert_tbl_PaidOutDenominations(pbMainLoading, lblMainLoading)
+        Insert_tbl_PaidOutTransactions(pbMainLoading, lblMainLoading)
 
         Insert_tbl_Bank(pbMainLoading, lblMainLoading)
         Insert_tbl_Banks(pbMainLoading, lblMainLoading)
@@ -160,11 +170,10 @@ Public Class FrmBranch
         Insert_tbl_PS_GT_Adjustment_EJournal(pbMainLoading, lblMainLoading)
         Insert_tbl_PS_GT_Adjustment_EJournal_Detail(pbMainLoading, lblMainLoading)
 
+
         Insert_tbl_PCPOS_Cashiers(pbMainLoading, lblMainLoading)
         Insert_tbl_ItemsForPLU(pbMainLoading, lblMainLoading)
 
-        Insert_tbl_PaidOutDenominations(pbMainLoading, lblMainLoading)
-        Insert_tbl_PaidOutTransactions(pbMainLoading, lblMainLoading)
 
         lblMainLoading.Text = ""
         pbMainLoading.Value = 0
