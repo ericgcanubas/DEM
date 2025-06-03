@@ -48,9 +48,6 @@ Public Class FrmMain
 
                 NGenType = Val(GetParameter("GenerateType"))
 
-
-
-
                 CreateTable_tbl_banks(pbMainLoading, lblMainLoading)
                 CreateTable_tbl_Banks_Changes(pbMainLoading, lblMainLoading)
 
@@ -101,10 +98,10 @@ Public Class FrmMain
                 CreateTable_tbl_PaidOutDenominations(pbMainLoading, lblMainLoading)
                 CreateTable_tbl_PaidOutTransactions(pbMainLoading, lblMainLoading)
 
-
+                SetLog(False)
                 lblMainLoading.Text = ""
                 btnExport.Enabled = True
-
+                RefreshLog()
                 Dim result As DialogResult = MessageBox.Show(
                 "File saved successfully at:" & vbCrLf & GL_EXPORT_PATH & vbCrLf & vbCrLf &
                 "Do you want to open the location?",
@@ -130,6 +127,8 @@ Public Class FrmMain
     Private Sub FrmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         gbl_Server = GetSetting("DEM", "MODE", "SERVER")
         gbl_Database = GetSetting("DEM", "MODE", "DATABASE")
+        lblSERVER.Text = $"SN:{gbl_Server}"
+        lblDATABASE.Text = $"DB:{gbl_Database}"
         getConnection()
 
         Dim str As String = CreateDBMain()
@@ -141,7 +140,11 @@ Public Class FrmMain
         Maketbl_PARAMETER()
         NGenType = Val(GetParameter("GenerateType"))
         NNoInclude = Val(GetParameter("ItemNotInclude"))
-
+        RefreshLog()
+    End Sub
+    Private Sub RefreshLog()
+        lblLogDownload.Text = $"Last Download On : { GetLog(False)}"
+        lblLogUpload.Text = $"Last Upload On : { GetLog(True)}"
     End Sub
     Private Sub Maketbl_COUNTER()
 
@@ -225,26 +228,30 @@ Public Class FrmMain
                 ConnLocal = New ADODB.Connection()
                 ConnLocal.ConnectionTimeout = 30
                 ConnLocal.Open(str)
-
-                Branch_Insert_tbl_GiftCert_List(pbBranchLoading, lblBranchLoading)
-                Branch_Insert_tbl_VPlus_Codes(pbBranchLoading, lblBranchLoading)
-                Branch_Insert_tbl_VPlus_Codes_Validity(pbBranchLoading, lblBranchLoading)
-                Branch_Insert_tbl_PS_GT(pbBranchLoading, lblBranchLoading)
-                Branch_Insert_tbl_PS_GT_ZZ(pbBranchLoading, lblBranchLoading)
-                Branch_Insert_tbl_PS_E_Journal(pbBranchLoading, lblBranchLoading)
-                Branch_Insert_tbl_PS_E_Journal_Detail(pbBranchLoading, lblBranchLoading)
-                Branch_Insert_tbl_PS_EmployeeATD(pbBranchLoading, lblBranchLoading)
-                Branch_Insert_tbl_GiftCert_Payment(pbBranchLoading, lblBranchLoading)
-                Branch_Insert_tbl_VPlus_Purchases_Points(pbBranchLoading, lblBranchLoading)
-                Branch_Insert_tbl_PS_Tmp(pbBranchLoading, lblBranchLoading)
-                Branch_Insert_tbl_PS_ItemsSold_Tmp(pbBranchLoading, lblBranchLoading)
-                Branch_Insert_tbl_PS_ItemsSold_Voided(pbBranchLoading, lblBranchLoading)
-                Branch_Insert_tbl_PS_MiscPay_Tmp(pbBranchLoading, lblBranchLoading)
-                Branch_Insert_tbl_PS_MiscPay_Voided(pbBranchLoading, lblBranchLoading)
-                Branch_Insert_tbl_PaidOutTransactions(pbBranchLoading, lblBranchLoading)
-
+                If GetBranchInfo() = True Then
+                    Branch_Insert_tbl_GiftCert_List(pbBranchLoading, lblBranchLoading)
+                    Branch_Insert_tbl_VPlus_Codes(pbBranchLoading, lblBranchLoading)
+                    Branch_Insert_tbl_VPlus_Codes_Validity(pbBranchLoading, lblBranchLoading)
+                    Branch_Insert_tbl_PS_GT(pbBranchLoading, lblBranchLoading)
+                    Branch_Insert_tbl_PS_GT_ZZ(pbBranchLoading, lblBranchLoading)
+                    Branch_Insert_tbl_PS_E_Journal(pbBranchLoading, lblBranchLoading)
+                    Branch_Insert_tbl_PS_E_Journal_Detail(pbBranchLoading, lblBranchLoading)
+                    Branch_Insert_tbl_PS_EmployeeATD(pbBranchLoading, lblBranchLoading)
+                    Branch_Insert_tbl_GiftCert_Payment(pbBranchLoading, lblBranchLoading)
+                    Branch_Insert_tbl_VPlus_Purchases_Points(pbBranchLoading, lblBranchLoading)
+                    Branch_Insert_tbl_PS_Tmp(pbBranchLoading, lblBranchLoading)
+                    Branch_Insert_tbl_PS_ItemsSold_Tmp(pbBranchLoading, lblBranchLoading)
+                    Branch_Insert_tbl_PS_ItemsSold_Voided(pbBranchLoading, lblBranchLoading)
+                    Branch_Insert_tbl_PS_MiscPay_Tmp(pbBranchLoading, lblBranchLoading)
+                    Branch_Insert_tbl_PS_MiscPay_Voided(pbBranchLoading, lblBranchLoading)
+                    Branch_Insert_tbl_PaidOutTransactions(pbBranchLoading, lblBranchLoading)
+                End If
                 ConnLocal.Close()
                 MessageBox.Show("Successfully Branch Data Upload", "Upload Message", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                pbBranchLoading.Value = 0
+                lblBranchLoading.Text = ""
+                SetLog(True)
+                RefreshLog()
             Catch ex As Exception
                 MessageBox.Show("Error uploading file: " & ex.Message)
             End Try

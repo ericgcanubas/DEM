@@ -2,7 +2,7 @@
 
 
 
-    Public Sub Branch_CreateTable_tbl_GiftCert_List(pb As ProgressBar, l As Label, dt As DateTime)
+    Public Sub Branch_CreateTable_tbl_GiftCert_List(pb As ProgressBar, l As Label, dt As Date)
         Try
             Dim createTableSql As String = "CREATE TABLE tbl_GiftCert_List (
                                                 PK INTEGER PRIMARY KEY,
@@ -23,7 +23,7 @@
             Application.Exit()
         End Try
     End Sub
-    Private Sub Branch_Collect_tbl_GiftCert_List(pb As ProgressBar, l As Label, dt As DateTime)
+    Private Sub Branch_Collect_tbl_GiftCert_List(pb As ProgressBar, l As Label, dt As Date)
 
         rs = New ADODB.Recordset
         rs.Open($"select * from tbl_GiftCert_List where DateAdded = {fDateIsEmpty(dt.ToShortDateString())}  and DateUsed is null ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
@@ -62,7 +62,7 @@
 
     End Sub
 
-    Public Sub Branch_CreateTable_tbl_VPlus_Codes(pb As ProgressBar, l As Label, dt As DateTime)
+    Public Sub Branch_CreateTable_tbl_VPlus_Codes(pb As ProgressBar, l As Label, dt As Date)
         Try
             Dim createTableSql As String = "CREATE TABLE tbl_VPlus_Codes (
                                             Codes TEXT(16) NOT NULL,
@@ -88,7 +88,7 @@
             Application.Exit()
         End Try
     End Sub
-    Private Sub Branch_Collect_tbl_VPlus_Codes(pb As ProgressBar, l As Label, dt As DateTime)
+    Private Sub Branch_Collect_tbl_VPlus_Codes(pb As ProgressBar, l As Label, dt As Date)
 
         Dim n As Integer = 0
         rs = New ADODB.Recordset
@@ -100,10 +100,8 @@
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_VPlus_Codes :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+                n = 0
+                Application.DoEvents()
                 Dim strSQL As String = $"INSERT INTO tbl_VPlus_Codes 
                                     (Codes,
                                     Customer,
@@ -141,7 +139,7 @@
 
     End Sub
 
-    Public Sub Branch_CreateTable_tbl_VPlus_Codes_Validity(pb As ProgressBar, l As Label, dt As DateTime)
+    Public Sub Branch_CreateTable_tbl_VPlus_Codes_Validity(pb As ProgressBar, l As Label, dt As Date)
         Try
             Dim createTableSql As String = "CREATE TABLE tbl_VPlus_Codes_Validity (
                                             Codes TEXT(16) NOT NULL,
@@ -157,7 +155,7 @@
             Application.Exit()
         End Try
     End Sub
-    Private Sub Branch_Collect_tbl_VPlus_Codes_Validity(pb As ProgressBar, l As Label, dt As DateTime)
+    Private Sub Branch_Collect_tbl_VPlus_Codes_Validity(pb As ProgressBar, l As Label, dt As Date)
 
         rs = New ADODB.Recordset
         rs.Open($"select tbl_VPlus_Codes_Validity.* from tbl_VPlus_Codes_Validity join tbl_VPlus_Codes on tbl_VPlus_Codes.codes = tbl_VPlus_Codes_Validity.codes  where tbl_VPlus_Codes.CreatedOn = {fDateIsEmpty(dt.ToShortDateString())} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
@@ -169,10 +167,10 @@
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_VPlus_Codes_Validity :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                n = 0
+                Application.DoEvents()
+
                 Dim strSQL As String = $"INSERT INTO tbl_VPlus_Codes_Validity 
                                     (Codes,
                                     DateStarted,
@@ -464,7 +462,7 @@
 
     End Sub
 
-    Public Sub Branch_CreateTable_tbl_PS_E_Journal(pb As ProgressBar, l As Label, dt As DateTime)
+    Public Sub Branch_CreateTable_tbl_PS_E_Journal(pb As ProgressBar, l As Label, dt As Date)
         Try
             Dim createTableSql As String = "CREATE TABLE tbl_PS_E_Journal (
                                             PK INTEGER PRIMARY KEY,
@@ -516,10 +514,9 @@
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_PS_E_Journal  :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                n = 0
+                Application.DoEvents()
                 Dim strSQL As String = $"INSERT INTO tbl_PS_E_Journal  
                                             (PK,
                                             PSNumber,
@@ -584,7 +581,7 @@
         End If
     End Sub
 
-    Public Sub Branch_CreateTable_tbl_PS_E_Journal_Detail(pb As ProgressBar, l As Label, dt As DateTime)
+    Public Sub Branch_CreateTable_tbl_PS_E_Journal_Detail(pb As ProgressBar, l As Label, dt As Date)
         Try
             Dim createTableSql As String = "CREATE TABLE tbl_PS_E_Journal_Detail (
                                             PK INTEGER PRIMARY KEY,
@@ -613,7 +610,7 @@
             Application.Exit()
         End Try
     End Sub
-    Private Sub Branch_Collect_tbl_PS_E_Journal_Detail(pb As ProgressBar, l As Label, dt As DateTime)
+    Private Sub Branch_Collect_tbl_PS_E_Journal_Detail(pb As ProgressBar, l As Label, dt As Date)
         Dim year As Integer = Now.Year - 1
         Dim toDate As String = Now.Date.ToShortDateString()
         Dim FromDate As String = Now.Date.AddYears(-1).ToShortDateString()
@@ -628,10 +625,8 @@
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_PS_E_Journal_Detail :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                Application.DoEvents()
                 Dim strSQL As String = $"INSERT INTO tbl_PS_E_Journal_Detail 
                                             (PK,
                                             TransactionNumber,
@@ -678,7 +673,7 @@
     End Sub
 
 
-    Public Sub Branch_CreateTable_tbl_PS_EmployeeATD(pb As ProgressBar, l As Label, dt As DateTime)
+    Public Sub Branch_CreateTable_tbl_PS_EmployeeATD(pb As ProgressBar, l As Label, dt As Date)
         Try
             Dim createTableSql As String = "CREATE TABLE tbl_PS_EmployeeATD (
                                                 PK INTEGER PRIMARY KEY,
@@ -698,11 +693,11 @@
             Application.Exit()
         End Try
     End Sub
-    Private Sub Branch_Collect_tbl_PS_EmployeeATD(pb As ProgressBar, l As Label, dt As DateTime)
+    Private Sub Branch_Collect_tbl_PS_EmployeeATD(pb As ProgressBar, l As Label, dt As Date)
 
         Dim n As Integer = 0
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_PS_EmployeeATD where PSDate = {fDateIsEmpty(dt.ToShortDateString())} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_PS_EmployeeATD where PSDate = {fDateIsEmpty(dt.ToShortDateString())} and [Counter] = '{gbl_Counter}' ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -710,10 +705,10 @@
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_PS_EmployeeATD :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                n = 0
+                Application.DoEvents()
+
                 Dim strSQL As String = $"INSERT INTO tbl_PS_EmployeeATD 
                                                 (PK,
                                                 TransactionNumber,
@@ -739,7 +734,7 @@
 
     End Sub
 
-    Public Sub Branch_CreateTable_tbl_GiftCert_Payment(pb As ProgressBar, l As Label, dt As DateTime)
+    Public Sub Branch_CreateTable_tbl_GiftCert_Payment(pb As ProgressBar, l As Label, dt As Date)
         Try
             Dim createTableSql As String = "CREATE TABLE tbl_GiftCert_Payment (
                                             PK INTEGER PRIMARY KEY,
@@ -759,11 +754,11 @@
             Application.Exit()
         End Try
     End Sub
-    Private Sub Branch_Collect_tbl_GiftCert_Payment(pb As ProgressBar, l As Label, dt As DateTime)
+    Private Sub Branch_Collect_tbl_GiftCert_Payment(pb As ProgressBar, l As Label, dt As Date)
 
         Dim n As Integer = 0
         rs = New ADODB.Recordset
-        rs.Open($"SELECT * from tbl_GiftCert_Payment where PSDate = {fDateIsEmpty(dt.ToShortDateString())} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"SELECT * from tbl_GiftCert_Payment where PSDate = {fDateIsEmpty(dt.ToShortDateString())} and [Counter] = '{gbl_Counter}' ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -771,10 +766,9 @@
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_GiftCert_Payment :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                Application.DoEvents()
+
                 Dim strSQL As String = $"INSERT INTO tbl_GiftCert_Payment 
                                                 (PK,
                                                 PSNumber,
@@ -800,7 +794,7 @@
 
     End Sub
 
-    Public Sub Branch_CreateTable_tbl_VPlus_Purchases_Points(pb As ProgressBar, l As Label, dt As DateTime)
+    Public Sub Branch_CreateTable_tbl_VPlus_Purchases_Points(pb As ProgressBar, l As Label, dt As Date)
         Try
             Dim createTableSql As String = "CREATE TABLE tbl_VPlus_Purchases_Points (
                                             PK INTEGER PRIMARY KEY,
@@ -825,11 +819,11 @@
             Application.Exit()
         End Try
     End Sub
-    Private Sub Branch_Collect_tbl_VPlus_Purchases_Points(pb As ProgressBar, l As Label, dt As DateTime)
+    Private Sub Branch_Collect_tbl_VPlus_Purchases_Points(pb As ProgressBar, l As Label, dt As Date)
 
         Dim n As Integer = 0
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_VPlus_Purchases_Points where VDate = {fDateIsEmpty(dt.ToShortDateString())} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_VPlus_Purchases_Points where VDate = {fDateIsEmpty(dt.ToShortDateString())} and [Counter] = '{gbl_Counter}'", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -837,10 +831,9 @@
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_VPlus_Purchases_Points :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                Application.DoEvents()
+
                 Dim strSQL As String = $"INSERT INTO tbl_VPlus_Purchases_Points 
                                                 (PK,
                                                 TransactionNo,
@@ -878,7 +871,7 @@
     End Sub
 
 
-    Public Sub Branch_CreateTable_tbl_PS_Tmp(pb As ProgressBar, l As Label, dt As DateTime)
+    Public Sub Branch_CreateTable_tbl_PS_Tmp(pb As ProgressBar, l As Label, dt As Date)
         Try
             Dim createTableSql As String = "CREATE TABLE tbl_PS_Tmp (
                                             PK INTEGER PRIMARY KEY,
@@ -916,11 +909,11 @@
             Application.Exit()
         End Try
     End Sub
-    Private Sub Branch_Collect_tbl_PS_Tmp(pb As ProgressBar, l As Label, dt As DateTime)
+    Private Sub Branch_Collect_tbl_PS_Tmp(pb As ProgressBar, l As Label, dt As Date)
 
         Dim n As Integer = 0
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_PS_Tmp where PSDate = {fDateIsEmpty(dt.ToShortDateString())} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_PS_Tmp where PSDate = {fDateIsEmpty(dt.ToShortDateString())} and [Counter] = '{gbl_Counter}' ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -928,10 +921,9 @@
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_PS_Tmp :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                Application.DoEvents()
+
                 Dim strSQL As String = $"INSERT INTO tbl_PS_Tmp 
                                                 (PK,
                                                 PSNumber,
@@ -995,7 +987,7 @@
     End Sub
 
 
-    Public Sub Branch_CreateTable_tbl_PS_ItemsSold_Tmp(pb As ProgressBar, l As Label, dt As DateTime)
+    Public Sub Branch_CreateTable_tbl_PS_ItemsSold_Tmp(pb As ProgressBar, l As Label, dt As Date)
         Try
             Dim createTableSql As String = "CREATE TABLE tbl_PS_ItemsSold_Tmp (
                                             PK INTEGER PRIMARY KEY,
@@ -1025,11 +1017,11 @@
             Application.Exit()
         End Try
     End Sub
-    Private Sub Branch_Collect_tbl_PS_ItemsSold_Tmp(pb As ProgressBar, l As Label, dt As DateTime)
+    Private Sub Branch_Collect_tbl_PS_ItemsSold_Tmp(pb As ProgressBar, l As Label, dt As Date)
 
         Dim n As Integer = 0
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_PS_ItemsSold_Tmp where PSDate = {fDateIsEmpty(dt.ToShortDateString())} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_PS_ItemsSold_Tmp where PSDate = {fDateIsEmpty(dt.ToShortDateString())} and  [Counter] = '{gbl_Counter}' ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -1037,10 +1029,9 @@
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_PS_ItemsSold_Tmp :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                Application.DoEvents()
+
                 Dim strSQL As String = $"INSERT INTO tbl_PS_ItemsSold_Tmp 
                                                 (PK,
                                                 TransactionNumber,
@@ -1087,7 +1078,7 @@
 
     End Sub
 
-    Public Sub Branch_CreateTable_tbl_PS_ItemsSold_Voided(pb As ProgressBar, l As Label, dt As DateTime)
+    Public Sub Branch_CreateTable_tbl_PS_ItemsSold_Voided(pb As ProgressBar, l As Label, dt As Date)
         Try
             Dim createTableSql As String = "CREATE TABLE tbl_PS_ItemsSold_Voided (
                                             PK INTEGER PRIMARY KEY,
@@ -1117,11 +1108,11 @@
             Application.Exit()
         End Try
     End Sub
-    Private Sub Branch_Collect_tbl_PS_ItemsSold_Voided(pb As ProgressBar, l As Label, dt As DateTime)
+    Private Sub Branch_Collect_tbl_PS_ItemsSold_Voided(pb As ProgressBar, l As Label, dt As Date)
 
         Dim n As Integer = 0
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_PS_ItemsSold_Voided where PSDate = {fDateIsEmpty(dt.ToShortDateString())} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_PS_ItemsSold_Voided where PSDate = {fDateIsEmpty(dt.ToShortDateString())} and [Counter] = '{gbl_Counter}' ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -1129,10 +1120,8 @@
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_PS_ItemsSold_Voided :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                Application.DoEvents()
                 Dim strSQL As String = $"INSERT INTO tbl_PS_ItemsSold_Voided 
                                                     (PK,
                                                     TransactionNumber,
@@ -1177,7 +1166,7 @@
 
     End Sub
 
-    Public Sub Branch_CreateTable_tbl_PS_MiscPay_Tmp(pb As ProgressBar, l As Label, dt As DateTime)
+    Public Sub Branch_CreateTable_tbl_PS_MiscPay_Tmp(pb As ProgressBar, l As Label, dt As Date)
         Try
             Dim createTableSql As String = "CREATE TABLE tbl_PS_MiscPay_Tmp (
                                             PK INTEGER PRIMARY KEY,
@@ -1214,11 +1203,11 @@
             Application.Exit()
         End Try
     End Sub
-    Private Sub Branch_Collect_tbl_PS_MiscPay_Tmp(pb As ProgressBar, l As Label, dt As DateTime)
+    Private Sub Branch_Collect_tbl_PS_MiscPay_Tmp(pb As ProgressBar, l As Label, dt As Date)
 
         Dim n As Integer = 0
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_PS_MiscPay_Tmp  where PSDate = {fDateIsEmpty(dt.ToShortDateString())} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_PS_MiscPay_Tmp  where PSDate = {fDateIsEmpty(dt.ToShortDateString())} and [Counter] = '{gbl_Counter}' ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -1226,10 +1215,10 @@
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_PS_MiscPay_Tmp  :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                n = 0
+                Application.DoEvents()
+
                 Dim strSQL As String = $"INSERT INTO tbl_PS_MiscPay_Tmp 
                                                     (PK,
                                                     TransactionNumber,
@@ -1328,7 +1317,7 @@
 
         Dim n As Integer = 0
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_PS_MiscPay_Voided  where PSDate = {fDateIsEmpty(dt.ToShortDateString())} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_PS_MiscPay_Voided  where PSDate = {fDateIsEmpty(dt.ToShortDateString())} and [Counter] = '{gbl_Counter}' ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -1336,11 +1325,11 @@
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_PS_MiscPay_Voided  :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
+
+                n = 0
                     Application.DoEvents()
-                End If
-                Dim strSQL As String = $"INSERT INTO tbl_PS_MiscPay_Voided 
+
+                    Dim strSQL As String = $"INSERT INTO tbl_PS_MiscPay_Voided 
                                                     (PK,
                                                     TransactionNumber,
                                                     PSDate,
@@ -1425,7 +1414,7 @@
 
         Dim n As Integer = 0
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_PaidOutTransactions  where TransDate = {fDateIsEmpty(dt.ToShortDateString())} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_PaidOutTransactions  where TransDate = {fDateIsEmpty(dt.ToShortDateString())} and [MachineNo] = '{gbl_Counter}' ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -1433,11 +1422,10 @@
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_PaidOutTransactions  :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
-                Dim strSQL As String = $"INSERT INTO tbl_PaidOutTransactions 
+
+                Application.DoEvents()
+
+                    Dim strSQL As String = $"INSERT INTO tbl_PaidOutTransactions 
                                                     (   PaidOutPK,
                                                         TransDate,
                                                         TransTime,
@@ -1518,7 +1506,7 @@
 
         Dim n As Integer = 0
         rs = New ADODB.Recordset
-        rs.Open($"select d.* from tbl_PaidOutTransactions_Det as d inner join tbl_PaidOutTransactions as p on p.PaidOutPK = d.PaidOutPK  where p.TransDate = {fDateIsEmpty(dt.ToShortDateString())} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select d.* from tbl_PaidOutTransactions_Det as d inner join tbl_PaidOutTransactions as p on p.PaidOutPK = d.PaidOutPK  where p.TransDate = {fDateIsEmpty(dt.ToShortDateString())} and p.MachineNo = '{gbl_Counter}' ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -1526,10 +1514,10 @@
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_PaidOutTransactions_Det  :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                n = 0
+                Application.DoEvents()
+
                 Dim strSQL As String = $"INSERT INTO tbl_PaidOutTransactions_Det 
                                                 (   PK,
                                                     PaidOutPK,

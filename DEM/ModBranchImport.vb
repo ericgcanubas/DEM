@@ -23,8 +23,7 @@ Module ModBranchImport
 
                 If rx.RecordCount = 0 Then
                     Dim strSQL As String = $"INSERT INTO tbl_GiftCert_List 
-                                    (PK,
-                                    GCNumber,
+                                    (GCNumber,
                                     Amount,
                                     Customer,
                                     ValidFrom,
@@ -32,8 +31,7 @@ Module ModBranchImport
                                     DateAdded,
                                     Used,
                                     DateUsed)
-                                    VALUES ({rs.Fields("PK").Value},      
-                                    {rs.Fields("GCNumber").Value},
+                                    VALUES ({rs.Fields("GCNumber").Value},
                                     {rs.Fields("Amount").Value},
                                    '{fSqlFormat(rs.Fields("Customer").Value.ToString())}',
                                     {fDateIsEmpty(rs.Fields("ValidFrom").Value.ToString())},
@@ -61,10 +59,10 @@ Module ModBranchImport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_VPlus_Codes :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
+
+                n = 0
                     Application.DoEvents()
-                End If
+
                 Dim rx As New Recordset
                 rx.Open($"select TOP 1 * from tbl_VPlus_Codes WHERE Codes ='{fSqlFormat(rs.Fields("Codes").Value)}'  ", ConnServer, CursorTypeEnum.adOpenStatic)
                 If rx.RecordCount = 0 Then
@@ -73,7 +71,6 @@ Module ModBranchImport
                                     Customer,
                                     InPoints,
                                     OutPoints,
-                                    AvailPoints,
                                     Blocked,
                                     Printed,
                                     CreatedOn,
@@ -86,8 +83,7 @@ Module ModBranchImport
                                     VALUES ('{fSqlFormat(rs.Fields("Codes").Value)}',      
                                     {fNum(rs.Fields("Customer").Value)},
                                     {fNum(rs.Fields("InPoints").Value)},
-                                    {fNum(rs.Fields("OutPoints").Value)},
-                                    {fNum(rs.Fields("AvailPoints").Value)},
+                                    {fNum(rs.Fields("OutPoints").Value)},                               
                                     {rs.Fields("Blocked").Value},
                                     {rs.Fields("Printed").Value},
                                     {fDateIsEmpty(rs.Fields("CreatedOn").Value.ToString())},
@@ -118,11 +114,10 @@ Module ModBranchImport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_VPlus_Codes_Validity :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
-                Dim rx As New Recordset
+
+                Application.DoEvents()
+
+                    Dim rx As New Recordset
                 rx.Open($"select TOP 1 * FROM tbl_VPlus_Codes_Validity WHERE 
                         Codes='{fSqlFormat(rs.Fields("Codes").Value)}' and 
                         DateStarted={fDateIsEmpty(rs.Fields("DateStarted").Value.ToString())} and 
@@ -422,10 +417,9 @@ Module ModBranchImport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_PS_E_Journal  :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
+
+                Application.DoEvents()
+
                 Dim rx As New Recordset
                 rx.Open($"SELECT TOP 1 * From tbl_PS_E_Journal WHERE 
                         PSNumber = '{fSqlFormat(rs.Fields("PSNumber").Value)}' and
@@ -545,12 +539,11 @@ Module ModBranchImport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_PS_E_Journal_Detail :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
 
-                Dim rx As New Recordset
+                Application.DoEvents()
+
+
+                    Dim rx As New Recordset
                 rx.Open($"select TOP 1 * from tbl_PS_E_Journal_Detail WHERE 
                                                                         TransactionNumber='{fSqlFormat(rs.Fields("TransactionNumber").Value)}' and 
                                                                         PSDate = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and 
@@ -642,11 +635,10 @@ Module ModBranchImport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_PS_EmployeeATD :" & pb.Maximum & "/" & pb.Value
-                If n > 10000 Then
-                    n = 0
-                    Application.DoEvents()
-                End If
-                Dim rx As New Recordset
+
+                Application.DoEvents()
+
+                    Dim rx As New Recordset
                 rx.Open($"select * from tbl_PS_EmployeeATD Where TransactionNumber = '{fSqlFormat(rs.Fields("TransactionNumber").Value)}' and
                                                             PSDate = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and
                                                             [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}' and 
@@ -1308,10 +1300,12 @@ Module ModBranchImport
                 If rx.RecordCount = 0 Then
 
                     Dim Series As Integer = 0
-                    Dim s As String = "SELECT TOP(1)  Series  FROM tbl_PaidOutTransactions  WHERE (YYear = " & CDbl(Format({fDateIsEmpty(rs.Fields("TransDate").Value.ToString())}, "YYYY")) & ")  ORDER BY Series Desc "
+                    Dim D_Year As Integer = CType(rs.Fields("TransDate").Value, Date).Year
+
+                    Dim s As String = $"SELECT TOP(1)  Series  FROM tbl_PaidOutTransactions  WHERE (YYear = {D_Year})  ORDER BY Series Desc "
                     Dim r As New Recordset
                     r.Open(s, ConnServer, CursorTypeEnum.adOpenStatic)
-                    If rs.RecordCount > 0 Then
+                    If r.RecordCount > 0 Then
                         Series = Val(r.Fields("Series").Value) + 1
                     Else
                         Series = 1
@@ -1320,6 +1314,7 @@ Module ModBranchImport
 
 
                     Dim OldPK As Integer = fNum(rs.Fields("PaidOutPK").Value)
+
                     Dim strSQL As String = $"INSERT INTO tbl_PaidOutTransactions 
                                                     (   TransDate,
                                                         TransTime,
@@ -1340,10 +1335,9 @@ Module ModBranchImport
                                                         IsUsed)
                                                 VALUES ( {fDateIsEmpty(rs.Fields("TransDate").Value.ToString())},
                                                         '{fSqlFormat(rs.Fields("TransTime").Value)}',
-                                                        '{CDbl(Format(rs.Fields("TransDate").Value.ToString(), "YYYY")) & Format(Series, "000000#")}',
+                                                        '{ D_Year & Format(Series, "000000#")}',
                                                          {fNum(rs.Fields("OOrder").Value)},                                                  
                                                         '{fSqlFormat(rs.Fields("CashierCode").Value)}',
-                                                        '{fSqlFormat(rs.Fields("Type").Value)}',
                                                         '{fSqlFormat(rs.Fields("CashierName").Value)}',
                                                         '{fSqlFormat(rs.Fields("CollectorCode").Value)}',
                                                         '{fSqlFormat(rs.Fields("CollectorName").Value)}',      
@@ -1358,7 +1352,7 @@ Module ModBranchImport
                                                          {fNum(rs.Fields("IsUsed").Value)}
                                                 );"
 
-                    ConnLocal.Execute(strSQL)
+                    ConnServer.Execute(strSQL)
                     Dim rsID As New Recordset
                     rsID = ConnServer.Execute("SELECT SCOPE_IDENTITY() AS NewID;")
                     Dim newPK As Integer = 0
@@ -1377,15 +1371,14 @@ Module ModBranchImport
 
     End Sub
     Private Sub Branch_Insert_tbl_PaidOutTransactions_Det(LocalPK As Integer, ServerPK As Integer)
+        Dim rs1 As New ADODB.Recordset
 
-
-        rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_PaidOutTransactions_Det  WHERE PaidOutPK = {LocalPK} ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
-        If rs.RecordCount > 0 Then
-            While Not rs.EOF
+        rs1.Open($"select * from tbl_PaidOutTransactions_Det  WHERE PaidOutPK = {LocalPK} ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
+        If rs1.RecordCount > 0 Then
+            While Not rs1.EOF
                 Application.DoEvents()
                 Dim rx As New Recordset
-                rx.Open($"SELECT TOP 1 *  FROM tbl_PaidOutTransactions_Det  WHERE PaidOutPK = {ServerPK} and  DenomPK = {fNum(rs.Fields("DenomPK").Value)} ", ConnServer, CursorTypeEnum.adOpenStatic)
+                rx.Open($"SELECT TOP 1 *  FROM tbl_PaidOutTransactions_Det  WHERE PaidOutPK = {ServerPK} and  DenomPK = {fNum(rs1.Fields("DenomPK").Value)} ", ConnServer, CursorTypeEnum.adOpenStatic)
                 If rx.RecordCount = 0 Then
                     Dim strSQL As String = $"INSERT INTO tbl_PaidOutTransactions_Det 
                                                 (  PaidOutPK,
@@ -1405,28 +1398,48 @@ Module ModBranchImport
                                                     Old_Qty_tmp,
                                                     DenomCode)
                                                 VALUES ({ServerPK}, 
-                                                        {fNum(rs.Fields("DenomPK").Value)},   
-                                                        {fNum(rs.Fields("Qty").Value)},
-                                                        {fNum(rs.Fields("DenomAmount").Value)},
-                                                        {fNum(rs.Fields("Total").Value)},
-                                                        {fNum(rs.Fields("STN_Qty").Value)},
-                                                        {fNum(rs.Fields("STN_Amount").Value)},
-                                                        {fNum(rs.Fields("IsChecked").Value)},
-                                                        {fNum(rs.Fields("Old_Qty").Value)},
-                                                        {fNum(rs.Fields("Old_Amount").Value)},                                                       
-                                                        '{fSqlFormat(rs.Fields("Remarks").Value)}',     
-                                                        '{fSqlFormat(rs.Fields("AdjustedBy").Value)}',   
-                                                        '{fSqlFormat(rs.Fields("WitnessedBy").Value)}',                                               
-                                                        '{fSqlFormat(rs.Fields("ApprovedBy").Value)}',    
-                                                         {fNum(rs.Fields("Old_Qty_tmp").Value)},
-                                                        '{fSqlFormat(rs.Fields("DenomCode").Value)}');"
+                                                        {fNum(rs1.Fields("DenomPK").Value)},   
+                                                        {fNum(rs1.Fields("Qty").Value)},
+                                                        {fNum(rs1.Fields("DenomAmount").Value)},
+                                                        {fNum(rs1.Fields("Total").Value)},
+                                                        {fNum(rs1.Fields("STN_Qty").Value)},
+                                                        {fNum(rs1.Fields("STN_Amount").Value)},
+                                                        {fNum(rs1.Fields("IsChecked").Value)},
+                                                        {fNum(rs1.Fields("Old_Qty").Value)},
+                                                        {fNum(rs1.Fields("Old_Amount").Value)},                                                       
+                                                        '{fSqlFormat(rs1.Fields("Remarks").Value)}',     
+                                                        '{fSqlFormat(rs1.Fields("AdjustedBy").Value)}',   
+                                                        '{fSqlFormat(rs1.Fields("WitnessedBy").Value)}',                                               
+                                                        '{fSqlFormat(rs1.Fields("ApprovedBy").Value)}',    
+                                                         {fNum(rs1.Fields("Old_Qty_tmp").Value)},
+                                                        '{fSqlFormat(rs1.Fields("DenomCode").Value)}');"
 
                     ConnServer.Execute(strSQL)
                 End If
 
-                rs.MoveNext()
+                rs1.MoveNext()
             End While
         End If
 
     End Sub
+
+    Public Function GetBranchInfo() As Boolean
+        Dim isHave As Boolean
+        Try
+            Dim rx As New Recordset
+            rx.Open($"SELECT * FROM tbl_info WHERE [Counter] <> 'Main'", ConnLocal, CursorTypeEnum.adOpenStatic)
+            If rx.RecordCount <> 0 Then
+                isHave = True
+            Else
+                isHave = False
+            End If
+
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "Error Upload", MessageBoxButtons.OK, MessageBoxIcon.Asterisk)
+        End Try
+
+
+        GetBranchInfo = isHave
+
+    End Function
 End Module

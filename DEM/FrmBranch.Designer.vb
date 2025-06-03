@@ -41,6 +41,9 @@ Partial Class FrmBranch
         Me.Label7 = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Label8 = New System.Windows.Forms.Label()
+        Me.lblLogUpload = New System.Windows.Forms.Label()
+        Me.lblLogDownload = New System.Windows.Forms.Label()
+        Me.lblCOUNTER = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'lblBranchLoading
@@ -163,9 +166,9 @@ Partial Class FrmBranch
         Me.Label2.Font = New System.Drawing.Font("Segoe UI", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label2.Location = New System.Drawing.Point(48, 115)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(132, 30)
+        Me.Label2.Size = New System.Drawing.Size(81, 30)
         Me.Label2.TabIndex = 17
-        Me.Label2.Text = "Branch Data"
+        Me.Label2.Text = "Branch"
         '
         'Label1
         '
@@ -174,9 +177,9 @@ Partial Class FrmBranch
         Me.Label1.Font = New System.Drawing.Font("Segoe UI", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.Location = New System.Drawing.Point(382, 115)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(114, 30)
+        Me.Label1.Size = New System.Drawing.Size(63, 30)
         Me.Label1.TabIndex = 16
-        Me.Label1.Text = "Main Data"
+        Me.Label1.Text = "Main"
         '
         'dtpDate
         '
@@ -219,6 +222,37 @@ Partial Class FrmBranch
         Me.Label8.TabIndex = 27
         Me.Label8.Text = "Developed By : Eric G. Canubas"
         '
+        'lblLogUpload
+        '
+        Me.lblLogUpload.BackColor = System.Drawing.Color.Transparent
+        Me.lblLogUpload.Font = New System.Drawing.Font("Microsoft Tai Le", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblLogUpload.Location = New System.Drawing.Point(384, 272)
+        Me.lblLogUpload.Name = "lblLogUpload"
+        Me.lblLogUpload.Size = New System.Drawing.Size(290, 16)
+        Me.lblLogUpload.TabIndex = 36
+        Me.lblLogUpload.Text = "Last Upload :"
+        '
+        'lblLogDownload
+        '
+        Me.lblLogDownload.BackColor = System.Drawing.Color.Transparent
+        Me.lblLogDownload.Font = New System.Drawing.Font("Microsoft Tai Le", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblLogDownload.Location = New System.Drawing.Point(40, 272)
+        Me.lblLogDownload.Name = "lblLogDownload"
+        Me.lblLogDownload.Size = New System.Drawing.Size(290, 16)
+        Me.lblLogDownload.TabIndex = 35
+        Me.lblLogDownload.Text = "Last Download : "
+        '
+        'lblCOUNTER
+        '
+        Me.lblCOUNTER.AutoSize = True
+        Me.lblCOUNTER.BackColor = System.Drawing.Color.Transparent
+        Me.lblCOUNTER.Font = New System.Drawing.Font("Microsoft Tai Le", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCOUNTER.Location = New System.Drawing.Point(502, 22)
+        Me.lblCOUNTER.Name = "lblCOUNTER"
+        Me.lblCOUNTER.Size = New System.Drawing.Size(62, 16)
+        Me.lblCOUNTER.TabIndex = 37
+        Me.lblCOUNTER.Text = "COUTER : "
+        '
         'FrmBranch
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -227,6 +261,9 @@ Partial Class FrmBranch
         Me.BackgroundImage = Global.DEM.My.Resources.Resources.orange
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ClientSize = New System.Drawing.Size(704, 447)
+        Me.Controls.Add(Me.lblCOUNTER)
+        Me.Controls.Add(Me.lblLogUpload)
+        Me.Controls.Add(Me.lblLogDownload)
         Me.Controls.Add(Me.Label8)
         Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.Label7)
@@ -249,8 +286,6 @@ Partial Class FrmBranch
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "FrmBranch"
-        Me.ShowIcon = False
-        Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Branch"
         Me.TransparencyKey = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
@@ -276,4 +311,7 @@ Partial Class FrmBranch
     Friend WithEvents Label7 As Label
     Friend WithEvents Label6 As Label
     Friend WithEvents Label8 As Label
+    Friend WithEvents lblLogUpload As Label
+    Friend WithEvents lblLogDownload As Label
+    Friend WithEvents lblCOUNTER As Label
 End Class

@@ -67,12 +67,16 @@ Public Class FrmBranch
                 Branch_CreateTable_tbl_PS_Tmp(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_PS_ItemsSold_Tmp(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_PS_ItemsSold_Voided(pbBranchLoading, lblBranchLoading, dtpDate.Value)
+
                 Branch_CreateTable_tbl_PS_MiscPay_Tmp(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_PS_MiscPay_Voided(pbBranchLoading, lblBranchLoading, dtpDate.Value)
 
                 Branch_CreateTable_tbl_PaidOutTransactions(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_PaidOutTransactions_Det(pbBranchLoading, lblBranchLoading, dtpDate.Value)
-
+                SetLog(False)
+                lblBranchLoading.Text = ""
+                pbBranchLoading.Value = 0
+                RefreshLog()
                 ConnLocal.Close()
                 ConnLocal = Nothing
 
@@ -109,7 +113,10 @@ Public Class FrmBranch
 
                 If GetMainInfo() = True Then
                     SaveIt()
+
                     ConnLocal.Close()
+                    SetLog(True)
+                    RefreshLog()
                     MessageBox.Show("Successfully Main Data Upload", "Upload Message", MessageBoxButtons.OK, MessageBoxIcon.Information)
                 Else
                     MessageBox.Show("Main data not found", "Upload Message", MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -124,8 +131,6 @@ Public Class FrmBranch
     End Sub
 
     Private Sub SaveIt()
-
-
         Insert_tbl_PaidOutDenominations(pbMainLoading, lblMainLoading)
         Insert_tbl_PaidOutTransactions(pbMainLoading, lblMainLoading)
 
@@ -179,12 +184,16 @@ Public Class FrmBranch
         pbMainLoading.Value = 0
 
     End Sub
-
+    Private Sub RefreshLog()
+        lblLogDownload.Text = $"Last Download On : { GetLog(False)}"
+        lblLogUpload.Text = $"Last Upload On : { GetLog(True)}"
+    End Sub
     Private Sub FrmBranch_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         gbl_Server = GetSetting("DEM", "MODE", "SERVER")
         gbl_Database = GetSetting("DEM", "MODE", "DATABASE")
         gbl_Counter = GetSetting("DEM", "MODE", "COUNTER")
-
+        lblCOUNTER.Text = $"COUNTER : {gbl_Counter}"
         getConnection()
+        RefreshLog()
     End Sub
 End Class

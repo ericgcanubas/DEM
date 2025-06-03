@@ -187,4 +187,21 @@ Module ModConnection
         End If
 
     End Sub
+
+    Public Sub SetLog(IsUpload As Boolean)
+        If IsUpload = True Then
+
+            SaveSetting("DEM", "MODE", "UPLOAD_LOG", DateTime.Now)
+
+        Else
+            SaveSetting("DEM", "MODE", "DOWNLOAD_LOG", DateTime.Now)
+        End If
+    End Sub
+    Public Function GetLog(IsUpload As Boolean) As String
+        If IsUpload = True Then
+            Return GetSetting("DEM", "MODE", "UPLOAD_LOG")
+        Else
+            Return GetSetting("DEM", "MODE", "DOWNLOAD_LOG")
+        End If
+    End Function
 End Module

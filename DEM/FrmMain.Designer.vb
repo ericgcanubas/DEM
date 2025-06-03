@@ -39,6 +39,10 @@ Partial Class FrmMain
         Me.Label8 = New System.Windows.Forms.Label()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.picOpenMain = New System.Windows.Forms.PictureBox()
+        Me.lblSERVER = New System.Windows.Forms.Label()
+        Me.lblDATABASE = New System.Windows.Forms.Label()
+        Me.lblLogDownload = New System.Windows.Forms.Label()
+        Me.lblLogUpload = New System.Windows.Forms.Label()
         CType(Me.picOpenMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -186,7 +190,7 @@ Partial Class FrmMain
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(171, 16)
         Me.Label8.TabIndex = 29
-        Me.Label8.Text = "Developed By ; Eric G. Canubas"
+        Me.Label8.Text = "Developed By : Eric G. Canubas"
         '
         'Label7
         '
@@ -211,6 +215,48 @@ Partial Class FrmMain
         Me.picOpenMain.TabIndex = 30
         Me.picOpenMain.TabStop = False
         '
+        'lblSERVER
+        '
+        Me.lblSERVER.AutoSize = True
+        Me.lblSERVER.BackColor = System.Drawing.Color.Transparent
+        Me.lblSERVER.Font = New System.Drawing.Font("Microsoft Tai Le", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblSERVER.Location = New System.Drawing.Point(495, 21)
+        Me.lblSERVER.Name = "lblSERVER"
+        Me.lblSERVER.Size = New System.Drawing.Size(50, 16)
+        Me.lblSERVER.TabIndex = 31
+        Me.lblSERVER.Text = "SERVER:"
+        '
+        'lblDATABASE
+        '
+        Me.lblDATABASE.AutoSize = True
+        Me.lblDATABASE.BackColor = System.Drawing.Color.Transparent
+        Me.lblDATABASE.Font = New System.Drawing.Font("Microsoft Tai Le", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblDATABASE.Location = New System.Drawing.Point(495, 37)
+        Me.lblDATABASE.Name = "lblDATABASE"
+        Me.lblDATABASE.Size = New System.Drawing.Size(26, 16)
+        Me.lblDATABASE.TabIndex = 32
+        Me.lblDATABASE.Text = "DB:"
+        '
+        'lblLogDownload
+        '
+        Me.lblLogDownload.BackColor = System.Drawing.Color.Transparent
+        Me.lblLogDownload.Font = New System.Drawing.Font("Microsoft Tai Le", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblLogDownload.Location = New System.Drawing.Point(28, 258)
+        Me.lblLogDownload.Name = "lblLogDownload"
+        Me.lblLogDownload.Size = New System.Drawing.Size(290, 16)
+        Me.lblLogDownload.TabIndex = 33
+        Me.lblLogDownload.Text = "Last Download : "
+        '
+        'lblLogUpload
+        '
+        Me.lblLogUpload.BackColor = System.Drawing.Color.Transparent
+        Me.lblLogUpload.Font = New System.Drawing.Font("Microsoft Tai Le", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblLogUpload.Location = New System.Drawing.Point(372, 258)
+        Me.lblLogUpload.Name = "lblLogUpload"
+        Me.lblLogUpload.Size = New System.Drawing.Size(290, 16)
+        Me.lblLogUpload.TabIndex = 34
+        Me.lblLogUpload.Text = "Last Upload :"
+        '
         'FrmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -220,6 +266,10 @@ Partial Class FrmMain
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ClientSize = New System.Drawing.Size(704, 447)
         Me.ControlBox = False
+        Me.Controls.Add(Me.lblLogUpload)
+        Me.Controls.Add(Me.lblLogDownload)
+        Me.Controls.Add(Me.lblDATABASE)
+        Me.Controls.Add(Me.lblSERVER)
         Me.Controls.Add(Me.picOpenMain)
         Me.Controls.Add(Me.Label8)
         Me.Controls.Add(Me.Label7)
@@ -263,4 +313,8 @@ Partial Class FrmMain
     Friend WithEvents Label8 As Label
     Friend WithEvents Label7 As Label
     Friend WithEvents picOpenMain As PictureBox
+    Friend WithEvents lblSERVER As Label
+    Friend WithEvents lblDATABASE As Label
+    Friend WithEvents lblLogDownload As Label
+    Friend WithEvents lblLogUpload As Label
 End Class

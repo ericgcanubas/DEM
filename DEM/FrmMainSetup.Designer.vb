@@ -107,7 +107,7 @@ Partial Class FrmMainSetup
         '
         Me.btnRefresh.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.btnRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnRefresh.Location = New System.Drawing.Point(397, 13)
+        Me.btnRefresh.Location = New System.Drawing.Point(284, 13)
         Me.btnRefresh.Name = "btnRefresh"
         Me.btnRefresh.Size = New System.Drawing.Size(60, 23)
         Me.btnRefresh.TabIndex = 5
