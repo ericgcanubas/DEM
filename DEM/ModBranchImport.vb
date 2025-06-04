@@ -1056,7 +1056,7 @@ Module ModBranchImport
                                                 {fNum(rs.Fields("TotalSurcharge").Value)},
                                                 {fNum(rs.Fields("TotalNet").Value)},
                                                 {fNum(rs.Fields("Posted").Value)},
-                                                '{fSqlFormat(rs.Fields("ViodedBy").Value)}'
+                                                '{fSqlFormat(rs.Fields("ViodedBy").Value)}',
                                                 '{fSqlFormat(rs.Fields("Location").Value)}'
                                                 );"
 

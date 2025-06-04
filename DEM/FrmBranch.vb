@@ -21,7 +21,13 @@ Public Class FrmBranch
             SendMessage(Handle, WM_NCLBUTTONDOWN, HTCAPTION, 0)
         End If
     End Sub
+    Private Sub EnableControl(e As Boolean)
+        dtpDate.Enabled = e
+        btnDownload.Enabled = e
+        btnUpload.Enabled = e
+        lblClose.Enabled = e
 
+    End Sub
     Private Sub btnDownload_Click(sender As Object, e As EventArgs) Handles btnDownload.Click
 
 
@@ -41,7 +47,7 @@ Public Class FrmBranch
             Dim DBNAME As String = CreateData()
 
             If DBNAME <> "" Then
-
+                EnableControl(False)
                 Dim str As String = getConString(DBNAME)
                 ConnLocal = New ADODB.Connection()
                 ConnLocal.ConnectionTimeout = 30
@@ -79,7 +85,7 @@ Public Class FrmBranch
                 RefreshLog()
                 ConnLocal.Close()
                 ConnLocal = Nothing
-
+                EnableControl(True)
                 Dim result As DialogResult = MessageBox.Show(
                 "File saved successfully at:" & vbCrLf & GL_EXPORT_PATH & vbCrLf & vbCrLf &
                 "Do you want to open the location?",
@@ -112,11 +118,13 @@ Public Class FrmBranch
                 ConnLocal.Open(str)
 
                 If GetMainInfo() = True Then
+                    EnableControl(False)
                     SaveIt()
 
                     ConnLocal.Close()
                     SetLog(True)
                     RefreshLog()
+                    EnableControl(True)
                     MessageBox.Show("Successfully Main Data Upload", "Upload Message", MessageBoxButtons.OK, MessageBoxIcon.Information)
                 Else
                     MessageBox.Show("Main data not found", "Upload Message", MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -127,12 +135,25 @@ Public Class FrmBranch
             Catch ex As Exception
                 MessageBox.Show("Error uploading file: " & ex.Message)
             End Try
+            EnableControl(True)
         End If
     End Sub
 
     Private Sub SaveIt()
-        Insert_tbl_PaidOutDenominations(pbMainLoading, lblMainLoading)
-        Insert_tbl_PaidOutTransactions(pbMainLoading, lblMainLoading)
+
+        Insert_tbl_PCPOS_Cashiers(pbMainLoading, lblMainLoading)
+
+
+        Insert_tbl_PCPOS_Cashiers_Changes(pbMainLoading, lblMainLoading)
+
+        Insert_tbl_Items_Changes(pbMainLoading, lblMainLoading)
+        Insert_tbl_ItemsForPLU_For_Effect(pbMainLoading, lblMainLoading)
+        Insert_tbl_Items(pbMainLoading, lblMainLoading)
+
+        Insert_tbl_ItemsForPLU(pbMainLoading, lblMainLoading)
+
+
+
 
         Insert_tbl_Bank(pbMainLoading, lblMainLoading)
         Insert_tbl_Banks(pbMainLoading, lblMainLoading)
@@ -147,11 +168,6 @@ Public Class FrmBranch
         Insert_tbl_VPlus_Codes_Validity(pbMainLoading, lblMainLoading)
         Insert_tbl_VPlus_Codes_Changes(pbMainLoading, lblMainLoading)
 
-        Insert_tbl_PCPOS_Cashiers_Changes(pbMainLoading, lblMainLoading)
-
-        Insert_tbl_Items_Changes(pbMainLoading, lblMainLoading)
-        Insert_tbl_ItemsForPLU_For_Effect(pbMainLoading, lblMainLoading)
-        Insert_tbl_Items(pbMainLoading, lblMainLoading)
 
 
         Insert_tbl_Concession_PCR(pbMainLoading, lblMainLoading)
@@ -176,9 +192,8 @@ Public Class FrmBranch
         Insert_tbl_PS_GT_Adjustment_EJournal_Detail(pbMainLoading, lblMainLoading)
 
 
-        Insert_tbl_PCPOS_Cashiers(pbMainLoading, lblMainLoading)
-        Insert_tbl_ItemsForPLU(pbMainLoading, lblMainLoading)
-
+        Insert_tbl_PaidOutDenominations(pbMainLoading, lblMainLoading)
+        Insert_tbl_PaidOutTransactions(pbMainLoading, lblMainLoading)
 
         lblMainLoading.Text = ""
         pbMainLoading.Value = 0
@@ -195,5 +210,7 @@ Public Class FrmBranch
         lblCOUNTER.Text = $"COUNTER : {gbl_Counter}"
         getConnection()
         RefreshLog()
+
+        EnableControl(True)
     End Sub
 End Class

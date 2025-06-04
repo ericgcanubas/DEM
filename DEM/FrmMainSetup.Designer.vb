@@ -129,9 +129,9 @@ Partial Class FrmMainSetup
         Me.chkItemNotInclude.AutoSize = True
         Me.chkItemNotInclude.Location = New System.Drawing.Point(12, 341)
         Me.chkItemNotInclude.Name = "chkItemNotInclude"
-        Me.chkItemNotInclude.Size = New System.Drawing.Size(155, 17)
+        Me.chkItemNotInclude.Size = New System.Drawing.Size(121, 17)
         Me.chkItemNotInclude.TabIndex = 8
-        Me.chkItemNotInclude.Text = "Download Not Include Item"
+        Me.chkItemNotInclude.Text = "Download Item Only"
         Me.chkItemNotInclude.UseVisualStyleBackColor = True
         '
         'FrmMainSetup

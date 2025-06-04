@@ -1,5 +1,7 @@
 ﻿Imports ADOX
 Module ModConnection
+    Public NGenType As Integer
+    Public NItemOnly As Integer
 
     Public ConnServer As ADODB.Connection
     Public ConnLocal As New ADODB.Connection()

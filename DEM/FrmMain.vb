@@ -1,8 +1,7 @@
 ﻿Imports System.IO
 Imports System.Runtime.InteropServices
 Public Class FrmMain
-    Dim NGenType As Integer
-    Dim NNoInclude As Integer
+
 
     <DllImport("user32.dll")>
     Public Shared Function ReleaseCapture() As Boolean
@@ -33,6 +32,7 @@ Public Class FrmMain
         saveFileDialog.FileName = "main" & ref
 
         If saveFileDialog.ShowDialog() = DialogResult.OK Then
+            EnableControl(False)
             ' Get the selected file path
             GL_EXPORT_PATH = saveFileDialog.FileName
             Dim DBNAME As String = CreateData()
@@ -47,11 +47,18 @@ Public Class FrmMain
                 Local_CreateTable_tbl_info(Now.Date, ref, "Main")
 
                 NGenType = Val(GetParameter("GenerateType"))
+                NItemOnly = Val(GetParameter("ItemNotInclude"))
+
+
+
+
 
                 CreateTable_tbl_banks(pbMainLoading, lblMainLoading)
-                CreateTable_tbl_Banks_Changes(pbMainLoading, lblMainLoading)
+                    CreateTable_tbl_Banks_Changes(pbMainLoading, lblMainLoading)
 
-                CreateTable_tbl_bank(pbMainLoading, lblMainLoading)
+
+
+                    CreateTable_tbl_bank(pbMainLoading, lblMainLoading)
                 CreateTable_tbl_Bank_Terms(pbMainLoading, lblMainLoading)
                 CreateTable_tbl_Bank_Changes(pbMainLoading, lblMainLoading)
 
@@ -102,6 +109,8 @@ Public Class FrmMain
                 lblMainLoading.Text = ""
                 btnExport.Enabled = True
                 RefreshLog()
+
+                EnableControl(True)
                 Dim result As DialogResult = MessageBox.Show(
                 "File saved successfully at:" & vbCrLf & GL_EXPORT_PATH & vbCrLf & vbCrLf &
                 "Do you want to open the location?",
@@ -120,8 +129,15 @@ Public Class FrmMain
 
             End Try
 
-
+            EnableControl(True)
         End If
+
+    End Sub
+    Private Sub EnableControl(e As Boolean)
+        picOpenMain.Enabled = e
+        btnExport.Enabled = e
+        btnImport.Enabled = e
+        lblClose.Enabled = e
 
     End Sub
     Private Sub FrmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -139,7 +155,7 @@ Public Class FrmMain
         Maketbl_COUNTER()
         Maketbl_PARAMETER()
         NGenType = Val(GetParameter("GenerateType"))
-        NNoInclude = Val(GetParameter("ItemNotInclude"))
+        NItemOnly = Val(GetParameter("ItemNotInclude"))
         RefreshLog()
     End Sub
     Private Sub RefreshLog()
@@ -229,6 +245,7 @@ Public Class FrmMain
                 ConnLocal.ConnectionTimeout = 30
                 ConnLocal.Open(str)
                 If GetBranchInfo() = True Then
+                    EnableControl(False)
                     Branch_Insert_tbl_GiftCert_List(pbBranchLoading, lblBranchLoading)
                     Branch_Insert_tbl_VPlus_Codes(pbBranchLoading, lblBranchLoading)
                     Branch_Insert_tbl_VPlus_Codes_Validity(pbBranchLoading, lblBranchLoading)
@@ -252,9 +269,11 @@ Public Class FrmMain
                 lblBranchLoading.Text = ""
                 SetLog(True)
                 RefreshLog()
+                EnableControl(True)
             Catch ex As Exception
                 MessageBox.Show("Error uploading file: " & ex.Message)
             End Try
+            EnableControl(True)
         End If
     End Sub
 
