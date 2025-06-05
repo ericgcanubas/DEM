@@ -247,8 +247,12 @@ Public Class FrmMain
                     Branch_Insert_tbl_VPlus_Codes_Validity(pbBranchLoading, lblBranchLoading)
                     Branch_Insert_tbl_PS_GT(pbBranchLoading, lblBranchLoading)
                     Branch_Insert_tbl_PS_GT_ZZ(pbBranchLoading, lblBranchLoading)
+
                     Branch_Insert_tbl_PS_E_Journal(pbBranchLoading, lblBranchLoading)
                     Branch_Insert_tbl_PS_E_Journal_Detail(pbBranchLoading, lblBranchLoading)
+                    Branch_Insert_tbl_PS_GT_Adjustment_EJournal(pbBranchLoading, lblBranchLoading)
+                    Branch_Insert_tbl_PS_GT_Adjustment_EJournal_Detail(pbBranchLoading, lblBranchLoading)
+
                     Branch_Insert_tbl_PS_EmployeeATD(pbBranchLoading, lblBranchLoading)
                     Branch_Insert_tbl_GiftCert_Payment(pbBranchLoading, lblBranchLoading)
                     Branch_Insert_tbl_VPlus_Purchases_Points(pbBranchLoading, lblBranchLoading)
