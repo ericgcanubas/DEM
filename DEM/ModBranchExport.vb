@@ -673,6 +673,232 @@
     End Sub
 
 
+    Public Sub Branch_CreateTable_tbl_PS_GT_Adjustment_EJournal(pb As ProgressBar, l As Label, dt As Date)
+        Try
+            Dim createTableSql As String = "CREATE TABLE tbl_PS_GT_Adjustment_EJournal (
+                                            ID INTEGER PRIMARY KEY,
+                                            PSNumber TEXT(15) NOT NULL,
+                                            PSDate DATETIME NOT NULL,
+                                            Cashier TEXT(3) NOT NULL,
+                                            [Counter] TEXT(3) NOT NULL,
+                                            Series TEXT(6) NOT NULL,
+                                            ExactDate DATETIME NOT NULL,
+                                            Amount DOUBLE NOT NULL,
+                                            SRem TEXT(50),
+                                            TotalQty DOUBLE NOT NULL,
+                                            TotalSales CURRENCY NOT NULL,
+                                            TotalCash CURRENCY NOT NULL,
+                                            TotalCard CURRENCY NOT NULL,
+                                            TotalDiscount CURRENCY NOT NULL,
+                                            TotalGC CURRENCY NOT NULL,
+                                            TotalVPlus CURRENCY NOT NULL,
+                                            TotalATD CURRENCY NOT NULL,
+                                            Location TEXT(3) NOT NULL,
+                                            InvoiceNo TEXT(25) NOT NULL,
+                                            VatPercent TEXT(10) NOT NULL,
+                                            VatSale DOUBLE NOT NULL,
+                                            Vat DOUBLE NOT NULL,
+                                            POSTableKey LONG NOT NULL,
+                                            TotalIncentiveCard DOUBLE NOT NULL,
+                                            IsZeroRated YESNO NOT NULL,
+                                            UpdatedBy TEXT(50) NOT NULL,
+                                            LastUpdated DATETIME NOT NULL,
+                                            TotalCreditMemo DOUBLE NOT NULL
+                                        );"
+
+            ConnLocal.Execute(createTableSql)
+            Branch_Collect_tbl_PS_GT_Adjustment_EJournal(pb, l, dt)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "tbl_PS_GT_Adjustment_EJournal")
+            Application.Exit()
+        End Try
+    End Sub
+    Private Sub Branch_Collect_tbl_PS_GT_Adjustment_EJournal(pb As ProgressBar, l As Label, dt As Date)
+
+
+
+        rs = New ADODB.Recordset
+        rs.CursorLocation = ADODB.CursorLocationEnum.adUseClient
+        rs.Open($"select j.* from tbl_PS_GT_Adjustment_EJournal as j WHERE j.[Counter] = '{gbl_Counter}' and j.PsDate = {fDateIsEmpty(dt.ToShortDateString())}   ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        Dim n As Integer = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_PS_GT_Adjustment_EJournal :" & pb.Maximum & "/" & pb.Value
+
+                Application.DoEvents()
+
+                Dim strSQL As String = $"INSERT INTO tbl_PS_GT_Adjustment_EJournal 
+                                            (ID,
+                                            PSNumber,
+                                            PSDate,
+                                            Cashier,
+                                            [Counter],
+                                            Series,
+                                            ExactDate,
+                                            Amount,
+                                            SRem,
+                                            TotalQty,
+                                            TotalSales,
+                                            TotalCash,
+                                            TotalCard,
+                                            TotalDiscount,
+                                            TotalGC,
+                                            TotalVPlus,
+                                            TotalATD,
+                                            Location,
+                                            InvoiceNo,
+                                            VatPercent,
+                                            VatSale,
+                                            Vat,
+                                            POSTableKey,
+                                            TotalIncentiveCard,
+                                            IsZeroRated,
+                                            UpdatedBy,
+                                            LastUpdated,
+                                            TotalCreditMemo)
+                                            VALUES ({fNum(rs.Fields("ID").Value)},
+                                                   '{fSqlFormat(rs.Fields("PSNumber").Value)}',
+                                                   {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())},
+                                                   '{fSqlFormat(rs.Fields("Cashier").Value)}',
+                                                   '{fSqlFormat(rs.Fields("Counter").Value)}',                                      
+                                                   '{fSqlFormat(rs.Fields("Series").Value)}',
+                                                    {fDateIsEmpty(rs.Fields("ExactDate").Value.ToString())},
+                                                    {fNum(rs.Fields("Amount").Value)},
+                                                   '{fSqlFormat(rs.Fields("SRem").Value)}',
+                                                    {fNum(rs.Fields("TotalQty").Value)},
+                                                    {fNum(rs.Fields("TotalSales").Value)},
+                                                    {fNum(rs.Fields("TotalCash").Value)},
+                                                    {fNum(rs.Fields("TotalCard").Value)},
+                                                    {fNum(rs.Fields("TotalDiscount").Value)},
+                                                    {fNum(rs.Fields("TotalGC").Value)},
+                                                    {fNum(rs.Fields("TotalVPlus").Value)},
+                                                    {fNum(rs.Fields("TotalATD").Value)},
+                                                   '{fSqlFormat(rs.Fields("Location").Value)}',
+                                                   '{fSqlFormat(rs.Fields("InvoiceNo").Value)}',
+                                                   '{fSqlFormat(rs.Fields("VatPercent").Value)}',
+                                                    {fNum(rs.Fields("VatSale").Value)},
+                                                    {fNum(rs.Fields("Vat").Value)},
+                                                    {fNum(rs.Fields("POSTableKey").Value)},
+                                                    {fNum(rs.Fields("TotalIncentiveCard").Value)},
+                                                    {fNum(rs.Fields("IsZeroRated").Value)},
+                                                    '{fSqlFormat(rs.Fields("UpdatedBy").Value)}',
+                                                    {fDateIsEmpty(rs.Fields("LastUpdated").Value.ToString())},
+                                                    {fNum(rs.Fields("TotalCreditMemo").Value)}
+
+                                               );"
+
+                ConnLocal.Execute(strSQL)
+                rs.MoveNext()
+            End While
+
+        End If
+
+    End Sub
+    Public Sub Branch_CreateTable_tbl_PS_GT_Adjustment_EJournal_Detail(pb As ProgressBar, l As Label, dt As Date)
+        Try
+
+
+
+            Dim createTableSql As String = "CREATE TABLE tbl_PS_GT_Adjustment_EJournal_Detail (
+                                            ID INTEGER PRIMARY KEY,
+                                            TransactionNumber TEXT(15) NOT NULL,
+                                            PSDate DATETIME NOT NULL,
+                                            [Counter] TEXT(3) NOT NULL,
+                                            Cashier TEXT(3) NOT NULL,
+                                            ItemCode TEXT(12) NOT NULL,
+                                            ItemDescription TEXT(50) NOT NULL,
+                                            Quantity DOUBLE NOT NULL,
+                                            GrossSRP DOUBLE NOT NULL,
+                                            Discount DOUBLE NOT NULL,
+                                            Surcharge DOUBLE NOT NULL,
+                                            TotalGross DOUBLE NOT NULL,
+                                            TotalDiscount DOUBLE NOT NULL,
+                                            TotalSurcharge DOUBLE NOT NULL,
+                                            TotalNet DOUBLE NOT NULL,
+                                            Location TEXT(1) NOT NULL,
+                                            POSTableKey LONG NOT NULL
+                                        );"
+
+            ConnLocal.Execute(createTableSql)
+            Branch_Collect_tbl_PS_GT_Adjustment_EJournal_Detail(pb, l, dt)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "tbl_PS_GT_Adjustment_EJournal_Detail ")
+            Application.Exit()
+        End Try
+    End Sub
+    Private Sub Branch_Collect_tbl_PS_GT_Adjustment_EJournal_Detail(pb As ProgressBar, l As Label, dt As Date)
+        Dim year As Integer = Now.Year - 1
+        Dim ToDate As String = Now.Date.ToShortDateString()
+        Dim FromDate As String = Now.Date.AddMonths(-2).ToShortDateString()
+
+
+
+
+
+
+        rs = New ADODB.Recordset
+        rs.CursorLocation = ADODB.CursorLocationEnum.adUseClient
+        rs.Open($"select d.* from tbl_PS_GT_Adjustment_EJournal_Detail as d inner join tbl_PS_GT_Adjustment_EJournal as j on  j.PSNumber = d.TransactionNumber where j.[Counter] = '{gbl_Counter}'  and j.PsDate = {fDateIsEmpty(dt.ToShortDateString())}  ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        Dim n As Integer = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_PS_GT_Adjustment_EJournal_Detail :" & pb.Maximum & "/" & pb.Value
+
+                Application.DoEvents()
+
+                Dim strSQL As String = $"INSERT INTO tbl_PS_GT_Adjustment_EJournal_Detail 
+                                            (ID,
+                                            TransactionNumber,
+                                            PSDate,
+                                            [Counter],
+                                            Cashier,                        
+                                            ItemCode,
+                                            ItemDescription,
+                                            Quantity,
+                                            GrossSRP,
+                                            Discount,
+                                            Surcharge,
+                                            TotalGross,
+                                            TotalDiscount,
+                                            TotalSurcharge,
+                                            TotalNet,
+                                            Location,
+                                            POSTableKey)
+                                            VALUES ({fNum(rs.Fields("ID").Value)},
+                                                   '{fSqlFormat(rs.Fields("TransactionNumber").Value)}',
+                                                    {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())},
+                                                   '{fSqlFormat(rs.Fields("Counter").Value)}',
+                                                   '{fSqlFormat(rs.Fields("Cashier").Value)}',                                      
+                                                   '{fSqlFormat(rs.Fields("ItemCode").Value)}',
+                                                   '{fSqlFormat(rs.Fields("ItemDescription").Value)}',
+                                                    {fNum(rs.Fields("Quantity").Value)},
+                                                    {fNum(rs.Fields("GrossSRP").Value)},
+                                                    {fNum(rs.Fields("Discount").Value)},
+                                                    {fNum(rs.Fields("Surcharge").Value)},
+                                                    {fNum(rs.Fields("TotalGross").Value)},
+                                                    {fNum(rs.Fields("TotalDiscount").Value)},
+                                                    {fNum(rs.Fields("TotalSurcharge").Value)},
+                                                    {fNum(rs.Fields("TotalNet").Value)},
+                                                   '{fSqlFormat(rs.Fields("Location").Value)}',
+                                                    {fNum(rs.Fields("POSTableKey").Value)}
+                                               );"
+
+                ConnLocal.Execute(strSQL)
+                rs.MoveNext()
+            End While
+        End If
+    End Sub
+
+
+
     Public Sub Branch_CreateTable_tbl_PS_EmployeeATD(pb As ProgressBar, l As Label, dt As Date)
         Try
             Dim createTableSql As String = "CREATE TABLE tbl_PS_EmployeeATD (

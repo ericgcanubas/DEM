@@ -65,6 +65,9 @@ Public Class FrmBranch
                 Branch_CreateTable_tbl_PS_E_Journal(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_PS_E_Journal_Detail(pbBranchLoading, lblBranchLoading, dtpDate.Value)
 
+                Branch_CreateTable_tbl_PS_GT_Adjustment_EJournal(pbBranchLoading, lblBranchLoading, dtpDate.Value)
+                Branch_CreateTable_tbl_PS_GT_Adjustment_EJournal_Detail(pbBranchLoading, lblBranchLoading, dtpDate.Value)
+
                 Branch_CreateTable_tbl_PS_EmployeeATD(pbBranchLoading, lblBranchLoading, dtpDate.Value)
 
                 Branch_CreateTable_tbl_GiftCert_List(pbBranchLoading, lblBranchLoading, dtpDate.Value)
@@ -79,6 +82,8 @@ Public Class FrmBranch
 
                 Branch_CreateTable_tbl_PaidOutTransactions(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_PaidOutTransactions_Det(pbBranchLoading, lblBranchLoading, dtpDate.Value)
+
+
                 SetLog(False)
                 lblBranchLoading.Text = ""
                 pbBranchLoading.Value = 0

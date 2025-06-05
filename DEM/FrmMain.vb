@@ -51,14 +51,10 @@ Public Class FrmMain
 
 
 
-
-
                 CreateTable_tbl_banks(pbMainLoading, lblMainLoading)
-                    CreateTable_tbl_Banks_Changes(pbMainLoading, lblMainLoading)
+                CreateTable_tbl_Banks_Changes(pbMainLoading, lblMainLoading)
 
-
-
-                    CreateTable_tbl_bank(pbMainLoading, lblMainLoading)
+                CreateTable_tbl_bank(pbMainLoading, lblMainLoading)
                 CreateTable_tbl_Bank_Terms(pbMainLoading, lblMainLoading)
                 CreateTable_tbl_Bank_Changes(pbMainLoading, lblMainLoading)
 
