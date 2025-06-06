@@ -46,7 +46,7 @@ Public Class FrmMain
 
                 Local_CreateTable_tbl_info(Now.Date, ref, "Main")
 
-                NGenType = Val(GetParameter("GenerateType"))
+                gbl_DownloadType = Val(GetParameter("GenerateType"))
                 NItemOnly = Val(GetParameter("ItemNotInclude"))
 
 
@@ -92,10 +92,10 @@ Public Class FrmMain
 
                 CreateTable_tbl_RetrieveHistoryForLocal(pbMainLoading, lblMainLoading)
 
-                CreateTable_tbl_Items(pbMainLoading, lblMainLoading, NGenType)
+                CreateTable_tbl_Items(pbMainLoading, lblMainLoading)
                 CreateTable_tbl_Items_Change(pbMainLoading, lblMainLoading)
 
-                CreateTable_tbl_ItemsForPLU(pbMainLoading, lblMainLoading, NGenType)
+                CreateTable_tbl_ItemsForPLU(pbMainLoading, lblMainLoading)
                 CreateTable_tbl_ItemsForPLU_For_Effect(pbMainLoading, lblMainLoading)
 
                 CreateTable_tbl_PaidOutDenominations(pbMainLoading, lblMainLoading)
@@ -150,7 +150,7 @@ Public Class FrmMain
         ConnTemp.Open(str)
         Maketbl_COUNTER()
         Maketbl_PARAMETER()
-        NGenType = Val(GetParameter("GenerateType"))
+        gbl_DownloadType = Val(GetParameter("GenerateType"))
         NItemOnly = Val(GetParameter("ItemNotInclude"))
         RefreshLog()
     End Sub

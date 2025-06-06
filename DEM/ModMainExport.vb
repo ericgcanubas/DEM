@@ -112,7 +112,7 @@ Module ModMainExport
 
     End Sub
 
-    Public Sub CreateTable_tbl_ItemsForPLU(pb As ProgressBar, l As Label, DownloadType As Integer)
+    Public Sub CreateTable_tbl_ItemsForPLU(pb As ProgressBar, l As Label)
         Try
             Dim createTableSql As String = "CREATE TABLE tbl_ItemsForPLU (
                                             ItemCode TEXT(12),
@@ -125,17 +125,17 @@ Module ModMainExport
                                 )"
 
             ConnLocal.Execute(createTableSql)
-            Collect_tbl_ItemsForPLU(pb, l, DownloadType)
+            Collect_tbl_ItemsForPLU(pb, l)
         Catch ex As Exception
             MessageBox.Show(ex.Message, "tbl_ItemsForPLU")
             Application.Exit()
         End Try
 
     End Sub
-    Private Sub Collect_tbl_ItemsForPLU(pb As ProgressBar, l As Label, DownloadType As Integer)
+    Private Sub Collect_tbl_ItemsForPLU(pb As ProgressBar, l As Label)
         rs = New ADODB.Recordset
 
-        If DownloadType = 0 Then
+        If gbl_DownloadType = 0 Then
             rs.Open("select tbl_ItemsForPLU.*  FROM tbl_ItemsForPLU inner join  tbl_Items on  [tbl_Items].ItemCode = tbl_ItemsForPLU.ItemCode join tbl_Suppliers on tbl_Suppliers.PK = tbl_Items.SupplierKey  where [tbl_Items].[status] = 0 and tbl_Suppliers.SStatus = 0 ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         Else
             rs.Open($" select
@@ -626,7 +626,10 @@ Module ModMainExport
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_VPlus_Codes :" & pb.Maximum & "/" & pb.Value
                 Application.DoEvents()
-                Dim strSQL As String = $"INSERT INTO tbl_VPlus_Codes 
+                If (IsNumeric(rs.Fields("Codes").Value) = True) Then
+
+
+                    Dim strSQL As String = $"INSERT INTO tbl_VPlus_Codes 
                                     (Codes,
                                     Customer,
                                     InPoints,
@@ -655,7 +658,8 @@ Module ModMainExport
                                     {fDateIsEmpty(rs.Fields("DateExpired").Value.ToString())},
                                     {fDateIsEmpty(rs.Fields("DateModified").Value.ToString())},
                                     {rs.Fields("Changes").Value} );"
-                ConnLocal.Execute(strSQL)
+                    ConnLocal.Execute(strSQL)
+                End If
                 rs.MoveNext()
             End While
         End If
@@ -694,8 +698,9 @@ Module ModMainExport
 
                 n = 0
                 Application.DoEvents()
+                If (IsNumeric(rs.Fields("Codes").Value) = True) Then
 
-                Dim strSQL As String = $"INSERT INTO tbl_VPlus_Codes_Validity 
+                    Dim strSQL As String = $"INSERT INTO tbl_VPlus_Codes_Validity 
                                     (Codes,
                                     DateStarted,
                                     DateExpired,
@@ -706,7 +711,8 @@ Module ModMainExport
                                     {fDateIsEmpty(rs.Fields("GracePeriod").Value.ToString())}   
                                    );"
 
-                ConnLocal.Execute(strSQL)
+                    ConnLocal.Execute(strSQL)
+                End If
                 rs.MoveNext()
             End While
 
@@ -881,7 +887,7 @@ Module ModMainExport
         End If
     End Sub
 
-    Public Sub CreateTable_tbl_Items(pb As ProgressBar, l As Label, DownLoadType As Integer)
+    Public Sub CreateTable_tbl_Items(pb As ProgressBar, l As Label)
         Try
             Dim createTableSql As String = "CREATE TABLE tbl_Items (
                                             PK INTEGER PRIMARY KEY,
@@ -947,18 +953,18 @@ Module ModMainExport
                                         );"
 
             ConnLocal.Execute(createTableSql)
-            Collect_tbl_Items(pb, l, DownLoadType)
+            Collect_tbl_Items(pb, l)
         Catch ex As Exception
             MessageBox.Show(ex.Message, "tbl_Items")
             Application.Exit()
         End Try
     End Sub
 
-    Private Sub Collect_tbl_Items(pb As ProgressBar, l As Label, DownLoadType As Integer)
+    Private Sub Collect_tbl_Items(pb As ProgressBar, l As Label)
         Dim year As Integer = Now.Year - 1
 
         rs = New ADODB.Recordset
-        If DownLoadType = 0 Then
+        If gbl_DownloadType = 0 Then
             rs.Open($"select i.* from tbl_Items as i join tbl_Suppliers as s on s.PK = i.SupplierKey where i.Status = 0  and s.SStatus = 0", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         Else
 
@@ -1713,8 +1719,8 @@ Module ModMainExport
                 l.Text = "tbl_VPlus_Summary :" & pb.Maximum & "/" & pb.Value
 
                 Application.DoEvents()
-
-                Dim strSQL As String = $"INSERT INTO tbl_VPlus_Summary 
+                If (IsNumeric(rs.Fields("VPlusCode").Value) = True) Then
+                    Dim strSQL As String = $"INSERT INTO tbl_VPlus_Summary 
                                             (PK,
                                             VPlusCode,
                                             TransDate,
@@ -1738,8 +1744,9 @@ Module ModMainExport
                                         {fNum(rs.Fields("InPoints").Value)},  
                                         {fNum(rs.Fields("OutPoints").Value)} 
                                    );"
+                    ConnLocal.Execute(strSQL)
+                End If
 
-                ConnLocal.Execute(strSQL)
                 rs.MoveNext()
             End While
 

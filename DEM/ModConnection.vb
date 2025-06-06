@@ -1,6 +1,6 @@
 ﻿Imports ADOX
 Module ModConnection
-    Public NGenType As Integer
+    Public gbl_DownloadType As Integer
     Public NItemOnly As Integer
 
     Public ConnServer As ADODB.Connection
