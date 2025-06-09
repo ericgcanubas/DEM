@@ -1786,7 +1786,210 @@
         End If
 
     End Sub
+    Public Sub Branch_CreateTable_tbl_CreditMemo(pb As ProgressBar, l As Label, dt As Date)
+        Try
+            Dim createTableSql As String = "CREATE TABLE tbl_CreditMemo (
+                                                        ID INTEGER PRIMARY KEY,
+                                                        TransNo NUMERIC(18, 0),
+                                                        ControlNo TEXT(7),
+                                                        CM_StockAdjustNo TEXT(10),
+                                                        CMNo_Manual TEXT(20),
+                                                        EntryDate DATETIME,
+                                                        POSTransactionNo TEXT(20),
+                                                        PurchaseDate DATETIME,
+                                                        [POSNo_TransNo] TEXT(20),
+                                                        Cashier TEXT(10),
+                                                        ValidUntil DATETIME,
+                                                        VPlusPoints CURRENCY,
+                                                        VPlusCode TEXT(20),
+                                                        PaymentType TEXT(20),
+                                                        Location TEXT(10),
+                                                        IsSalesReturn YESNO,
+                                                        IsCashRefund YESNO,
+                                                        CustomerName TEXT(100),
+                                                        TotalPurchaseQty DOUBLE,
+                                                        TotalPurchase CURRENCY,
+                                                        TotalReturnQty DOUBLE,
+                                                        TotalReturn CURRENCY,
+                                                        TotalReturnVPlus CURRENCY,
+                                                        Remarks TEXT(200),
+                                                        PreparedBy TEXT(100),
+                                                        IsPosted YESNO,
+                                                        PostedBy TEXT(100),
+                                                        DatePosted DATETIME,
+                                                        ApprovedBy TEXT(100),
+                                                        IsCancelled YESNO,
+                                                        CancelledBy TEXT(100),
+                                                        ReasonForCancel TEXT(100),
+                                                        DateCancelled DATETIME,
+                                                        UpdatedBy TEXT(50),
+                                                        LastUpdated DATETIME,
+                                                        IsUsed YESNO,
+                                                        IsPrinted YESNO
+                                                    );
+"
 
+            ConnLocal.Execute(createTableSql)
+            Branch_Collect_tbl_CreditMemo(pb, l, dt)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "tbl_CreditMemo  ")
+            Application.Exit()
+        End Try
+    End Sub
+    Private Sub Branch_Collect_tbl_CreditMemo(pb As ProgressBar, l As Label, dt As Date)
 
+        Dim n As Integer = 0
+        rs = New ADODB.Recordset
+        rs.Open($"select * from tbl_CreditMemo  where EntryDate = {fDateIsEmpty(dt.ToShortDateString())} and LEFT([POSNo_TransNo], CHARINDEX(' ', [POSNo_TransNo]) - 1) = '{gbl_Counter}'; ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_CreditMemo  :" & pb.Maximum & "/" & pb.Value
+                Application.DoEvents()
+                Dim strSQL As String = $"INSERT INTO tbl_CreditMemo
+                                                        (ID,
+                                                        TransNo,
+                                                        ControlNo,
+                                                        CM_StockAdjustNo,
+                                                        CMNo_Manual,
+                                                        EntryDate,
+                                                        POSTransactionNo,
+                                                        PurchaseDate,
+                                                        [POSNo_TransNo],
+                                                        Cashier,
+                                                        ValidUntil,
+                                                        VPlusPoints,
+                                                        VPlusCode,
+                                                        PaymentType,
+                                                        Location,
+                                                        IsSalesReturn,
+                                                        IsCashRefund,
+                                                        CustomerName,
+                                                        TotalPurchaseQty,
+                                                        TotalPurchase,
+                                                        TotalReturnQty,
+                                                        TotalReturn,
+                                                        TotalReturnVPlus,
+                                                        Remarks,
+                                                        PreparedBy,
+                                                        IsPosted,
+                                                        PostedBy ,
+                                                        DatePosted,
+                                                        ApprovedBy,
+                                                        IsCancelled,
+                                                        CancelledBy,
+                                                        ReasonForCancel,
+                                                        DateCancelled,
+                                                        UpdatedBy,
+                                                        LastUpdated,
+                                                        IsUsed,
+                                                        IsPrinted)
+                                                VALUES ({fNum(rs.Fields("ID").Value)},
+                                                        {fNum(rs.Fields("TransNo").Value)} ,  
+                                                        '{fSqlFormat(rs.Fields("ControlNo").Value)}',
+                                                        '{fSqlFormat(rs.Fields("CM_StockAdjustNo").Value)}',
+                                                        '{fSqlFormat(rs.Fields("CMNo_Manual").Value)}',
+                                                         {fDateIsEmpty(rs.Fields("EntryDate").Value.ToString())},
+                                                        '{fSqlFormat(rs.Fields("POSTransactionNo").Value)}',
+                                                         {fDateIsEmpty(rs.Fields("PurchaseDate").Value.ToString())},
+                                                        '{fSqlFormat(rs.Fields("POSNo_TransNo").Value)}',                                                
+                                                        '{fSqlFormat(rs.Fields("Cashier").Value)}',
+                                                         {fDateIsEmpty(rs.Fields("ValidUntil").Value.ToString())},
+                                                         {fNum(rs.Fields("VPlusPoints").Value)} ,  
+                                                         '{fSqlFormat(rs.Fields("VPlusCode").Value)}',
+                                                         '{fSqlFormat(rs.Fields("PaymentType").Value)}',
+                                                         '{fSqlFormat(rs.Fields("Location").Value)}',
+                                                         {fNum(rs.Fields("IsSalesReturn").Value)} ,  
+                                                         {fNum(rs.Fields("IsCashRefund").Value)} , 
+                                                        '{fSqlFormat(rs.Fields("CustomerName").Value)}',
+                                                         {fNum(rs.Fields("TotalPurchaseQty").Value)} ,
+                                                         {fNum(rs.Fields("TotalPurchase").Value)} ,
+                                                         {fNum(rs.Fields("TotalReturnQty").Value)} ,
+                                                         {fNum(rs.Fields("TotalReturnVPlus").Value)} ,
+                                                        '{fSqlFormat(rs.Fields("Remarks").Value)}',
+                                                         '{fSqlFormat(rs.Fields("PreparedBy").Value)}',
+                                                         {fNum(rs.Fields("IsPosted").Value)} ,
+                                                        '{fSqlFormat(rs.Fields("PostedBy").Value)}',
+                                                         {fDateIsEmpty(rs.Fields("DatePosted").Value.ToString())},
+                                                        '{fSqlFormat(rs.Fields("ApprovedBy").Value)}',
+                                                         {fNum(rs.Fields("IsCancelled").Value)} ,
+                                                        '{fSqlFormat(rs.Fields("CancelledBy").Value)}',
+                                                        '{fSqlFormat(rs.Fields("ReasonForCancel").Value)}',
+                                                         {fDateIsEmpty(rs.Fields("DateCancelled").Value.ToString())},
+                                                        '{fSqlFormat(rs.Fields("UpdatedBy").Value)}',
+                                                         {fDateIsEmpty(rs.Fields("LastUpdated").Value.ToString())},
+                                                         {fNum(rs.Fields("IsUsed").Value)} ,
+                                                         {fNum(rs.Fields("IsPrinted").Value)} 
 
+                                                );"
+
+                ConnLocal.Execute(strSQL)
+                rs.MoveNext()
+            End While
+        End If
+
+    End Sub
+    Public Sub Branch_CreateTable_tbl_CreditMemo_CashRefund_Payment(pb As ProgressBar, l As Label, dt As Date)
+        Try
+            Dim createTableSql As String = "CREATE TABLE tbl_CreditMemo_CashRefund_Payment (
+                                            ID INTEGER PRIMARY KEY,
+                                            CMNo TEXT(20) NOT NULL,
+                                            PaymentDate DATETIME NOT NULL,
+                                            Amount CURRENCY NOT NULL,
+                                            Cashier TEXT(3) NOT NULL,
+                                            Senior TEXT(100) NOT NULL,
+                                            ApprovedBy TEXT(100) NOT NULL,
+                                            LastUpdated DATETIME NOT NULL
+                                        );
+"
+
+            ConnLocal.Execute(createTableSql)
+            Branch_Collect_tbl_CreditMemo_CashRefund_Payment(pb, l, dt)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "tbl_CreditMemo_CashRefund_Payment  ")
+            Application.Exit()
+        End Try
+    End Sub
+    Private Sub Branch_Collect_tbl_CreditMemo_CashRefund_Payment(pb As ProgressBar, l As Label, dt As Date)
+
+        Dim n As Integer = 0
+        rs = New ADODB.Recordset
+        rs.Open($"select * from tbl_CreditMemo_CashRefund_Payment WHERE PaymentDate = {fDateIsEmpty(dt.ToShortDateString())} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_CreditMemo_CashRefund_Payment  :" & pb.Maximum & "/" & pb.Value
+                Application.DoEvents()
+                Dim strSQL As String = $"INSERT INTO tbl_CreditMemo_CashRefund_Payment
+                                                    (   ID,
+                                                        CMNo,
+                                                        PaymentDate DATETIME NOT NULL,
+                                                        Amount CURRENCY NOT NULL,
+                                                        Cashier TEXT(3) NOT NULL,
+                                                        Senior TEXT(100) NOT NULL,
+                                                        ApprovedBy TEXT(100) NOT NULL,
+                                                        LastUpdated DATETIME NOT NULL)
+                                                VALUES ({fNum(rs.Fields("ID").Value)},
+                                                        '{fSqlFormat(rs.Fields("CMNo").Value)}',
+                                                        {fDateIsEmpty(rs.Fields("PaymentDate").Value.ToString())},
+                                                        {fNum(rs.Fields("Amount").Value)} ,                               
+                                                        '{fSqlFormat(rs.Fields("Cashier").Value)}',
+                                                        '{fSqlFormat(rs.Fields("Senior").Value)}',
+                                                        '{fSqlFormat(rs.Fields("ApprovedBy").Value)}',
+                                                        {fDateIsEmpty(rs.Fields("LastUpdated").Value.ToString())}
+                                                       
+                                            );"
+
+                ConnLocal.Execute(strSQL)
+                rs.MoveNext()
+            End While
+        End If
+
+    End Sub
 End Module

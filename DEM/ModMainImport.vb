@@ -1517,7 +1517,6 @@ Module ModMainImport
     End Sub
     Public Sub Insert_tbl_PS_GT_ZZ(pb As ProgressBar, l As Label)
 
-
         rs = New ADODB.Recordset
         rs.CursorLocation = ADODB.CursorLocationEnum.adUseClient
         rs.Open($"SELECT * from tbl_PS_GT_ZZ ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
@@ -1573,7 +1572,8 @@ Module ModMainImport
                                             PSNumber = '{fSqlFormat(rs.Fields("PSNumber").Value)}' and 
                                             PSDate={fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and 
                                             [Counter]='{fSqlFormat(rs.Fields("Counter").Value)}' and 
-                                            Cashier='{fSqlFormat(rs.Fields("Cashier").Value)}'  ", ConnServer, CursorTypeEnum.adOpenStatic)
+                                            Cashier='{fSqlFormat(rs.Fields("Cashier").Value)}' and 
+                                            POSTableKey =  {fNum(rs.Fields("POSTableKey").Value)} ", ConnServer, CursorTypeEnum.adOpenStatic)
 
                 If rx.RecordCount = 0 Then
                     Dim strSQL As String = $"INSERT INTO tbl_PS_E_Journal  
@@ -1632,6 +1632,35 @@ Module ModMainImport
                                    );"
 
                     ConnServer.Execute(strSQL)
+
+                Else
+                    Dim strSQL As String = $"UPDATE tbl_PS_E_Journal SET
+                            PSDate = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())},
+                            Cashier = '{fSqlFormat(rs.Fields("Cashier").Value)}',
+                            [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}',
+                            Series = '{fSqlFormat(rs.Fields("Series").Value)}',
+                            ExactDate = {fDateIsEmpty(rs.Fields("ExactDate").Value.ToString())},
+                            Amount = {fNum(rs.Fields("Amount").Value)},
+                            SRem = '{fSqlFormat(rs.Fields("SRem").Value)}',
+                            TotalQty = {fNum(rs.Fields("TotalQty").Value)},
+                            TotalSales = {fNum(rs.Fields("TotalSales").Value)},
+                            TotalDiscount = {fNum(rs.Fields("TotalDiscount").Value)},
+                            TotalGC = {fNum(rs.Fields("TotalGC").Value)},
+                            TotalCard = {fNum(rs.Fields("TotalCard").Value)},
+                            TotalVPlus = {fNum(rs.Fields("TotalVPlus").Value)},
+                            TotalATD = {fNum(rs.Fields("TotalATD").Value)},
+                            Location = '{fSqlFormat(rs.Fields("Location").Value)}',
+                            InvoiceNumber = '{fSqlFormat(rs.Fields("InvoiceNumber").Value)}',
+                            VatPercent = '{fSqlFormat(rs.Fields("VatPercent").Value)}',
+                            VatSale = {fNum(rs.Fields("VatSale").Value)},
+                            Vat = {fNum(rs.Fields("Vat").Value)},
+                            POSTableKey = {fNum(rs.Fields("POSTableKey").Value)},
+                            TotalIncentiveCard = {fNum(rs.Fields("TotalIncentiveCard").Value)},
+                            IsZeroRated = {fNum(rs.Fields("IsZeroRated").Value)},
+                            TotalCreditMemo = {fNum(rs.Fields("TotalCreditMemo").Value)},
+                            TotalHomeCredit = {fNum(rs.Fields("TotalHomeCredit").Value)},
+                            TotalQRPay = {fNum(rs.Fields("TotalQRPay").Value)}
+                        WHERE PSNumber = '{fSqlFormat(rs.Fields("PSNumber").Value)}';"
                 End If
                 rs.MoveNext()
             End While
@@ -1659,7 +1688,8 @@ Module ModMainImport
                                                     [Counter] ='{gbl_Counter}' and
                                                     PSDate= {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and 
                                                     Cashier = '{fSqlFormat(rs.Fields("Cashier").Value)}' and 
-                                                    ItemCode='{fSqlFormat(rs.Fields("ItemCode").Value)}'", ConnServer, CursorTypeEnum.adOpenStatic)
+                                                    ItemCode='{fSqlFormat(rs.Fields("ItemCode").Value)}' and 
+                                                    POSTableKey = {fNum(rs.Fields("POSTableKey").Value)} ", ConnServer, CursorTypeEnum.adOpenStatic)
 
                 If rx.RecordCount = 0 Then
                     Dim strSQL As String = $"INSERT INTO tbl_PS_E_Journal_Detail 
@@ -1723,7 +1753,8 @@ Module ModMainImport
                                 [Counter] ='{gbl_Counter}' and
                                 PSDate= {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and 
                                 Cashier = '{fSqlFormat(rs.Fields("Cashier").Value)}' and 
-                                ItemCode='{fSqlFormat(rs.Fields("ItemCode").Value)}';"
+                                ItemCode='{fSqlFormat(rs.Fields("ItemCode").Value)}' and 
+                                POSTableKey = {fNum(rs.Fields("POSTableKey").Value)} ;"
 
                     ConnServer.Execute(strSQL)
                 End If
@@ -1755,7 +1786,8 @@ Module ModMainImport
                 rx.Open($"select TOP 1 * from tbl_PS_GT_Adjustment_EJournal WHERE 
                                             PSNumber = '{fSqlFormat(rs.Fields("PSNumber").Value)}' and 
                                             PSDate = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and
-                                            [Counter] = '{gbl_Counter}' ", ConnServer, CursorTypeEnum.adOpenStatic)
+                                            [Counter] = '{gbl_Counter}' and 
+                                            POSTableKey = {fNum(rs.Fields("POSTableKey").Value)} ", ConnServer, CursorTypeEnum.adOpenStatic)
                 If rx.RecordCount = 0 Then
                     Dim strSQL As String = $"INSERT INTO tbl_PS_GT_Adjustment_EJournal 
                                             (PSNumber,
@@ -1817,11 +1849,7 @@ Module ModMainImport
                     ConnServer.Execute(strSQL)
 
                 Else
-                    Dim strSQL As String = $"UPDATE tbl_PS_GT_Adjustment_EJournal SET
-                                PSNumber = '{fSqlFormat(rs.Fields("PSNumber").Value)}',
-                                PSDate = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())},
-                                Cashier = '{fSqlFormat(rs.Fields("Cashier").Value)}',
-                                [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}',
+                    Dim strSQL As String = $"UPDATE tbl_PS_GT_Adjustment_EJournal SET                      
                                 Series = '{fSqlFormat(rs.Fields("Series").Value)}',
                                 ExactDate = {fDateIsEmpty(rs.Fields("ExactDate").Value.ToString())},
                                 Amount = {fNum(rs.Fields("Amount").Value)},
@@ -1845,7 +1873,11 @@ Module ModMainImport
                                 UpdatedBy = '{fSqlFormat(rs.Fields("UpdatedBy").Value)}',
                                 LastUpdated = {fDateIsEmpty(rs.Fields("LastUpdated").Value.ToString())},
                                 TotalCreditMemo = {fNum(rs.Fields("TotalCreditMemo").Value)}
-                                WHERE PSNumber = '{fSqlFormat(rs.Fields("PSNumber").Value)}' and PSDate = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and [Counter] = '{gbl_Counter}';"
+                                WHERE PSNumber = '{fSqlFormat(rs.Fields("PSNumber").Value)}' and
+                                PSDate = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and 
+                                [Counter] = '{gbl_Counter}' and 
+                                Cashier = '{fSqlFormat(rs.Fields("Cashier").Value)}' and 
+                                POSTableKey = {fNum(rs.Fields("POSTableKey").Value)} ;"
 
                     ConnServer.Execute(strSQL)
                 End If
@@ -1868,17 +1900,15 @@ Module ModMainImport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_PS_GT_Adjustment_EJournal_Detail :" & pb.Maximum & "/" & pb.Value
-
                 Application.DoEvents()
-
-
                 Dim rx As New Recordset
                 rx.Open($"SELECT TOP 1 * from tbl_PS_GT_Adjustment_EJournal_Detail 
                                                 WHERE TransactionNumber = '{fSqlFormat(rs.Fields("TransactionNumber").Value)}' and 
                                                 PSDate = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and 
                                                 [Counter] = '{gbl_Counter}' and 
                                                 Cashier = '{fSqlFormat(rs.Fields("Cashier").Value)}' and 
-                                                ItemCode = '{fSqlFormat(rs.Fields("ItemCode").Value)}' ", ConnServer, CursorTypeEnum.adOpenStatic)
+                                                ItemCode = '{fSqlFormat(rs.Fields("ItemCode").Value)}' and 
+                                                POSTableKey = {fNum(rs.Fields("POSTableKey").Value)} ", ConnServer, CursorTypeEnum.adOpenStatic)
 
                 If rx.RecordCount = 0 Then
                     Dim strSQL As String = $"INSERT INTO tbl_PS_GT_Adjustment_EJournal_Detail 
@@ -1943,7 +1973,8 @@ Module ModMainImport
                         PSDate = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and 
                         [Counter] = '{gbl_Counter}' and
                         Cashier = '{fSqlFormat(rs.Fields("Cashier").Value)}' and
-                        ItemCode = '{fSqlFormat(rs.Fields("ItemCode").Value)}';"
+                        ItemCode = '{fSqlFormat(rs.Fields("ItemCode").Value)}' and
+                        POSTableKey = {fNum(rs.Fields("POSTableKey").Value)};"
 
                     ConnServer.Execute(strSQL)
 
@@ -2102,64 +2133,172 @@ Module ModMainImport
 
     End Function
 
-    Private Sub Collect_tbl_PaidOutTransactions_Det(pb As ProgressBar, l As Label)
-
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_PaidOutTransactions_Det ON;")
-        Dim n As Integer = 0
+    Public Sub Insert_Collect_tbl_PS_GT_History(pb As ProgressBar, l As Label)
+        Dim year As Integer = Now.Year - 1
+        ConnServer.Execute("SET IDENTITY_INSERT tbl_PS_GT_History ON;")
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_PaidOutTransactions_Det  ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_PS_GT_History  where [Counter] = '{gbl_Counter}'  ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
         If rs.RecordCount > 0 Then
             While Not rs.EOF
                 pb.Value = pb.Value + 1
-                l.Text = "tbl_PaidOutTransactions_Det  :" & pb.Maximum & "/" & pb.Value
+                l.Text = "tbl_PS_GT_History  :" & pb.Maximum & "/" & pb.Value
                 Application.DoEvents()
-
                 Dim rx As New Recordset
-                rx.Open("", ConnServer, CursorTypeEnum.adOpenStatic)
-                Dim strSQL As String = $"INSERT INTO tbl_PaidOutTransactions_Det 
-                                                (   PK,
-                                                    PaidOutPK,
-                                                    DenomPK,
-                                                    Qty,
-                                                    DenomAmount,
-                                                    Total,
-                                                    STN_Qty,
-                                                    STN_Amount,
-                                                    IsChecked,
-                                                    Old_Qty,
-                                                    Old_Amount,
-                                                    Remarks,
-                                                    AdjustedBy,
-                                                    WitnessedBy,
-                                                    ApprovedBy,
-                                                    Old_Qty_tmp,
-                                                    DenomCode)
-                                                VALUES ({fNum(rs.Fields("PK").Value)},    
-                                                        {fNum(rs.Fields("PaidOutPK").Value)}, 
-                                                        {fNum(rs.Fields("DenomPK").Value)},   
-                                                        {fNum(rs.Fields("Qty").Value)},
-                                                        {fNum(rs.Fields("DenomAmount").Value)},
-                                                        {fNum(rs.Fields("Total").Value)},
-                                                        {fNum(rs.Fields("STN_Qty").Value)},
-                                                        {fNum(rs.Fields("STN_Amount").Value)},
-                                                        {fNum(rs.Fields("IsChecked").Value)},
-                                                        {fNum(rs.Fields("Old_Qty").Value)},
-                                                        {fNum(rs.Fields("Old_Amount").Value)},                                                       
-                                                        '{fSqlFormat(rs.Fields("Remarks").Value)}',     
-                                                        '{fSqlFormat(rs.Fields("AdjustedBy").Value)}',   
-                                                        '{fSqlFormat(rs.Fields("WitnessedBy").Value)}',                                               
-                                                        '{fSqlFormat(rs.Fields("ApprovedBy").Value)}',    
-                                                         {fNum(rs.Fields("Old_Qty_tmp").Value)},
-                                                        '{fSqlFormat(rs.Fields("DenomCode").Value)}');"
+                rx.Open($"select TOP 1 * from tbl_PS_GT_History where  PK = { fNum(rs.Fields("PK").Value)} ", ConnServer, CursorTypeEnum.adOpenStatic)
+                If rx.RecordCount = 0 Then
+                    Dim strSQL As String = $"
+                        INSERT INTO tbl_PS_GT_History (
+                            PK,
+                            EDate,
+                            [Counter],
+                            TransactionCount,
+                            GrandTotal,
+                            ZZCount,
+                            ResetCnt,
+                            ResetTrans,
+                            InvoiceNumberOld,
+                            InvoiceNumberCnt,
+                            InvoiceNumber,
+                            [RA],
+                            RACount,
+                            Sales,
+                            SalesCount,
+                            Discount,
+                            Surcharge,
+                            TranCount,
+                            Cash,
+                            CashCount,
+                            Card,
+                            CardCount,
+                            [GC],
+                            GCCount,
+                            IncentiveCard,
+                            IncentiveCardCount,
+                            CreditMemo,
+                            CreditMemoCount,
+                            CM_CashRefund,
+                            CM_CashRefundCount,
+                            ATD,
+                            ATDCount,
+                            VPlus,
+                            VPlusCount,
+                            Misc,
+                            MiscCount,
+                            [SN],
+                            PermitNo,
+                            M_I_N,
+                            Trans,
+                            Locked,
+                            VPlusCodeCount,
+                            Header1,
+                            Header2,
+                            Header3,
+                            TIN,
+                            ForOfflineMode,
+                            CapableOffline,
+                            WithEJournal,
+                            BankCommission,
+                            LastUpdated
 
-                ConnServer.Execute(strSQL)
+                        ) VALUES (
+                            {fNum(rs.Fields("PK").Value)},
+                            {fDateIsEmpty(rs.Fields("EDate").Value.ToString())},
+                            '{fSqlFormat(rs.Fields("Counter").Value)}',
+                            {fNum(rs.Fields("TransactionCount").Value)},
+                            {fNum(rs.Fields("GrandTotal").Value)},
+                            {fNum(rs.Fields("ZZCount").Value)},
+                            '{fSqlFormat(rs.Fields("ResetCnt").Value)}',
+                            {fNum(rs.Fields("ResetTrans").Value)},
+                            '{fSqlFormat(rs.Fields("InvoiceNumberOld").Value)}',
+                            {fNum(rs.Fields("InvoiceNumberCnt").Value)},
+                            '{fSqlFormat(rs.Fields("InvoiceNumber").Value)}',
+                            {fNum(rs.Fields("RA").Value)},
+                            {fNum(rs.Fields("RACount").Value)},
+                            {fNum(rs.Fields("Sales").Value)},
+                            {fNum(rs.Fields("SalesCount").Value)},
+                            {fNum(rs.Fields("Discount").Value)},
+                            {fNum(rs.Fields("Surcharge").Value)},
+                            {fNum(rs.Fields("TranCount").Value)},
+                            {fNum(rs.Fields("Cash").Value)},
+                            {fNum(rs.Fields("CashCount").Value)},
+                            {fNum(rs.Fields("Card").Value)},
+                            {fNum(rs.Fields("CardCount").Value)},
+                            {fNum(rs.Fields("GC").Value)},
+                            {fNum(rs.Fields("GCCount").Value)},
+                            {fNum(rs.Fields("IncentiveCard").Value)},
+                            {fNum(rs.Fields("IncentiveCardCount").Value)},
+                            {fNum(rs.Fields("CreditMemo").Value)},
+                            {fNum(rs.Fields("CreditMemoCount").Value)},
+                            {fNum(rs.Fields("CM_CashRefund").Value)},
+                            {fNum(rs.Fields("CM_CashRefundCount").Value)},
+                            {fNum(rs.Fields("ATD").Value)},
+                            {fNum(rs.Fields("ATDCount").Value)},
+                            {fNum(rs.Fields("VPlus").Value)},
+                            {fNum(rs.Fields("VPlusCount").Value)},
+                            {fNum(rs.Fields("Misc").Value)},
+                            {fNum(rs.Fields("MiscCount").Value)},
+                            '{fSqlFormat(rs.Fields("SN").Value)}',
+                            '{fSqlFormat(rs.Fields("PermitNo").Value)}',
+                            '{fSqlFormat(rs.Fields("M_I_N").Value)}',
+                            {fNum(rs.Fields("Trans").Value)},
+                            {fNum(rs.Fields("Locked").Value)},
+                            {fNum(rs.Fields("VPlusCodeCount").Value)},
+                            '{fSqlFormat(rs.Fields("Header1").Value)}',
+                            '{fSqlFormat(rs.Fields("Header2").Value)}',
+                            '{fSqlFormat(rs.Fields("Header3").Value)}',
+                            '{fSqlFormat(rs.Fields("TIN").Value)}',
+                            {fNum(rs.Fields("ForOfflineMode").Value)},
+                            {fNum(rs.Fields("CapableOffline").Value)},
+                            {fNum(rs.Fields("WithEJournal").Value)},
+                            {fNum(rs.Fields("BankCommission").Value)},
+                            {fDateIsEmpty(rs.Fields("LastUpdated").Value.ToString())}
+                        );"
+
+                    ConnServer.Execute(strSQL)
+                End If
+
                 rs.MoveNext()
             End While
         End If
 
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_PaidOutTransactions_Det OFF;")
+        ConnServer.Execute("SET IDENTITY_INSERT tbl_PS_GT_History OFF;")
     End Sub
+    Public Sub Insert_Collect_tbl_PS_GT_Zero_Out(pb As ProgressBar, l As Label)
+        ConnServer.Execute("SET IDENTITY_INSERT tbl_PS_GT_Zero_Out ON;")
+        Dim year As Integer = Now.Year - 1
+        rs = New ADODB.Recordset
+        rs.Open($"select * from tbl_PS_GT_Zero_Out  where [Counter] = '{gbl_Counter}'   ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_PS_GT_Zero_Out  :" & pb.Maximum & "/" & pb.Value
+                Application.DoEvents()
+                Dim rx As New Recordset
+                rx.Open($"select TOP 1 * from tbl_PS_GT_Zero_Out where  PK = { fNum(rs.Fields("PK").Value)} ", ConnServer, CursorTypeEnum.adOpenStatic)
+                If rx.RecordCount = 0 Then
+                    Dim strSQL As String = $"
+                       INSERT INTO tbl_PS_GT_Zero_Out (
+                        PK,
+                        DDate,
+                        [Counter]
+                    ) VALUES (
+                        {fNum(rs.Fields("PK").Value)},
+                        {fDateIsEmpty(rs.Fields("DDate").Value.ToString())},
+                        '{fSqlFormat(rs.Fields("Counter").Value)}'
+                    );"
+                    ConnServer.Execute(strSQL)
+                End If
+                rs.MoveNext()
+            End While
+        End If
+        ConnServer.Execute("SET IDENTITY_INSERT tbl_PS_GT_Zero_Out OFF;")
+    End Sub
+
+
 End Module

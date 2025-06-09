@@ -14,6 +14,7 @@ Public Class FrmMain
     Const WM_NCLBUTTONDOWN As Integer = &HA1
     Const HTCAPTION As Integer = 2
     Private Sub btnExport_Click(sender As Object, e As EventArgs) Handles btnExport.Click
+        gbl_AdjustmentOnly = chkAdjustment.Checked
 
         saveIt()
 
@@ -76,6 +77,8 @@ Public Class FrmMain
 
                 CreateTable_tbl_PS_E_Journal(pbMainLoading, lblMainLoading)
                 CreateTable_tbl_PS_E_Journal_Detail(pbMainLoading, lblMainLoading)
+                CreateTable_tbl_PS_GT_History(pbMainLoading, lblMainLoading)
+                CreateTable_tbl_PS_GT_Zero_Out(pbMainLoading, lblMainLoading)
 
                 CreateTable_tbl_PS_GT(pbMainLoading, lblMainLoading)
                 CreateTable_tbl_PS_GT_ZZ(pbMainLoading, lblMainLoading)
@@ -250,6 +253,7 @@ Public Class FrmMain
 
                     Branch_Insert_tbl_PS_E_Journal(pbBranchLoading, lblBranchLoading)
                     Branch_Insert_tbl_PS_E_Journal_Detail(pbBranchLoading, lblBranchLoading)
+
                     Branch_Insert_tbl_PS_GT_Adjustment_EJournal(pbBranchLoading, lblBranchLoading)
                     Branch_Insert_tbl_PS_GT_Adjustment_EJournal_Detail(pbBranchLoading, lblBranchLoading)
 

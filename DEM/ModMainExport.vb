@@ -54,7 +54,9 @@ Module ModMainExport
     End Sub
 
     Private Sub Collect_tbl_PCPOS_Cashiers(pb As ProgressBar, l As Label)
-
+        If gbl_AdjustmentOnly = True Then
+            Exit Sub
+        End If
         rs = New ADODB.Recordset
         rs.Open("select * from tbl_PCPOS_Cashiers ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
@@ -133,6 +135,9 @@ Module ModMainExport
 
     End Sub
     Private Sub Collect_tbl_ItemsForPLU(pb As ProgressBar, l As Label)
+        If gbl_AdjustmentOnly = True Then
+            Exit Sub
+        End If
         rs = New ADODB.Recordset
 
         If gbl_DownloadType = 0 Then
@@ -446,6 +451,7 @@ Module ModMainExport
     Private Sub Collect_tbl_Bank_Terms(pb As ProgressBar, l As Label)
 
 
+
         rs = New ADODB.Recordset
         rs.Open("select * from tbl_Bank_Terms ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
@@ -547,6 +553,9 @@ Module ModMainExport
     End Sub
 
     Private Sub Collect_tbl_GiftCert_List(pb As ProgressBar, l As Label)
+
+
+
         Dim year As Integer = Now.Year - 1
 
         rs = New ADODB.Recordset
@@ -614,6 +623,7 @@ Module ModMainExport
         End Try
     End Sub
     Private Sub Collect_tbl_VPlus_Codes(pb As ProgressBar, l As Label)
+
         Dim year As Integer = Now.Year - 5
         Dim n As Integer = 0
         rs = New ADODB.Recordset
@@ -683,6 +693,8 @@ Module ModMainExport
         End Try
     End Sub
     Private Sub Collect_tbl_VPlus_Codes_Validity(pb As ProgressBar, l As Label)
+
+
         Dim year As Integer = Now.Year - 5
 
         rs = New ADODB.Recordset
@@ -738,6 +750,15 @@ Module ModMainExport
         End Try
     End Sub
     Private Sub Collect_tbl_PCPOS_Cashiers_Changes(pb As ProgressBar, l As Label)
+
+        If gbl_AdjustmentOnly = True Then
+            Exit Sub
+        End If
+
+        If gbl_DownloadType = 0 Then
+            Exit Sub
+        End If
+
         rs = New ADODB.Recordset
         rs.Open($"select * from tbl_PCPOS_Cashiers_Changes", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
@@ -789,6 +810,12 @@ Module ModMainExport
     End Sub
 
     Private Sub Collect_tbl_Items_Changes(pb As ProgressBar, l As Label)
+        If gbl_AdjustmentOnly = True Then
+            Exit Sub
+        End If
+        If gbl_DownloadType = 0 Then
+            Exit Sub
+        End If
         Dim year As Integer = Now.Year - 1
         rs = New ADODB.Recordset
         rs.Open($"select top 1000 * from tbl_Items_Change where year(DateChange) >= {year} order by dateChange desc", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
@@ -848,6 +875,13 @@ Module ModMainExport
     End Sub
 
     Private Sub Collect_tbl_ItemsForPLU_For_Effect(pb As ProgressBar, l As Label)
+        If gbl_AdjustmentOnly = True Then
+            Exit Sub
+        End If
+        If gbl_DownloadType = 0 Then
+            Exit Sub
+        End If
+
         Dim year As Integer = Now.Year - 1
         rs = New ADODB.Recordset
         rs.Open($"select * from tbl_ItemsForPLU_For_Effect", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
@@ -888,6 +922,8 @@ Module ModMainExport
     End Sub
 
     Public Sub CreateTable_tbl_Items(pb As ProgressBar, l As Label)
+
+
         Try
             Dim createTableSql As String = "CREATE TABLE tbl_Items (
                                             PK INTEGER PRIMARY KEY,
@@ -961,6 +997,9 @@ Module ModMainExport
     End Sub
 
     Private Sub Collect_tbl_Items(pb As ProgressBar, l As Label)
+        If gbl_AdjustmentOnly = True Then
+            Exit Sub
+        End If
         Dim year As Integer = Now.Year - 1
 
         rs = New ADODB.Recordset
@@ -1194,6 +1233,7 @@ Module ModMainExport
         End Try
     End Sub
     Private Sub Collect_tbl_Concession_PCR(pb As ProgressBar, l As Label)
+
         Dim year As Integer = Now.Year - 1
         rs = New ADODB.Recordset
         rs.Open($"select * from tbl_Concession_PCR where YYear >= '{year}' ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
@@ -1394,6 +1434,7 @@ Module ModMainExport
     End Sub
 
     Private Sub Collect_tbl_Concession_PCR_Det(pb As ProgressBar, l As Label)
+
         Dim year As Integer = Now.Year - 1
         rs = New ADODB.Recordset
         rs.Open($"select dd.* from [tbl_Concession_PCR_Det] as dd INNER JOIN tbl_Concession_PCR on tbl_Concession_PCR.PK = dd.ConcPCRKey WHERE tbl_Concession_PCR.YYear >='{year}' ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
@@ -1504,6 +1545,7 @@ Module ModMainExport
     End Sub
 
     Private Sub Collect_tbl_Concession_PCR_Effectivity(pb As ProgressBar, l As Label)
+
         Dim year As Integer = Now.Year - 1
         rs = New ADODB.Recordset
         rs.Open($"select * from tbl_Concession_PCR_Effectivity where YEAR(Effect_To) >= {year} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
@@ -1565,6 +1607,7 @@ Module ModMainExport
     End Sub
 
     Private Sub Collect_tbl_GiftCert_Changes(pb As ProgressBar, l As Label)
+
         Dim year As Integer = Now.Year - 1
 
         rs = New ADODB.Recordset
@@ -1610,6 +1653,10 @@ Module ModMainExport
     End Sub
 
     Private Sub Collect_tbl_PS_Upload_Utility(pb As ProgressBar, l As Label)
+        If gbl_AdjustmentOnly = True Then
+            Exit Sub
+        End If
+
         Dim year As Integer = Now.Year - 1
 
         rs = New ADODB.Recordset
@@ -1652,6 +1699,10 @@ Module ModMainExport
         End Try
     End Sub
     Private Sub Collect_tbl_VPlus_Codes_Changes(pb As ProgressBar, l As Label)
+        If gbl_AdjustmentOnly = True Then
+            Exit Sub
+        End If
+
         Dim year As Integer = Now.Year - 1
 
         rs = New ADODB.Recordset
@@ -1705,6 +1756,10 @@ Module ModMainExport
         End Try
     End Sub
     Private Sub Collect_tbl_VPlus_Summary(pb As ProgressBar, l As Label)
+        If gbl_AdjustmentOnly = True Then
+            Exit Sub
+        End If
+
         Dim year As Integer = Now.Year - 1
 
         rs = New ADODB.Recordset
@@ -1770,6 +1825,7 @@ Module ModMainExport
         End Try
     End Sub
     Private Sub Collect_tbl_VPlus_Codes_For_Offline(pb As ProgressBar, l As Label)
+
         Dim year As Integer = Now.Year - 1
         rs = New ADODB.Recordset
         rs.Open($"select * from tbl_VPlus_Codes_For_Offline where year(CreatedOn) >= {year} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
@@ -1817,6 +1873,8 @@ Module ModMainExport
         End Try
     End Sub
     Private Sub Collect_tbl_VPlus_App(pb As ProgressBar, l As Label)
+
+
         Dim year As Integer = Now.Year - 5
 
         rs = New ADODB.Recordset
@@ -1857,10 +1915,11 @@ Module ModMainExport
         End Try
     End Sub
     Private Sub Collect_tbl_RetrieveHistoryForLocal(pb As ProgressBar, l As Label)
-        Dim year As Integer = Now.Year - 5
 
+        Dim CounterList As String = getCounterList()
+        Dim year As Integer = Now.Year - 5
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_RetrieveHistoryForLocal ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_RetrieveHistoryForLocal WHERE [Counter] in ({CounterList}) ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -1961,9 +2020,9 @@ Module ModMainExport
         End Try
     End Sub
     Private Sub Collect_tbl_PS_GT(pb As ProgressBar, l As Label)
-
+        Dim CounterList As String = getCounterList()
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_PS_GT ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_PS_GT WHERE [Counter] in ({CounterList}) ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -2126,10 +2185,10 @@ Module ModMainExport
     End Sub
     Private Sub Collect_tbl_PS_GT_ZZ(pb As ProgressBar, l As Label)
         Dim year As Integer = Now.Year - 5
-
+        Dim CounterList As String = getCounterList()
         rs = New ADODB.Recordset
         rs.CursorLocation = ADODB.CursorLocationEnum.adUseClient
-        rs.Open($"select * from tbl_PS_GT_ZZ ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_PS_GT_ZZ WHERE [Counter] in ({CounterList}) ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -2517,15 +2576,11 @@ Module ModMainExport
                 ConnLocal.Execute(strSQL)
                 rs.MoveNext()
             End While
-
         End If
 
     End Sub
     Public Sub CreateTable_tbl_PS_GT_Adjustment_EJournal_Detail(pb As ProgressBar, l As Label)
         Try
-
-
-
             Dim createTableSql As String = "CREATE TABLE tbl_PS_GT_Adjustment_EJournal_Detail (
                                             ID INTEGER PRIMARY KEY,
                                             TransactionNumber TEXT(15) NOT NULL,
@@ -2564,7 +2619,6 @@ Module ModMainExport
             MessageBox.Show("Counter not found")
             Exit Sub
         End If
-
 
         rs = New ADODB.Recordset
         rs.CursorLocation = ADODB.CursorLocationEnum.adUseClient
@@ -2641,6 +2695,9 @@ Module ModMainExport
     End Sub
     Private Sub Collect_tbl_PaidOutDenominations(pb As ProgressBar, l As Label)
 
+        If gbl_AdjustmentOnly = True Then
+            Exit Sub
+        End If
 
         rs = New ADODB.Recordset
         rs.CursorLocation = ADODB.CursorLocationEnum.adUseClient
@@ -2704,6 +2761,9 @@ Module ModMainExport
         End Try
     End Sub
     Private Sub Collect_tbl_PaidOutTransactions(pb As ProgressBar, l As Label)
+        If gbl_AdjustmentOnly = True Then
+            Exit Sub
+        End If
         Dim year As Integer = Now.Year - 1
         Dim CounterList As String = getCounterList()
 
@@ -2765,6 +2825,256 @@ Module ModMainExport
             End While
         End If
 
+    End Sub
+
+
+    Public Sub CreateTable_tbl_PS_GT_History(pb As ProgressBar, l As Label)
+
+        Try
+            Dim createTableSql As String = "CREATE TABLE tbl_PS_GT_History (
+                                                    PK INTEGER PRIMARY KEY,
+                                                    EDate DATETIME NOT NULL,
+                                                    [Counter] TEXT(3) NOT NULL,
+                                                    TransactionCount INTEGER NOT NULL,
+                                                    GrandTotal DOUBLE NOT NULL,
+                                                    ZZCount INTEGER NOT NULL,
+                                                    ResetCnt TEXT(20) NOT NULL,
+                                                    ResetTrans DOUBLE NOT NULL,
+                                                    InvoiceNumberOld TEXT(10) NOT NULL,
+                                                    InvoiceNumberCnt DOUBLE NOT NULL,
+                                                    InvoiceNumber TEXT(10) NOT NULL,
+                                                    RA DOUBLE NOT NULL,
+                                                    RACount INTEGER NOT NULL,
+                                                    Sales DOUBLE NOT NULL,
+                                                    SalesCount DOUBLE NOT NULL,
+                                                    Discount DOUBLE NOT NULL,
+                                                    Surcharge DOUBLE NOT NULL,
+                                                    TranCount INTEGER NOT NULL,
+                                                    Cash DOUBLE NOT NULL,
+                                                    CashCount INTEGER NOT NULL,
+                                                    Card DOUBLE NOT NULL,
+                                                    CardCount INTEGER NOT NULL,
+                                                    [GC] DOUBLE NOT NULL,
+                                                    GCCount INTEGER NOT NULL,
+                                                    IncentiveCard DOUBLE NOT NULL,
+                                                    IncentiveCardCount INTEGER NOT NULL,
+                                                    CreditMemo DOUBLE NOT NULL,
+                                                    CreditMemoCount INTEGER NOT NULL,
+                                                    CM_CashRefund DOUBLE NOT NULL,
+                                                    CM_CashRefundCount INTEGER NOT NULL,
+                                                    ATD DOUBLE NOT NULL,
+                                                    ATDCount INTEGER NOT NULL,
+                                                    VPlus DOUBLE NOT NULL,
+                                                    VPlusCount INTEGER NOT NULL,
+                                                    Misc DOUBLE NOT NULL,
+                                                    MiscCount INTEGER NOT NULL,
+                                                    [SN] TEXT(20) NOT NULL,
+                                                    PermitNo TEXT(50) NOT NULL,
+                                                    [M_I_N] TEXT(50) NOT NULL,
+                                                    Trans BYTE NOT NULL,
+                                                    [Locked] BYTE NOT NULL,
+                                                    VPlusCodeCount DOUBLE NOT NULL,
+                                                    Header1 TEXT(50) NOT NULL,
+                                                    Header2 TEXT(50) NOT NULL,
+                                                    Header3 TEXT(50) NOT NULL,
+                                                    TIN TEXT(50) NOT NULL,
+                                                    ForOfflineMode BYTE NOT NULL,
+                                                    CapableOffline BYTE NOT NULL,
+                                                    WithEJournal BYTE NOT NULL,
+                                                    BankCommission DOUBLE,
+                                                    LastUpdated DATETIME NOT NULL
+                                                );"
+
+            ConnLocal.Execute(createTableSql)
+            Collect_tbl_PS_GT_History(pb, l)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "tbl_PS_GT_History ")
+            Application.Exit()
+        End Try
+    End Sub
+
+    Private Sub Collect_tbl_PS_GT_History(pb As ProgressBar, l As Label)
+        Dim CounterList As String = getCounterList()
+        If CounterList = "" Then
+            MessageBox.Show("Counter not found")
+            Exit Sub
+        End If
+        Dim year As Integer = Now.Year - 1
+
+        rs = New ADODB.Recordset
+        rs.Open($"select * from tbl_PS_GT_History  where [Counter] in ({CounterList})  ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_PS_GT_History  :" & pb.Maximum & "/" & pb.Value
+                Application.DoEvents()
+                Dim strSQL As String = $"
+                        INSERT INTO tbl_PS_GT_History (
+                            PK,
+                            EDate,
+                            [Counter],
+                            TransactionCount,
+                            GrandTotal,
+                            ZZCount,
+                            ResetCnt,
+                            ResetTrans,
+                            InvoiceNumberOld,
+                            InvoiceNumberCnt,
+                            InvoiceNumber,
+                            [RA],
+                            RACount,
+                            Sales,
+                            SalesCount,
+                            Discount,
+                            Surcharge,
+                            TranCount,
+                            Cash,
+                            CashCount,
+                            Card,
+                            CardCount,
+                            [GC],
+                            GCCount,
+                            IncentiveCard,
+                            IncentiveCardCount,
+                            CreditMemo,
+                            CreditMemoCount,
+                            CM_CashRefund,
+                            CM_CashRefundCount,
+                            ATD,
+                            ATDCount,
+                            VPlus,
+                            VPlusCount,
+                            Misc,
+                            MiscCount,
+                            [SN],
+                            PermitNo,
+                            M_I_N,
+                            Trans,
+                            Locked,
+                            VPlusCodeCount,
+                            Header1,
+                            Header2,
+                            Header3,
+                            TIN,
+                            ForOfflineMode,
+                            CapableOffline,
+                            WithEJournal,
+                            BankCommission,
+                            LastUpdated
+
+                        ) VALUES (
+                            {fNum(rs.Fields("PK").Value)},
+                            {fDateIsEmpty(rs.Fields("EDate").Value.ToString())},
+                            '{fSqlFormat(rs.Fields("Counter").Value)}',
+                            {fNum(rs.Fields("TransactionCount").Value)},
+                            {fNum(rs.Fields("GrandTotal").Value)},
+                            {fNum(rs.Fields("ZZCount").Value)},
+                            '{fSqlFormat(rs.Fields("ResetCnt").Value)}',
+                            {fNum(rs.Fields("ResetTrans").Value)},
+                            '{fSqlFormat(rs.Fields("InvoiceNumberOld").Value)}',
+                            {fNum(rs.Fields("InvoiceNumberCnt").Value)},
+                            '{fSqlFormat(rs.Fields("InvoiceNumber").Value)}',
+                            {fNum(rs.Fields("RA").Value)},
+                            {fNum(rs.Fields("RACount").Value)},
+                            {fNum(rs.Fields("Sales").Value)},
+                            {fNum(rs.Fields("SalesCount").Value)},
+                            {fNum(rs.Fields("Discount").Value)},
+                            {fNum(rs.Fields("Surcharge").Value)},
+                            {fNum(rs.Fields("TranCount").Value)},
+                            {fNum(rs.Fields("Cash").Value)},
+                            {fNum(rs.Fields("CashCount").Value)},
+                            {fNum(rs.Fields("Card").Value)},
+                            {fNum(rs.Fields("CardCount").Value)},
+                            {fNum(rs.Fields("GC").Value)},
+                            {fNum(rs.Fields("GCCount").Value)},
+                            {fNum(rs.Fields("IncentiveCard").Value)},
+                            {fNum(rs.Fields("IncentiveCardCount").Value)},
+                            {fNum(rs.Fields("CreditMemo").Value)},
+                            {fNum(rs.Fields("CreditMemoCount").Value)},
+                            {fNum(rs.Fields("CM_CashRefund").Value)},
+                            {fNum(rs.Fields("CM_CashRefundCount").Value)},
+                            {fNum(rs.Fields("ATD").Value)},
+                            {fNum(rs.Fields("ATDCount").Value)},
+                            {fNum(rs.Fields("VPlus").Value)},
+                            {fNum(rs.Fields("VPlusCount").Value)},
+                            {fNum(rs.Fields("Misc").Value)},
+                            {fNum(rs.Fields("MiscCount").Value)},
+                            '{fSqlFormat(rs.Fields("SN").Value)}',
+                            '{fSqlFormat(rs.Fields("PermitNo").Value)}',
+                            '{fSqlFormat(rs.Fields("M_I_N").Value)}',
+                            {fNum(rs.Fields("Trans").Value)},
+                            {fNum(rs.Fields("Locked").Value)},
+                            {fNum(rs.Fields("VPlusCodeCount").Value)},
+                            '{fSqlFormat(rs.Fields("Header1").Value)}',
+                            '{fSqlFormat(rs.Fields("Header2").Value)}',
+                            '{fSqlFormat(rs.Fields("Header3").Value)}',
+                            '{fSqlFormat(rs.Fields("TIN").Value)}',
+                            {fNum(rs.Fields("ForOfflineMode").Value)},
+                            {fNum(rs.Fields("CapableOffline").Value)},
+                            {fNum(rs.Fields("WithEJournal").Value)},
+                            {fNum(rs.Fields("BankCommission").Value)},
+                            {fDateIsEmpty(rs.Fields("LastUpdated").Value.ToString())}
+                        );"
+
+                ConnLocal.Execute(strSQL)
+                rs.MoveNext()
+            End While
+        End If
+    End Sub
+
+    Public Sub CreateTable_tbl_PS_GT_Zero_Out(pb As ProgressBar, l As Label)
+
+        Try
+            Dim createTableSql As String = "CREATE TABLE tbl_PS_GT_Zero_Out (
+                                                PK INTEGER PRIMARY KEY,
+                                                DDate DATETIME NOT NULL,
+                                                [Counter] TEXT(3) NOT NULL
+                                            );"
+
+            ConnLocal.Execute(createTableSql)
+            Collect_tbl_PS_GT_Zero_Out(pb, l)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "tbl_PS_GT_Zero_Out ")
+            Application.Exit()
+        End Try
+    End Sub
+
+    Private Sub Collect_tbl_PS_GT_Zero_Out(pb As ProgressBar, l As Label)
+        Dim CounterList As String = getCounterList()
+        If CounterList = "" Then
+            MessageBox.Show("Counter not found")
+            Exit Sub
+        End If
+        Dim year As Integer = Now.Year - 1
+
+        rs = New ADODB.Recordset
+        rs.Open($"select * from tbl_PS_GT_Zero_Out  where [Counter] in ({CounterList})  ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_PS_GT_Zero_Out  :" & pb.Maximum & "/" & pb.Value
+                Application.DoEvents()
+                Dim strSQL As String = $"
+                       INSERT INTO tbl_PS_GT_Zero_Out (
+                            PK,
+                        DDate,
+                        [Counter]
+                    ) VALUES (
+                        {fNum(rs.Fields("PK").Value)},
+                        {fDateIsEmpty(rs.Fields("DDate").Value.ToString())},
+                        '{fSqlFormat(rs.Fields("Counter").Value)}'
+                    );"
+
+                ConnLocal.Execute(strSQL)
+                rs.MoveNext()
+            End While
+        End If
     End Sub
 
 End Module

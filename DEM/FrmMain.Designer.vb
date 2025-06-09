@@ -43,6 +43,7 @@ Partial Class FrmMain
         Me.lblDATABASE = New System.Windows.Forms.Label()
         Me.lblLogDownload = New System.Windows.Forms.Label()
         Me.lblLogUpload = New System.Windows.Forms.Label()
+        Me.chkAdjustment = New System.Windows.Forms.CheckBox()
         CType(Me.picOpenMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -257,6 +258,17 @@ Partial Class FrmMain
         Me.lblLogUpload.TabIndex = 34
         Me.lblLogUpload.Text = "Last Upload :"
         '
+        'chkAdjustment
+        '
+        Me.chkAdjustment.AutoSize = True
+        Me.chkAdjustment.BackColor = System.Drawing.Color.Transparent
+        Me.chkAdjustment.Location = New System.Drawing.Point(216, 143)
+        Me.chkAdjustment.Name = "chkAdjustment"
+        Me.chkAdjustment.Size = New System.Drawing.Size(102, 17)
+        Me.chkAdjustment.TabIndex = 35
+        Me.chkAdjustment.Text = "Adjustment Only"
+        Me.chkAdjustment.UseVisualStyleBackColor = False
+        '
         'FrmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -266,6 +278,7 @@ Partial Class FrmMain
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ClientSize = New System.Drawing.Size(704, 447)
         Me.ControlBox = False
+        Me.Controls.Add(Me.chkAdjustment)
         Me.Controls.Add(Me.lblLogUpload)
         Me.Controls.Add(Me.lblLogDownload)
         Me.Controls.Add(Me.lblDATABASE)
@@ -317,4 +330,5 @@ Partial Class FrmMain
     Friend WithEvents lblDATABASE As Label
     Friend WithEvents lblLogDownload As Label
     Friend WithEvents lblLogUpload As Label
+    Friend WithEvents chkAdjustment As CheckBox
 End Class

@@ -9,7 +9,7 @@ Module ModConnection
     Public ConnTemp As New ADODB.Connection()
 
     Public gbl_Counter As String
-
+    Public gbl_AdjustmentOnly As Boolean
     Public gbl_Database As String
     Public gbl_Server As String
     Public IsConnected As Boolean

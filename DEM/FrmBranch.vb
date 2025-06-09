@@ -83,6 +83,9 @@ Public Class FrmBranch
                 Branch_CreateTable_tbl_PaidOutTransactions(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_PaidOutTransactions_Det(pbBranchLoading, lblBranchLoading, dtpDate.Value)
 
+                Branch_CreateTable_tbl_CreditMemo(pbBranchLoading, lblBranchLoading, dtpDate.Value)
+                Branch_CreateTable_tbl_CreditMemo_CashRefund_Payment(pbBranchLoading, lblBranchLoading, dtpDate.Value)
+
 
                 SetLog(False)
                 lblBranchLoading.Text = ""
@@ -199,6 +202,8 @@ Public Class FrmBranch
 
         Insert_tbl_PaidOutDenominations(pbMainLoading, lblMainLoading)
         Insert_tbl_PaidOutTransactions(pbMainLoading, lblMainLoading)
+        Insert_Collect_tbl_PS_GT_History(pbMainLoading, lblMainLoading)
+        Insert_Collect_tbl_PS_GT_Zero_Out(pbMainLoading, lblMainLoading)
 
         lblMainLoading.Text = ""
         pbMainLoading.Value = 0
