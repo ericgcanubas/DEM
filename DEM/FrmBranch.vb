@@ -176,8 +176,6 @@ Public Class FrmBranch
         Insert_tbl_VPlus_Codes_Validity(pbMainLoading, lblMainLoading)
         Insert_tbl_VPlus_Codes_Changes(pbMainLoading, lblMainLoading)
 
-
-
         Insert_tbl_Concession_PCR(pbMainLoading, lblMainLoading)
         Insert_tbl_Concession_PCR_Det(pbMainLoading, lblMainLoading)
         Insert_tbl_Concession_PCR_Effectivity(pbMainLoading, lblMainLoading)
@@ -202,6 +200,7 @@ Public Class FrmBranch
 
         Insert_tbl_PaidOutDenominations(pbMainLoading, lblMainLoading)
         Insert_tbl_PaidOutTransactions(pbMainLoading, lblMainLoading)
+
         Insert_Collect_tbl_PS_GT_History(pbMainLoading, lblMainLoading)
         Insert_Collect_tbl_PS_GT_Zero_Out(pbMainLoading, lblMainLoading)
 
