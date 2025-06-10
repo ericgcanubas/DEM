@@ -1,0 +1,207 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\developer\\DEM\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{49DE4457-E399-44B5-940A-840AD7787BC5}|DEM\\DEM.vbproj|c:\\developer\\dem\\dem\\modbranchexport.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "RelativeMoniker": "D:0:0:{49DE4457-E399-44B5-940A-840AD7787BC5}|DEM\\DEM.vbproj|solutionrelative:dem\\modbranchexport.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{49DE4457-E399-44B5-940A-840AD7787BC5}|DEM\\DEM.vbproj|c:\\developer\\dem\\dem\\frmmain.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form",
+      "RelativeMoniker": "D:0:0:{49DE4457-E399-44B5-940A-840AD7787BC5}|DEM\\DEM.vbproj|solutionrelative:dem\\frmmain.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{49DE4457-E399-44B5-940A-840AD7787BC5}|DEM\\DEM.vbproj|c:\\developer\\dem\\dem\\frmmainsetup.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form",
+      "RelativeMoniker": "D:0:0:{49DE4457-E399-44B5-940A-840AD7787BC5}|DEM\\DEM.vbproj|solutionrelative:dem\\frmmainsetup.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{49DE4457-E399-44B5-940A-840AD7787BC5}|DEM\\DEM.vbproj|c:\\developer\\dem\\dem\\frmsetup.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form",
+      "RelativeMoniker": "D:0:0:{49DE4457-E399-44B5-940A-840AD7787BC5}|DEM\\DEM.vbproj|solutionrelative:dem\\frmsetup.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{49DE4457-E399-44B5-940A-840AD7787BC5}|DEM\\DEM.vbproj|c:\\developer\\dem\\dem\\frmbranch.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form",
+      "RelativeMoniker": "D:0:0:{49DE4457-E399-44B5-940A-840AD7787BC5}|DEM\\DEM.vbproj|solutionrelative:dem\\frmbranch.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{49DE4457-E399-44B5-940A-840AD7787BC5}|DEM\\DEM.vbproj|c:\\developer\\dem\\dem\\modmainexport.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "RelativeMoniker": "D:0:0:{49DE4457-E399-44B5-940A-840AD7787BC5}|DEM\\DEM.vbproj|solutionrelative:dem\\modmainexport.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{49DE4457-E399-44B5-940A-840AD7787BC5}|DEM\\DEM.vbproj|c:\\developer\\dem\\dem\\modbranchimport.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "RelativeMoniker": "D:0:0:{49DE4457-E399-44B5-940A-840AD7787BC5}|DEM\\DEM.vbproj|solutionrelative:dem\\modbranchimport.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{49DE4457-E399-44B5-940A-840AD7787BC5}|DEM\\DEM.vbproj|c:\\developer\\dem\\dem\\modmainimport.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "RelativeMoniker": "D:0:0:{49DE4457-E399-44B5-940A-840AD7787BC5}|DEM\\DEM.vbproj|solutionrelative:dem\\modmainimport.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{49DE4457-E399-44B5-940A-840AD7787BC5}|DEM\\DEM.vbproj|c:\\developer\\dem\\dem\\frmbranch.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "RelativeMoniker": "D:0:0:{49DE4457-E399-44B5-940A-840AD7787BC5}|DEM\\DEM.vbproj|solutionrelative:dem\\frmbranch.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{49DE4457-E399-44B5-940A-840AD7787BC5}|DEM\\DEM.vbproj|c:\\developer\\dem\\dem\\frmmain.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "RelativeMoniker": "D:0:0:{49DE4457-E399-44B5-940A-840AD7787BC5}|DEM\\DEM.vbproj|solutionrelative:dem\\frmmain.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{49DE4457-E399-44B5-940A-840AD7787BC5}|DEM\\DEM.vbproj|c:\\developer\\dem\\dem\\modconnection.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "RelativeMoniker": "D:0:0:{49DE4457-E399-44B5-940A-840AD7787BC5}|DEM\\DEM.vbproj|solutionrelative:dem\\modconnection.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 7,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "FrmSetup.vb [Design]",
+              "DocumentMoniker": "C:\\developer\\DEM\\DEM\\FrmSetup.vb",
+              "RelativeDocumentMoniker": "DEM\\FrmSetup.vb",
+              "ToolTip": "C:\\developer\\DEM\\DEM\\FrmSetup.vb [Design]",
+              "RelativeToolTip": "DEM\\FrmSetup.vb [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-06-09T16:24:10.575Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "FrmMainSetup.vb [Design]",
+              "DocumentMoniker": "C:\\developer\\DEM\\DEM\\FrmMainSetup.vb",
+              "RelativeDocumentMoniker": "DEM\\FrmMainSetup.vb",
+              "ToolTip": "C:\\developer\\DEM\\DEM\\FrmMainSetup.vb [Design]",
+              "RelativeToolTip": "DEM\\FrmMainSetup.vb [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-06-09T16:24:05.893Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "FrmBranch.vb",
+              "DocumentMoniker": "C:\\developer\\DEM\\DEM\\FrmBranch.vb",
+              "RelativeDocumentMoniker": "DEM\\FrmBranch.vb",
+              "ToolTip": "C:\\developer\\DEM\\DEM\\FrmBranch.vb",
+              "RelativeToolTip": "DEM\\FrmBranch.vb",
+              "ViewState": "AgIAAKMAAAAAAAAAAAAswLIAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-06-09T16:20:50.729Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "FrmMain.vb [Design]",
+              "DocumentMoniker": "C:\\developer\\DEM\\DEM\\FrmMain.vb",
+              "RelativeDocumentMoniker": "DEM\\FrmMain.vb",
+              "ToolTip": "C:\\developer\\DEM\\DEM\\FrmMain.vb [Design]",
+              "RelativeToolTip": "DEM\\FrmMain.vb [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-06-09T15:46:32.023Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "FrmBranch.vb [Design]",
+              "DocumentMoniker": "C:\\developer\\DEM\\DEM\\FrmBranch.vb",
+              "RelativeDocumentMoniker": "DEM\\FrmBranch.vb",
+              "ToolTip": "C:\\developer\\DEM\\DEM\\FrmBranch.vb [Design]",
+              "RelativeToolTip": "DEM\\FrmBranch.vb [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-06-09T15:46:28.092Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ModMainExport.vb",
+              "DocumentMoniker": "C:\\developer\\DEM\\DEM\\ModMainExport.vb",
+              "RelativeDocumentMoniker": "DEM\\ModMainExport.vb",
+              "ToolTip": "C:\\developer\\DEM\\DEM\\ModMainExport.vb",
+              "RelativeToolTip": "DEM\\ModMainExport.vb",
+              "ViewState": "AgIAAFUDAAAAAAAAAAAqwMYLAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-06-09T15:41:32.791Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ModBranchExport.vb",
+              "DocumentMoniker": "C:\\developer\\DEM\\DEM\\ModBranchExport.vb",
+              "RelativeDocumentMoniker": "DEM\\ModBranchExport.vb",
+              "ToolTip": "C:\\developer\\DEM\\DEM\\ModBranchExport.vb",
+              "RelativeToolTip": "DEM\\ModBranchExport.vb",
+              "ViewState": "AgIAAM8BAAAAAAAAAAAAALUEAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-06-09T15:39:21.662Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "FrmMain.vb",
+              "DocumentMoniker": "C:\\developer\\DEM\\DEM\\FrmMain.vb",
+              "RelativeDocumentMoniker": "DEM\\FrmMain.vb",
+              "ToolTip": "C:\\developer\\DEM\\DEM\\FrmMain.vb",
+              "RelativeToolTip": "DEM\\FrmMain.vb",
+              "ViewState": "AgIAAD8AAAAAAAAAAAAqwFAAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-06-09T15:47:01.671Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ModMainImport.vb",
+              "DocumentMoniker": "C:\\developer\\DEM\\DEM\\ModMainImport.vb",
+              "RelativeDocumentMoniker": "DEM\\ModMainImport.vb",
+              "ToolTip": "C:\\developer\\DEM\\DEM\\ModMainImport.vb",
+              "RelativeToolTip": "DEM\\ModMainImport.vb",
+              "ViewState": "AgIAAFcCAAAAAAAAAAAswBEDAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-06-09T15:36:32.043Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ModBranchImport.vb",
+              "DocumentMoniker": "C:\\developer\\DEM\\DEM\\ModBranchImport.vb",
+              "RelativeDocumentMoniker": "DEM\\ModBranchImport.vb",
+              "ToolTip": "C:\\developer\\DEM\\DEM\\ModBranchImport.vb",
+              "RelativeToolTip": "DEM\\ModBranchImport.vb",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAKIFAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-06-09T15:39:16.484Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ModConnection.vb",
+              "DocumentMoniker": "C:\\developer\\DEM\\DEM\\ModConnection.vb",
+              "RelativeDocumentMoniker": "DEM\\ModConnection.vb",
+              "ToolTip": "C:\\developer\\DEM\\DEM\\ModConnection.vb",
+              "RelativeToolTip": "DEM\\ModConnection.vb",
+              "ViewState": "AgIAAGYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-06-09T15:40:49.749Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

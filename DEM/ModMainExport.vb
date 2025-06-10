@@ -381,8 +381,6 @@ Module ModMainExport
 
     End Sub
 
-
-
     Public Sub CreateTable_tbl_Bank_Changes(pb As ProgressBar, l As Label)
         Try
             Dim createTableSql As String = "  CREATE TABLE tbl_Bank_Changes (
@@ -922,8 +920,6 @@ Module ModMainExport
     End Sub
 
     Public Sub CreateTable_tbl_Items(pb As ProgressBar, l As Label)
-
-
         Try
             Dim createTableSql As String = "CREATE TABLE tbl_Items (
                                             PK INTEGER PRIMARY KEY,
@@ -1388,8 +1384,6 @@ Module ModMainExport
             End While
         End If
     End Sub
-
-
     Public Sub CreateTable_tbl_Concession_PCR_Det(pb As ProgressBar, l As Label)
         Try
             Dim createTableSql As String = " CREATE TABLE tbl_Concession_PCR_Det (
@@ -1521,8 +1515,6 @@ Module ModMainExport
         End If
     End Sub
 
-
-
     Public Sub CreateTable_tbl_Concession_PCR_Effectivity(pb As ProgressBar, l As Label)
         Try
             Dim createTableSql As String = "CREATE TABLE tbl_Concession_PCR_Effectivity (
@@ -1585,8 +1577,6 @@ Module ModMainExport
             End While
         End If
     End Sub
-
-
 
     Public Sub CreateTable_tbl_GiftCert_Changes(pb As ProgressBar, l As Label)
         Try
@@ -2167,7 +2157,6 @@ Module ModMainExport
 
     End Sub
 
-
     Public Sub CreateTable_tbl_PS_GT_ZZ(pb As ProgressBar, l As Label)
         Try
             Dim createTableSql As String = "CREATE TABLE tbl_PS_GT_ZZ (
@@ -2346,7 +2335,6 @@ Module ModMainExport
         End If
     End Sub
 
-
     Public Sub CreateTable_tbl_PS_E_Journal_Detail(pb As ProgressBar, l As Label)
         Try
             Dim createTableSql As String = "CREATE TABLE tbl_PS_E_Journal_Detail (
@@ -2446,7 +2434,6 @@ Module ModMainExport
         End If
 
     End Sub
-
 
     Public Sub CreateTable_tbl_PS_GT_Adjustment_EJournal(pb As ProgressBar, l As Label)
         Try

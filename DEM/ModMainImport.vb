@@ -747,7 +747,6 @@ Module ModMainImport
         End If
         ConnServer.Execute("SET IDENTITY_INSERT tbl_Items OFF;")
     End Sub
-
     Public Sub Insert_tbl_VPlus_Codes_Changes(pb As ProgressBar, l As Label)
 
         ConnServer.Execute("TRUNCATE TABLE tbl_VPlus_Codes_Changes;") ' clean table
@@ -784,8 +783,6 @@ Module ModMainImport
         End If
 
     End Sub
-
-
     Public Sub Insert_tbl_Concession_PCR(pb As ProgressBar, l As Label)
         ConnServer.Execute("SET IDENTITY_INSERT tbl_Concession_PCR ON;")
         rs = New ADODB.Recordset
@@ -1053,9 +1050,8 @@ Module ModMainImport
 
                 Application.DoEvents()
 
-
                 Dim rx As New Recordset
-                rx.Open($"select TOP 1 * from tbl_Concession_PCR_Effectivity WHERE PK = {fNum(rs.Fields("PK").Value)}", ConnServer, CursorTypeEnum.adOpenStatic)
+                rx.Open($"select TOP 1 * from tbl_Concession_PCR_Effectivity WHERE ConcPCRKey = {fNum(rs.Fields("ConcPCRKey").Value)} and Effect_From = {fDateIsEmpty(rs.Fields("Effect_From").Value.ToString())} and  Effect_To = {fDateIsEmpty(rs.Fields("Effect_To").Value.ToString())} ", ConnServer, CursorTypeEnum.adOpenStatic)
                 If rx.RecordCount = 0 Then
                     Dim strSQL As String = $"INSERT INTO tbl_Concession_PCR_Effectivity 
                                     (PK,
@@ -1077,6 +1073,23 @@ Module ModMainImport
                                    );"
 
                     ConnServer.Execute(strSQL)
+
+                Else
+
+                    Dim strSQL As String = $"
+                    UPDATE tbl_Concession_PCR_Effectivity SET
+                        ConcPCRKey = {fNum(rs.Fields("ConcPCRKey").Value)},
+                        Effect_From = {fDateIsEmpty(rs.Fields("Effect_From").Value.ToString())},
+                        Effect_To = {fDateIsEmpty(rs.Fields("Effect_To").Value.ToString())},
+                        Posted = {fNum(rs.Fields("Posted").Value)},
+                        IsExtended = {fNum(rs.Fields("IsExtended").Value)},
+                        ExtendedBy = {fNum(rs.Fields("ExtendedBy").Value)},
+                        LastModifiedBy = {fNum(rs.Fields("LastModifiedBy").Value)}
+                        WHERE  ConcPCRKey = {fNum(rs.Fields("ConcPCRKey").Value)} and 
+                        Effect_From = {fDateIsEmpty(rs.Fields("Effect_From").Value.ToString())} and 
+                        Effect_To = {fDateIsEmpty(rs.Fields("Effect_To").Value.ToString())};"
+
+                    ConnServer.Execute(strSQL)
                 End If
 
                 rs.MoveNext()
@@ -1085,7 +1098,6 @@ Module ModMainImport
         End If
         ConnServer.Execute("SET IDENTITY_INSERT tbl_Concession_PCR_Effectivity OFF;")
     End Sub
-
     Public Sub Insert_tbl_GiftCert_Changes(pb As ProgressBar, l As Label)
 
         ConnServer.Execute("SET IDENTITY_INSERT tbl_GiftCert_Changes ON;")
@@ -1112,9 +1124,21 @@ Module ModMainImport
                                     {fDateIsEmpty(rs.Fields("EffectDate").Value.ToString())}, 
                                     {rs.Fields("GCNumber").Value},
                                     {rs.Fields("GCAmount").Value},
-                                   '{fSqlFormat(rs.Fields("Changes").Value)}'
-                                );"
+                                   '{fSqlFormat(rs.Fields("Changes").Value)}');"
+
                     ConnServer.Execute(strSQL)
+
+                Else
+                    Dim strSQL As String = $"
+                        UPDATE tbl_GiftCert_Changes SET
+                            EffectDate = {fDateIsEmpty(rs.Fields("EffectDate").Value.ToString())},
+                            GCNumber = {rs.Fields("GCNumber").Value},
+                            GCAmount = {rs.Fields("GCAmount").Value},
+                            [Changes] = '{fSqlFormat(rs.Fields("Changes").Value)}'
+                        WHERE PK = {rs.Fields("PK").Value};"
+
+                    ConnServer.Execute(strSQL)
+
                 End If
 
                 rs.MoveNext()
@@ -1197,6 +1221,22 @@ Module ModMainImport
                                         {fNum(rs.Fields("OutPoints").Value)} 
                                    );"
                     ConnServer.Execute(strSQL)
+
+                Else
+                    Dim strSQL As String = $"
+                        UPDATE tbl_VPlus_Summary SET
+                        VPlusCode = '{fSqlFormat(rs.Fields("VPlusCode").Value)}',
+                        TransDate = {fDateIsEmpty(rs.Fields("TransDate").Value.ToString())},
+                        Location = '{fSqlFormat(rs.Fields("Location").Value)}',
+                        Cash = {fNum(rs.Fields("Cash").Value)},
+                        Card = {fNum(rs.Fields("Card").Value)},
+                        [GC] = {fNum(rs.Fields("GC").Value)},
+                        VPlus = {fNum(rs.Fields("VPlus").Value)},
+                        InOut = '{fSqlFormat(rs.Fields("InOut").Value)}',
+                        InPoints = {fNum(rs.Fields("InPoints").Value)},
+                        OutPoints = {fNum(rs.Fields("OutPoints").Value)}
+                    WHERE PK = {fNum(rs.Fields("PK").Value)};"
+
                 End If
                 rs.MoveNext()
             End While
@@ -1309,7 +1349,7 @@ Module ModMainImport
                 l.Text = "tbl_PS_GT :" & pb.Maximum & "/" & pb.Value
                 Application.DoEvents()
                 Dim rx As New Recordset
-                rx.Open($"select * from tbl_PS_GT WHERE [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}'", ConnServer, CursorTypeEnum.adOpenStatic)
+                rx.Open($"select TOP 1 * from tbl_PS_GT WHERE [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}'", ConnServer, CursorTypeEnum.adOpenStatic)
                 If (rx.RecordCount = 0) Then
                     Dim strSQL As String = $"INSERT INTO tbl_PS_GT 
                                             ( [Counter],
@@ -1660,7 +1700,11 @@ Module ModMainImport
                             TotalCreditMemo = {fNum(rs.Fields("TotalCreditMemo").Value)},
                             TotalHomeCredit = {fNum(rs.Fields("TotalHomeCredit").Value)},
                             TotalQRPay = {fNum(rs.Fields("TotalQRPay").Value)}
-                        WHERE PSNumber = '{fSqlFormat(rs.Fields("PSNumber").Value)}';"
+                        WHERE PSNumber = '{fSqlFormat(rs.Fields("PSNumber").Value)}' and 
+                            PSDate={fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and 
+                            [Counter]='{fSqlFormat(rs.Fields("Counter").Value)}' and 
+                            Cashier='{fSqlFormat(rs.Fields("Cashier").Value)}' and 
+                            POSTableKey =  {fNum(rs.Fields("POSTableKey").Value)};"
                 End If
                 rs.MoveNext()
             End While
@@ -2019,6 +2063,18 @@ Module ModMainImport
                                    );"
 
                     ConnServer.Execute(strSQL)
+
+                Else
+                    Dim strSQL As String = $"
+                        UPDATE tbl_PaidOutDenominations SET
+                            [Denominations_Code] = '{fSqlFormat(rs.Fields("Denominations_Code").Value)}',
+                            Denominations = {fNum(rs.Fields("Denominations").Value)},
+                            [Type] = {fNum(rs.Fields("Type").Value)},
+                            [Active] = {fNum(rs.Fields("Active").Value)}
+                        WHERE DenomPK = {fNum(rs.Fields("DenomPK").Value)};"
+
+
+                    ConnServer.Execute(strSQL)
                 End If
 
 
@@ -2258,6 +2314,62 @@ Module ModMainImport
                         );"
 
                     ConnServer.Execute(strSQL)
+                Else
+                    Dim strSQL As String = $"
+                    UPDATE tbl_PS_GT_History SET
+                        EDate = {fDateIsEmpty(rs.Fields("EDate").Value.ToString())},
+                        [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}',
+                        TransactionCount = {fNum(rs.Fields("TransactionCount").Value)},
+                        GrandTotal = {fNum(rs.Fields("GrandTotal").Value)},
+                        ZZCount = {fNum(rs.Fields("ZZCount").Value)},
+                        ResetCnt = '{fSqlFormat(rs.Fields("ResetCnt").Value)}',
+                        ResetTrans = {fNum(rs.Fields("ResetTrans").Value)},
+                        InvoiceNumberOld = '{fSqlFormat(rs.Fields("InvoiceNumberOld").Value)}',
+                        InvoiceNumberCnt = {fNum(rs.Fields("InvoiceNumberCnt").Value)},
+                        InvoiceNumber = '{fSqlFormat(rs.Fields("InvoiceNumber").Value)}',
+                        [RA] = {fNum(rs.Fields("RA").Value)},
+                        RACount = {fNum(rs.Fields("RACount").Value)},
+                        Sales = {fNum(rs.Fields("Sales").Value)},
+                        SalesCount = {fNum(rs.Fields("SalesCount").Value)},
+                        Discount = {fNum(rs.Fields("Discount").Value)},
+                        Surcharge = {fNum(rs.Fields("Surcharge").Value)},
+                        TranCount = {fNum(rs.Fields("TranCount").Value)},
+                        Cash = {fNum(rs.Fields("Cash").Value)},
+                        CashCount = {fNum(rs.Fields("CashCount").Value)},
+                        Card = {fNum(rs.Fields("Card").Value)},
+                        CardCount = {fNum(rs.Fields("CardCount").Value)},
+                        [GC] = {fNum(rs.Fields("GC").Value)},
+                        GCCount = {fNum(rs.Fields("GCCount").Value)},
+                        IncentiveCard = {fNum(rs.Fields("IncentiveCard").Value)},
+                        IncentiveCardCount = {fNum(rs.Fields("IncentiveCardCount").Value)},
+                        CreditMemo = {fNum(rs.Fields("CreditMemo").Value)},
+                        CreditMemoCount = {fNum(rs.Fields("CreditMemoCount").Value)},
+                        CM_CashRefund = {fNum(rs.Fields("CM_CashRefund").Value)},
+                        CM_CashRefundCount = {fNum(rs.Fields("CM_CashRefundCount").Value)},
+                        ATD = {fNum(rs.Fields("ATD").Value)},
+                        ATDCount = {fNum(rs.Fields("ATDCount").Value)},
+                        VPlus = {fNum(rs.Fields("VPlus").Value)},
+                        VPlusCount = {fNum(rs.Fields("VPlusCount").Value)},
+                        Misc = {fNum(rs.Fields("Misc").Value)},
+                        MiscCount = {fNum(rs.Fields("MiscCount").Value)},
+                        [SN] = '{fSqlFormat(rs.Fields("SN").Value)}',
+                        PermitNo = '{fSqlFormat(rs.Fields("PermitNo").Value)}',
+                        M_I_N = '{fSqlFormat(rs.Fields("M_I_N").Value)}',
+                        Trans = {fNum(rs.Fields("Trans").Value)},
+                        Locked = {fNum(rs.Fields("Locked").Value)},
+                        VPlusCodeCount = {fNum(rs.Fields("VPlusCodeCount").Value)},
+                        Header1 = '{fSqlFormat(rs.Fields("Header1").Value)}',
+                        Header2 = '{fSqlFormat(rs.Fields("Header2").Value)}',
+                        Header3 = '{fSqlFormat(rs.Fields("Header3").Value)}',
+                        TIN = '{fSqlFormat(rs.Fields("TIN").Value)}',
+                        ForOfflineMode = {fNum(rs.Fields("ForOfflineMode").Value)},
+                        CapableOffline = {fNum(rs.Fields("CapableOffline").Value)},
+                        WithEJournal = {fNum(rs.Fields("WithEJournal").Value)},
+                        BankCommission = {fNum(rs.Fields("BankCommission").Value)},
+                        LastUpdated = {fDateIsEmpty(rs.Fields("LastUpdated").Value.ToString())}
+                        WHERE PK = {fNum(rs.Fields("PK").Value)};"
+
+                    ConnServer.Execute(strSQL)
                 End If
 
                 rs.MoveNext()
@@ -2293,6 +2405,11 @@ Module ModMainImport
                         '{fSqlFormat(rs.Fields("Counter").Value)}'
                     );"
                     ConnServer.Execute(strSQL)
+                Else
+                    Dim strSQL As String = $"UPDATE tbl_PS_GT_Zero_Out 
+                                SET DDate = {fDateIsEmpty(rs.Fields("DDate").Value.ToString())},
+                                [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}'
+                                WHERE PK = {fNum(rs.Fields("PK").Value)}"
                 End If
                 rs.MoveNext()
             End While

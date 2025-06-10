@@ -835,11 +835,6 @@
         Dim ToDate As String = Now.Date.ToShortDateString()
         Dim FromDate As String = Now.Date.AddMonths(-2).ToShortDateString()
 
-
-
-
-
-
         rs = New ADODB.Recordset
         rs.CursorLocation = ADODB.CursorLocationEnum.adUseClient
         rs.Open($"select d.* from tbl_PS_GT_Adjustment_EJournal_Detail as d inner join tbl_PS_GT_Adjustment_EJournal as j on  j.PSNumber = d.TransactionNumber where j.[Counter] = '{gbl_Counter}'  and j.PsDate = {fDateIsEmpty(dt.ToShortDateString())}  ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
@@ -896,8 +891,6 @@
             End While
         End If
     End Sub
-
-
 
     Public Sub Branch_CreateTable_tbl_PS_EmployeeATD(pb As ProgressBar, l As Label, dt As Date)
         Try
@@ -1096,7 +1089,6 @@
 
     End Sub
 
-
     Public Sub Branch_CreateTable_tbl_PS_Tmp(pb As ProgressBar, l As Label, dt As Date)
         Try
             Dim createTableSql As String = "CREATE TABLE tbl_PS_Tmp (
@@ -1211,7 +1203,6 @@
         End If
 
     End Sub
-
 
     Public Sub Branch_CreateTable_tbl_PS_ItemsSold_Tmp(pb As ProgressBar, l As Label, dt As Date)
         Try

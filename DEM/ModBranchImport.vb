@@ -1441,7 +1441,6 @@ Module ModBranchImport
 
     End Function
 
-
     Public Sub Branch_Insert_tbl_PS_GT_Adjustment_EJournal(pb As ProgressBar, l As Label)
 
         rs = New ADODB.Recordset
