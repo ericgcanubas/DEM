@@ -53,12 +53,31 @@ Module ModMainImport
                                     {rs.Fields("Changes").Value},
                                     {rs.Fields("Admin").Value},
                                     {rs.Fields("Transfered").Value}
-                                )        
+                                ) ")
 
-            ")
+                Else
+
+                    ConnServer.Execute($"
+                    UPDATE tbl_PCPOS_Cashiers SET                       
+                        [Password] = '{rs.Fields("Password").Value}',
+                        Senior = {rs.Fields("Senior").Value},
+                        Track2 = '{rs.Fields("Track2").Value}',
+                        Track1 = '{rs.Fields("Track1").Value}',
+                        DirectVoid = {rs.Fields("DirectVoid").Value},
+                        DirectDiscount = {rs.Fields("DirectDiscount").Value},
+                        DirectSurcharge = {rs.Fields("DirectSurcharge").Value},
+                        SecureCode = '{rs.Fields("SecureCode").Value}',
+                        FullName = '{rs.Fields("FullName").Value}',
+                        CodeType = {rs.Fields("CodeType").Value},
+                        DiscountLimit = {rs.Fields("DiscountLimit").Value},
+                        Active = {rs.Fields("Active").Value},
+                        Changes = {rs.Fields("Changes").Value},
+                        Admin = {rs.Fields("Admin").Value},
+                        Transfered = {rs.Fields("Transfered").Value}
+                    WHERE CashierCode = '{rs.Fields("CashierCode").Value}';
+                ")
+
                 End If
-
-
                 rs.MoveNext()
             End While
         End If
@@ -99,6 +118,20 @@ Module ModMainImport
                                      {fDateIsEmpty(rs.Fields("PromoTo").Value.ToString())}
                                 );"
                     ConnServer.Execute(strSQL)
+
+                Else
+                    Dim strSQL As String = $"
+                            UPDATE tbl_ItemsForPLU SET
+                                ECRDescription = '{fSqlFormat(rs.Fields("ECRDescription").Value)}',
+                                ItemDescription = '{fSqlFormat(rs.Fields("ItemDescription").Value)}',
+                                GrossSRP = {fNum(rs.Fields("GrossSRP").Value)},
+                                PromoDisc = {fNum(rs.Fields("PromoDisc").Value)},
+                                PromoFrom = {fDateIsEmpty(rs.Fields("PromoFrom").Value.ToString())},
+                                PromoTo = {fDateIsEmpty(rs.Fields("PromoTo").Value.ToString())}
+                            WHERE ItemCode = '{rs.Fields("ItemCode").Value}';"
+
+                    ConnServer.Execute(strSQL)
+
                 End If
                 rs.MoveNext()
             End While
@@ -145,6 +178,23 @@ Module ModMainImport
                             
                                 );"
                     ConnServer.Execute(strSQL)
+
+                Else
+                    Dim strSQL As String = $"
+                                UPDATE tbl_Bank SET
+                                    BankName = '{fSqlFormat(rs.Fields("BankName").Value)}',
+                                    [Address] = '{fSqlFormat(rs.Fields("Address").Value)}',
+                                    TelNo = '{fSqlFormat(rs.Fields("TelNo").Value)}',
+                                    FaxNo = '{fSqlFormat(rs.Fields("FaxNo").Value)}',
+                                    ContactPerson = '{fSqlFormat(rs.Fields("ContactPerson").Value)}',
+                                    LastModified = '{fSqlFormat(rs.Fields("LastModified").Value)}',
+                                    Tax = {rs.Fields("Tax").Value},
+                                    Locked = {rs.Fields("Locked").Value},
+                                    CardType = {rs.Fields("CardType").Value},
+                                    IsDefault = {rs.Fields("IsDefault").Value}
+                                WHERE PK = {rs.Fields("PK").Value};
+"
+                    ConnServer.Execute(strSQL)
                 End If
                 rs.MoveNext()
             End While
@@ -186,6 +236,21 @@ Module ModMainImport
                                              {fNum(rs.Fields("Bank").Value)}       
                                              );"
                     ConnServer.Execute(strSQL)
+
+                Else
+
+                    Dim strSQL As String = $"
+                        UPDATE tbl_Banks SET
+                            BankCode = '{fSqlFormat(rs.Fields("BankCode").Value)}',
+                            BankName = '{fSqlFormat(rs.Fields("BankName").Value)}',
+                            Telephone = '{fSqlFormat(rs.Fields("Telephone").Value)}',
+                            MERC_COD = '{fSqlFormat(rs.Fields("MERC_COD").Value)}',
+                            MERC_COD2 = '{fSqlFormat(rs.Fields("MERC_COD2").Value)}',
+                            [Description] = '{fSqlFormat(rs.Fields("Description").Value)}',
+                            Bank = {fNum(rs.Fields("Bank").Value)}
+                        WHERE PK = {fNum(rs.Fields("PK").Value)};"
+
+                    ConnServer.Execute(strSQL)
                 End If
                 rs.MoveNext()
             End While
@@ -212,16 +277,26 @@ Module ModMainImport
                 rx.Open($"select TOP 1 * from tbl_Banks_Changes WHERE PK = {fNum(rs.Fields("PK").Value)}", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
                 If rx.RecordCount = 0 Then
                     Dim strSQL As String = $"INSERT INTO tbl_Banks_Changes 
-                                    (PK,
-                                    EffectDate,
-                                    BankKey,
-                                    [Changes])
-                                    VALUES ({fNum(rs.Fields("PK").Value)},  
-                                    {fDateIsEmpty(rs.Fields("EffectDate").Value.ToString())},
-                                    {fNum(rs.Fields("BankKey").Value)},    
-                                    '{fSqlFormat(rs.Fields("Changes").Value)}'   
-                                   );"
+                    (PK,
+                    EffectDate,
+                    BankKey,
+                    [Changes])
+                    VALUES ({fNum(rs.Fields("PK").Value)},  
+                    {fDateIsEmpty(rs.Fields("EffectDate").Value.ToString())},
+                    {fNum(rs.Fields("BankKey").Value)},    
+                    '{fSqlFormat(rs.Fields("Changes").Value)}'   
+                    );"
 
+                    ConnServer.Execute(strSQL)
+
+                Else
+                    Dim strSQL As String = $"
+                    UPDATE tbl_Banks_Changes SET
+                    EffectDate = {fDateIsEmpty(rs.Fields("EffectDate").Value.ToString())},
+                    BankKey = {fNum(rs.Fields("BankKey").Value)},
+                    [Changes] = '{fSqlFormat(rs.Fields("Changes").Value)}'
+                    WHERE PK = {fNum(rs.Fields("PK").Value)};
+                "
                     ConnServer.Execute(strSQL)
                 End If
                 rs.MoveNext()
@@ -255,20 +330,28 @@ Module ModMainImport
                                     {fNum(rs.Fields("BankKey").Value)},    
                                     '{fSqlFormat(rs.Fields("Changes").Value)}'   
                                    );"
-
                     ConnServer.Execute(strSQL)
+
+                Else
+                    Dim strSQL As String = $"
+                    UPDATE tbl_Bank_Changes SET
+                        EffectDate = {fDateIsEmpty(rs.Fields("EffectDate").Value.ToString())},
+                        BankKey = {fNum(rs.Fields("BankKey").Value)},
+                        [Changes] = '{fSqlFormat(rs.Fields("Changes").Value)}'
+                    WHERE PK = {fNum(rs.Fields("PK").Value)};"
+                    ConnServer.Execute(strSQL)
+
                 End If
                 rs.MoveNext()
             End While
 
         End If
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_Bank_Changes OFF;")
+        ConnServer.Execute("Set IDENTITY_INSERT tbl_Bank_Changes OFF;")
     End Sub
     Public Sub Insert_tbl_Bank_Terms(pb As ProgressBar, l As Label)
 
-
         rs = New Recordset
-        rs.Open("select * from tbl_Bank_Terms ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open("Select * from tbl_Bank_Terms ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -293,14 +376,20 @@ Module ModMainImport
                                     '{fSqlFormat(rs.Fields("TermsDescription").Value)}'
                                 );"
                     ConnServer.Execute(strSQL)
-                End If
 
+                Else
+                    Dim strSQL As String = $"
+                    UPDATE tbl_Bank_Terms SET
+                        Effectivity = {fDateIsEmpty(rs.Fields("Effectivity").Value.ToString())},
+                        [Type] = '{fSqlFormat(rs.Fields("Type").Value)}',
+                        Terms = '{fSqlFormat(rs.Fields("Terms").Value)}',
+                        TermsDescription = '{fSqlFormat(rs.Fields("TermsDescription").Value)}'
+                    WHERE BankKey = {fNum(rs.Fields("BankKey").Value)};"
+                    ConnServer.Execute(strSQL)
+                End If
                 rs.MoveNext()
             End While
-
         End If
-
-
     End Sub
     Public Sub Insert_tbl_QRPay_Type(pb As ProgressBar, l As Label)
         ConnServer.Execute("SET IDENTITY_INSERT tbl_QRPay_Type ON;")
@@ -369,8 +458,24 @@ Module ModMainImport
                                     {fDateIsEmpty(rs.Fields("ValidTo").Value.ToString())},
                                     {fDateIsEmpty(rs.Fields("DateAdded").Value.ToString())},
                                     {rs.Fields("Used").Value},
-                                    {fDateIsEmpty(rs.Fields("DateUsed").Value.ToString())}
-                                );"
+                                    {fDateIsEmpty(rs.Fields("DateUsed").Value.ToString())} );"
+
+                    ConnServer.Execute(strSQL)
+
+                Else
+
+                    Dim strSQL As String = $"
+                    UPDATE tbl_GiftCert_List SET
+                        GCNumber = {rs.Fields("GCNumber").Value},
+                        Amount = {rs.Fields("Amount").Value},
+                        Customer = '{fSqlFormat(rs.Fields("Customer").Value.ToString())}',
+                        ValidFrom = {fDateIsEmpty(rs.Fields("ValidFrom").Value.ToString())},
+                        ValidTo = {fDateIsEmpty(rs.Fields("ValidTo").Value.ToString())},
+                        DateAdded = {fDateIsEmpty(rs.Fields("DateAdded").Value.ToString())},
+                        Used = {rs.Fields("Used").Value},
+                        DateUsed = {fDateIsEmpty(rs.Fields("DateUsed").Value.ToString())}
+                    WHERE PK = {rs.Fields("PK").Value};"
+
                     ConnServer.Execute(strSQL)
                 End If
 
@@ -427,6 +532,24 @@ Module ModMainImport
                                     {fDateIsEmpty(rs.Fields("DateModified").Value.ToString())},
                                     {rs.Fields("Changes").Value} );"
                     ConnServer.Execute(strSQL)
+                Else
+                    Dim strSQL As String = $"
+                        UPDATE tbl_VPlus_Codes SET
+                            Customer = {fNum(rs.Fields("Customer").Value)},
+                            InPoints = {fNum(rs.Fields("InPoints").Value)},
+                            OutPoints = {fNum(rs.Fields("OutPoints").Value)},
+                            Blocked = {rs.Fields("Blocked").Value},
+                            Printed = {rs.Fields("Printed").Value},
+                            CreatedOn = {fDateIsEmpty(rs.Fields("CreatedOn").Value.ToString())},
+                            CreatedOnTime = {fDateIsEmpty(rs.Fields("CreatedOnTime").Value.ToString())},
+                            [Password] = '{fSqlFormat(rs.Fields("Password").Value.ToString())}',
+                            DateStarted = {fDateIsEmpty(rs.Fields("DateStarted").Value.ToString())},
+                            DateExpired = {fDateIsEmpty(rs.Fields("DateExpired").Value.ToString())},
+                            DateModified = {fDateIsEmpty(rs.Fields("DateModified").Value.ToString())},
+                            Changes = {rs.Fields("Changes").Value}
+                        WHERE Codes = '{fSqlFormat(rs.Fields("Codes").Value)}'; "
+
+                    ConnServer.Execute(strSQL)
                 End If
 
                 rs.MoveNext()
@@ -466,6 +589,16 @@ Module ModMainImport
                                    );"
 
                     ConnServer.Execute(strSQL)
+
+                Else
+                    Dim strSQL As String = $"
+                        UPDATE tbl_VPlus_Codes_Validity SET
+                            DateStarted = {fDateIsEmpty(rs.Fields("DateStarted").Value.ToString())},
+                            DateExpired = {fDateIsEmpty(rs.Fields("DateExpired").Value.ToString())},
+                            GracePeriod = {fDateIsEmpty(rs.Fields("GracePeriod").Value.ToString())}
+                        WHERE Codes = '{fSqlFormat(rs.Fields("Codes").Value)}';"
+
+                    ConnServer.Execute(strSQL)
                 End If
                 rs.MoveNext()
             End While
@@ -494,11 +627,22 @@ Module ModMainImport
                                     EffectDate,
                                     CashierPK,
                                     [Changes])
-                                    VALUES ('{fSqlFormat(rs.Fields("PK").Value)}',  
+                                    VALUES ({fNum(rs.Fields("PK").Value)},  
                                     {fDateIsEmpty(rs.Fields("EffectDate").Value.ToString())},
                                     {fNum(rs.Fields("CashierPK").Value)},    
                                     '{fSqlFormat(rs.Fields("Changes").Value)}'   
                                    );"
+
+                    ConnServer.Execute(strSQL)
+
+                Else
+                    Dim strSQL As String = $"
+                        UPDATE tbl_PCPOS_Cashiers_Changes SET
+                            EffectDate = {fDateIsEmpty(rs.Fields("EffectDate").Value.ToString())},
+                            CashierPK = {fNum(rs.Fields("CashierPK").Value)},
+                            [Changes] = '{fSqlFormat(rs.Fields("Changes").Value)}'
+                        WHERE PK = {fNum(rs.Fields("PK").Value)};
+                    "
 
                     ConnServer.Execute(strSQL)
                 End If
@@ -545,6 +689,20 @@ Module ModMainImport
                                    );"
 
                     ConnServer.Execute(strSQL)
+
+                Else
+                    Dim strSQL As String = $"
+                            UPDATE tbl_Items_Change SET
+                                ItemCode = '{fSqlFormat(rs.Fields("ItemCode").Value)}',
+                                ItemDescription = '{fSqlFormat(rs.Fields("ItemDescription").Value)}',
+                                GrossSRP = {fNum(rs.Fields("GrossSRP").Value)},
+                                DateChange = {fDateIsEmpty(rs.Fields("DateChange").Value.ToString())},
+                                Remarks = '{fSqlFormat(rs.Fields("Remarks").Value)}',
+                                UserName = '{fSqlFormat(rs.Fields("UserName").Value)}',
+                                DateTimeChange = {fDateIsEmpty(rs.Fields("DateTimeChange").Value.ToString())},
+                                ItemKey = {fNum(rs.Fields("ItemKey").Value)}
+                            WHERE PK = {rs.Fields("PK").Value};"
+                    ConnServer.Execute(strSQL)
                 End If
 
                 rs.MoveNext()
@@ -590,6 +748,20 @@ Module ModMainImport
                                     {fDateIsEmpty(rs.Fields("PromoFrom").Value.ToString())},       
                                     {fDateIsEmpty(rs.Fields("PromoTo").Value.ToString())}                    
                                    );"
+                    ConnServer.Execute(strSQL)
+                Else
+
+                    Dim strSQL As String = $"
+                        UPDATE tbl_ItemsForPLU_For_Effect SET
+                            EffectDate = {fDateIsEmpty(rs.Fields("EffectDate").Value.ToString())},
+                            ItemCode = '{fSqlFormat(rs.Fields("ItemCode").Value)}',
+                            ItemDescription = '{fSqlFormat(rs.Fields("ItemDescription").Value)}',
+                            GrossSRP = {fNum(rs.Fields("GrossSRP").Value)},
+                            PromoDisc = {fNum(rs.Fields("PromoDisc").Value)},
+                            PromoFrom = {fDateIsEmpty(rs.Fields("PromoFrom").Value.ToString())},
+                            PromoTo = {fDateIsEmpty(rs.Fields("PromoTo").Value.ToString())}
+                        WHERE PK = {rs.Fields("PK").Value};
+                    "
                     ConnServer.Execute(strSQL)
                 End If
                 rs.MoveNext()
@@ -740,6 +912,72 @@ Module ModMainImport
                                       {fNum(rs.Fields("Status").Value)}
 
                                    );"
+                    ConnServer.Execute(strSQL)
+
+                Else
+                    Dim strSQL As String = $"
+                        UPDATE tbl_Items SET
+                            ItemCode = '{fSqlFormat(rs.Fields("ItemCode").Value)}',
+                            ItemDescription = '{fSqlFormat(rs.Fields("ItemDescription").Value)}',
+                            ItemType = {fNum(rs.Fields("ItemType").Value)},
+                            ECRDescription = '{fSqlFormat(rs.Fields("ECRDescription").Value)}',
+                            StockNumber = '{fSqlFormat(rs.Fields("StockNumber").Value)}',
+                            UnitOfMeasure = '{fSqlFormat(rs.Fields("UnitOfMeasure").Value)}',
+                            ClassKey = {fNum(rs.Fields("ClassKey").Value)},
+                            SupplierKey = {fNum(rs.Fields("SupplierKey").Value)},
+                            [Discount] = '{fSqlFormat(rs.Fields("Discount").Value)}',
+                            Commission = '{fSqlFormat(rs.Fields("Commission").Value)}',
+                            Terms = '{fSqlFormat(rs.Fields("Terms").Value)}',
+                            Remarks = '{fSqlFormat(rs.Fields("Remarks").Value)}',
+                            ForeignCost = '{fSqlFormat(rs.Fields("ForeignCost").Value)}',
+                            GrossCost = {fNum(rs.Fields("GrossCost").Value)},
+                            [Vat] = {fNum(rs.Fields("Vat").Value)},
+                            [MarkUp] = {fNum(rs.Fields("MarkUp").Value)},
+                            GrossSRP = {fNum(rs.Fields("GrossSRP").Value)},
+                            LastModifiedBy = '{fSqlFormat(rs.Fields("LastModifiedBy").Value)}',
+                            PhasedOut = {fNum(rs.Fields("PhasedOut").Value)},
+                            BrandKey = {fNum(rs.Fields("BrandKey").Value)},
+                            ProdLineKey = {fNum(rs.Fields("ProdLineKey").Value)},
+                            OldCode = '{fSqlFormat(rs.Fields("OldCode").Value)}',
+                            SeasonCode = '{fSqlFormat(rs.Fields("SeasonCode").Value)}',
+                            [Change] = {fNum(rs.Fields("Change").Value)},
+                            MinQty = {fNum(rs.Fields("MinQty").Value)},
+                            MaxQty = {fNum(rs.Fields("MaxQty").Value)},
+                            ReOrder = {fNum(rs.Fields("ReOrder").Value)},
+                            Category = {fNum(rs.Fields("Category").Value)},
+                            PromoDisc = {fNum(rs.Fields("PromoDisc").Value)},
+                            PromoDiscAmt = {fNum(rs.Fields("PromoDiscAmt").Value)},
+                            PromoFrom = {fDateIsEmpty(rs.Fields("PromoFrom").Value.ToString())},
+                            PromoTo = {fDateIsEmpty(rs.Fields("PromoTo").Value.ToString())},
+                            PromoDiscLocked = {fNum(rs.Fields("PromoDiscLocked").Value)},
+                            Level1 = {fNum(rs.Fields("Level1").Value)},
+                            Level2 = {fNum(rs.Fields("Level2").Value)},
+                            Level3 = {fNum(rs.Fields("Level3").Value)},
+                            Level4 = {fNum(rs.Fields("Level4").Value)},
+                            Level5 = {fNum(rs.Fields("Level5").Value)},
+                            Disc1 = {fNum(rs.Fields("Disc1").Value)},
+                            Disc2 = {fNum(rs.Fields("Disc2").Value)},
+                            Disc3 = {fNum(rs.Fields("Disc3").Value)},
+                            Disc4 = {fNum(rs.Fields("Disc4").Value)},
+                            Disc5 = {fNum(rs.Fields("Disc5").Value)},
+                            LastCost = {fNum(rs.Fields("LastCost").Value)},
+                            LastSRP = {fNum(rs.Fields("LastSRP").Value)},
+                            [Color] = '{fSqlFormat(rs.Fields("Color").Value)}',
+                            StoreLocation = {fNum(rs.Fields("StoreLocation").Value)},
+                            [PO] = {fNum(rs.Fields("PO").Value)},
+                            Date_Encoded = {fDateIsEmpty(rs.Fields("Date_Encoded").Value.ToString())},
+                            User_Action = '{fSqlFormat(rs.Fields("User_Action").Value)}',
+                            User_Encoded = '{fSqlFormat(rs.Fields("User_Encoded").Value)}',
+                            [Changes] = '{fSqlFormat(rs.Fields("Changes").Value)}',
+                            RefNoID = {fNum(rs.Fields("RefNoID").Value)},
+                            NotIncludeInSale = {fNum(rs.Fields("NotIncludeInSale").Value)},
+                            [Active] = {fNum(rs.Fields("Active").Value)},
+                            ActiveAsOf = {fDateIsEmpty(rs.Fields("ActiveAsOf").Value.ToString())},
+                            [Discounted] = {fNum(rs.Fields("Discounted").Value)},
+                            [MarkDown] = {fNum(rs.Fields("MarkDown").Value)},
+                            [Status] = {fNum(rs.Fields("Status").Value)}
+                        WHERE [PK] = {rs.Fields("PK").Value};
+                    "
                     ConnServer.Execute(strSQL)
                 End If
                 rs.MoveNext()

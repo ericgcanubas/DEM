@@ -81,6 +81,7 @@ Public Class FrmMain
                 CreateTable_tbl_PS_GT_Zero_Out(pbMainLoading, lblMainLoading)
 
                 CreateTable_tbl_PS_GT(pbMainLoading, lblMainLoading)
+
                 CreateTable_tbl_PS_GT_ZZ(pbMainLoading, lblMainLoading)
 
                 CreateTable_tbl_PS_Upload_Utility(pbMainLoading, lblMainLoading)
@@ -260,12 +261,15 @@ Public Class FrmMain
                     Branch_Insert_tbl_PS_EmployeeATD(pbBranchLoading, lblBranchLoading)
                     Branch_Insert_tbl_GiftCert_Payment(pbBranchLoading, lblBranchLoading)
                     Branch_Insert_tbl_VPlus_Purchases_Points(pbBranchLoading, lblBranchLoading)
+
+                    Branch_Insert_tbl_PS(pbBranchLoading, lblBranchLoading)
                     Branch_Insert_tbl_PS_Tmp(pbBranchLoading, lblBranchLoading)
                     Branch_Insert_tbl_PS_ItemsSold_Tmp(pbBranchLoading, lblBranchLoading)
                     Branch_Insert_tbl_PS_ItemsSold_Voided(pbBranchLoading, lblBranchLoading)
                     Branch_Insert_tbl_PS_MiscPay_Tmp(pbBranchLoading, lblBranchLoading)
                     Branch_Insert_tbl_PS_MiscPay_Voided(pbBranchLoading, lblBranchLoading)
                     Branch_Insert_tbl_PaidOutTransactions(pbBranchLoading, lblBranchLoading)
+                    Branch_Insert__tbl_ItemTransactions(pbBranchLoading, lblBranchLoading)
                 End If
                 ConnLocal.Close()
                 MessageBox.Show("Successfully Branch Data Upload", "Upload Message", MessageBoxButtons.OK, MessageBoxIcon.Information)

@@ -145,7 +145,7 @@ Partial Class FrmSetup
         Me.Label5.BackColor = System.Drawing.Color.Transparent
         Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label5.ForeColor = System.Drawing.Color.Maroon
-        Me.Label5.Location = New System.Drawing.Point(104, 19)
+        Me.Label5.Location = New System.Drawing.Point(108, 36)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(68, 29)
         Me.Label5.TabIndex = 11
@@ -156,7 +156,7 @@ Partial Class FrmSetup
         Me.Label4.AutoSize = True
         Me.Label4.BackColor = System.Drawing.Color.Transparent
         Me.Label4.Font = New System.Drawing.Font("Microsoft Tai Le", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.Location = New System.Drawing.Point(17, 56)
+        Me.Label4.Location = New System.Drawing.Point(21, 73)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(125, 16)
         Me.Label4.TabIndex = 10
@@ -168,7 +168,7 @@ Partial Class FrmSetup
         Me.Label6.BackColor = System.Drawing.Color.Transparent
         Me.Label6.Font = New System.Drawing.Font("Segoe UI", 26.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label6.ForeColor = System.Drawing.Color.Coral
-        Me.Label6.Location = New System.Drawing.Point(12, 9)
+        Me.Label6.Location = New System.Drawing.Point(16, 26)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(99, 47)
         Me.Label6.TabIndex = 9
@@ -181,7 +181,7 @@ Partial Class FrmSetup
         Me.lblClose.Font = New System.Drawing.Font("Verdana", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblClose.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline
         Me.lblClose.LinkColor = System.Drawing.Color.Black
-        Me.lblClose.Location = New System.Drawing.Point(570, 19)
+        Me.lblClose.Location = New System.Drawing.Point(559, 33)
         Me.lblClose.Name = "lblClose"
         Me.lblClose.Size = New System.Drawing.Size(28, 25)
         Me.lblClose.TabIndex = 12

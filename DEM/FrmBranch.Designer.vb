@@ -98,7 +98,7 @@ Partial Class FrmBranch
         Me.lblClose.Font = New System.Drawing.Font("Verdana", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblClose.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline
         Me.lblClose.LinkColor = System.Drawing.Color.Black
-        Me.lblClose.Location = New System.Drawing.Point(664, 13)
+        Me.lblClose.Location = New System.Drawing.Point(652, 29)
         Me.lblClose.Name = "lblClose"
         Me.lblClose.Size = New System.Drawing.Size(28, 25)
         Me.lblClose.TabIndex = 23
@@ -130,7 +130,7 @@ Partial Class FrmBranch
         Me.Label5.BackColor = System.Drawing.Color.Transparent
         Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label5.ForeColor = System.Drawing.Color.Maroon
-        Me.Label5.Location = New System.Drawing.Point(126, 22)
+        Me.Label5.Location = New System.Drawing.Point(120, 33)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(68, 29)
         Me.Label5.TabIndex = 20
@@ -140,10 +140,10 @@ Partial Class FrmBranch
         '
         Me.Label4.AutoSize = True
         Me.Label4.BackColor = System.Drawing.Color.Transparent
-        Me.Label4.Font = New System.Drawing.Font("Microsoft Tai Le", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.Location = New System.Drawing.Point(39, 59)
+        Me.Label4.Font = New System.Drawing.Font("Microsoft Tai Le", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.Location = New System.Drawing.Point(33, 70)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(125, 16)
+        Me.Label4.Size = New System.Drawing.Size(159, 19)
         Me.Label4.TabIndex = 19
         Me.Label4.Text = "Data Export && iMports"
         '
@@ -153,7 +153,7 @@ Partial Class FrmBranch
         Me.Label3.BackColor = System.Drawing.Color.Transparent
         Me.Label3.Font = New System.Drawing.Font("Segoe UI", 26.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label3.ForeColor = System.Drawing.Color.Coral
-        Me.Label3.Location = New System.Drawing.Point(34, 12)
+        Me.Label3.Location = New System.Drawing.Point(28, 23)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(99, 47)
         Me.Label3.TabIndex = 18
@@ -205,7 +205,7 @@ Partial Class FrmBranch
         Me.Label6.AutoSize = True
         Me.Label6.BackColor = System.Drawing.Color.Transparent
         Me.Label6.Font = New System.Drawing.Font("Microsoft Tai Le", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label6.Location = New System.Drawing.Point(128, 385)
+        Me.Label6.Location = New System.Drawing.Point(103, 379)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(193, 16)
         Me.Label6.TabIndex = 26
@@ -216,7 +216,7 @@ Partial Class FrmBranch
         Me.Label8.AutoSize = True
         Me.Label8.BackColor = System.Drawing.Color.Transparent
         Me.Label8.Font = New System.Drawing.Font("Microsoft Tai Le", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label8.Location = New System.Drawing.Point(128, 401)
+        Me.Label8.Location = New System.Drawing.Point(103, 395)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(171, 16)
         Me.Label8.TabIndex = 27
@@ -247,7 +247,7 @@ Partial Class FrmBranch
         Me.lblCOUNTER.AutoSize = True
         Me.lblCOUNTER.BackColor = System.Drawing.Color.Transparent
         Me.lblCOUNTER.Font = New System.Drawing.Font("Microsoft Tai Le", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblCOUNTER.Location = New System.Drawing.Point(502, 22)
+        Me.lblCOUNTER.Location = New System.Drawing.Point(529, 38)
         Me.lblCOUNTER.Name = "lblCOUNTER"
         Me.lblCOUNTER.Size = New System.Drawing.Size(62, 16)
         Me.lblCOUNTER.TabIndex = 37

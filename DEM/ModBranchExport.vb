@@ -1089,6 +1089,89 @@
 
     End Sub
 
+
+    Public Sub Branch_CreateTable_tbl_PS(pb As ProgressBar, l As Label, dt As Date)
+        Try
+            Dim createTableSql As String = "  CREATE TABLE tbl_PS (
+                                                PK INTEGER PRIMARY KEY,
+                                                PSNumber TEXT(15) Not NULL,
+                                                PSDate DATETIME Not NULL,
+                                                Cashier TEXT(3) Not NULL,
+                                                [Counter] TEXT(3) Not NULL,
+                                                Series TEXT(6) Not NULL,
+                                                ExactDate DATETIME Not NULL,
+                                                Amount DOUBLE Not NULL,
+                                                SRem TEXT(12),
+                                                TotalQty Double Not NULL,
+                                                TotalSales DOUBLE Not NULL,
+                                                TotalDiscount DOUBLE Not NULL,
+                                                TotalGC DOUBLE Not NULL,
+                                                TotalCard DOUBLE Not NULL,
+                                                TotalVPlus DOUBLE Not NULL,
+                                                TotalATD DOUBLE Not NULL,
+                                                Location TEXT(1) Not NULL,
+                                                InvoiceNumber TEXT(15) Not NULL,
+                                                TotalIncentiveCard DOUBLE Not NULL,
+                                                IsZeroRated YESNO Not NULL,
+                                                TotalCreditMemo DOUBLE Not NULL,
+                                                TotalHomeCredit DOUBLE Not NULL,
+                                                TotalQRPay DOUBLE
+                                            );"
+
+            ConnLocal.Execute(createTableSql)
+            Branch_Collect_tbl_PS(pb, l, dt)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "tbl_PS")
+            Application.Exit()
+        End Try
+    End Sub
+
+    Private Sub Branch_Collect_tbl_PS(pb As ProgressBar, l As Label, dt As Date)
+        rs = New ADODB.Recordset
+        rs.Open($"select * from tbl_PS WHERE PSDate = {fDateIsEmpty(dt.ToString())} and [Counter] = '{gbl_Counter}'  ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_PS  :" & pb.Maximum & "/" & pb.Value
+                Application.DoEvents()
+                Dim strSQL As String = $"INSERT INTO tbl_PS (
+                                                PK,PSNumber, PSDate, Cashier, [Counter], Series, ExactDate, Amount, SRem,
+                                                TotalQty, TotalSales, TotalDiscount, TotalGC, TotalCard, TotalVPlus, TotalATD,
+                                                Location, InvoiceNumber, TotalIncentiveCard, IsZeroRated, TotalCreditMemo,
+                                                TotalHomeCredit, TotalQRPay)
+                                            VALUES ( {fNum(rs.Fields("PK").Value)},
+                                                '{fSqlFormat(rs.Fields("PSNumber").Value)}',
+                                                {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())},
+                                                '{fSqlFormat(rs.Fields("Cashier").Value)}',
+                                                '{fSqlFormat(rs.Fields("Counter").Value)}',
+                                                '{fSqlFormat(rs.Fields("Series").Value)}',
+                                                {fDateIsEmpty(rs.Fields("ExactDate").Value.ToString())},
+                                                {fNum(rs.Fields("Amount").Value)},
+                                                '{fSqlFormat(rs.Fields("SRem").Value)}',
+                                                {fNum(rs.Fields("TotalQty").Value)},
+                                                {fNum(rs.Fields("TotalSales").Value)},
+                                                {fNum(rs.Fields("TotalDiscount").Value)},
+                                                {fNum(rs.Fields("TotalGC").Value)},
+                                                {fNum(rs.Fields("TotalCard").Value)},
+                                                {fNum(rs.Fields("TotalVPlus").Value)},
+                                                {fNum(rs.Fields("TotalATD").Value)},
+                                                '{fSqlFormat(rs.Fields("Location").Value)}',
+                                                '{fSqlFormat(rs.Fields("InvoiceNumber").Value)}',
+                                                {fNum(rs.Fields("TotalIncentiveCard").Value)},
+                                                {fNum(rs.Fields("IsZeroRated").Value)},
+                                                {fNum(rs.Fields("TotalCreditMemo").Value)},
+                                                {fNum(rs.Fields("TotalHomeCredit").Value)},
+                                                {fNum(rs.Fields("TotalQRPay").Value)}
+                                            );"
+                ConnLocal.Execute(strSQL)
+                rs.MoveNext()
+            End While
+        End If
+    End Sub
+
     Public Sub Branch_CreateTable_tbl_PS_Tmp(pb As ProgressBar, l As Label, dt As Date)
         Try
             Dim createTableSql As String = "CREATE TABLE tbl_PS_Tmp (
@@ -1976,6 +2059,95 @@
                                                         {fDateIsEmpty(rs.Fields("LastUpdated").Value.ToString())}
                                                        
                                             );"
+
+                ConnLocal.Execute(strSQL)
+                rs.MoveNext()
+            End While
+        End If
+
+    End Sub
+
+    Public Sub Branch_CreateTable_tbl_ItemTransactions(pb As ProgressBar, l As Label, dt As Date)
+        Try
+            Dim createTableSql As String = "CREATE TABLE tbl_ItemTransactions (
+                                                PK INTEGER PRIMARY KEY,
+                                                Cleared BYTE NOT NULL,
+                                                InOrOut CHAR(1) NOT NULL,
+                                                Location CHAR(1) NOT NULL,
+                                                ItemKey LONG NOT NULL,
+                                                DocDate DATETIME NOT NULL,
+                                                DocType BYTE NOT NULL,
+                                                StockIn DOUBLE NOT NULL,
+                                                StockOut DOUBLE NOT NULL,
+                                                StockUsed DOUBLE NOT NULL,
+                                                NetCost DOUBLE NOT NULL,
+                                                PurchaseDiscount TEXT(15),
+                                                GrossCost DOUBLE NOT NULL,
+                                                RefKey LONG,
+                                                SRPGross DOUBLE NOT NULL,
+                                                SRPDiscount DOUBLE NOT NULL,
+                                                SRPSurcharge DOUBLE NOT NULL,
+                                                SRPNet DOUBLE NOT NULL,
+                                                [Counter] TEXT(3),
+                                                [Cashier] TEXT(3),
+                                                DocNumber TEXT(20),
+                                                LoginName TEXT(15),
+                                                DocRemarks TEXT(50)
+                                            );
+
+"
+
+            ConnLocal.Execute(createTableSql)
+            Branch_Collect_tbl_ItemTransactions(pb, l, dt)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "tbl_ItemTransactions  ")
+            Application.Exit()
+        End Try
+    End Sub
+    Private Sub Branch_Collect_tbl_ItemTransactions(pb As ProgressBar, l As Label, dt As Date)
+
+        Dim n As Integer = 0
+        rs = New ADODB.Recordset
+        rs.Open($"select * from tbl_ItemTransactions WHERE DocDate = {fDateIsEmpty(dt.ToShortDateString())} and [Counter] = '{gbl_Counter}' and DocType = 4 ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_ItemTransactions  :" & pb.Maximum & "/" & pb.Value
+                Application.DoEvents()
+                Dim strSQL As String = $"
+                                    INSERT INTO tbl_ItemTransactions (PK,
+                                        Cleared, InOrOut, Location, ItemKey, DocDate, DocType,
+                                        StockIn, StockOut, StockUsed, NetCost, PurchaseDiscount, GrossCost,
+                                        RefKey, SRPGross, SRPDiscount, SRPSurcharge, SRPNet,
+                                        [Counter], [Cashier], DocNumber, LoginName, DocRemarks
+                                    ) VALUES (
+                                        {fNum(rs.Fields("PK").Value)},
+                                        {fNum(rs.Fields("Cleared").Value)},
+                                        '{fSqlFormat(rs.Fields("InOrOut").Value)}',
+                                        '{fSqlFormat(rs.Fields("Location").Value)}',
+                                        {fNum(rs.Fields("ItemKey").Value)},
+                                        {fDateIsEmpty(rs.Fields("DocDate").Value.ToString())},
+                                        {fNum(rs.Fields("DocType").Value)},
+                                        {fNum(rs.Fields("StockIn").Value)},
+                                        {fNum(rs.Fields("StockOut").Value)},
+                                        {fNum(rs.Fields("StockUsed").Value)},
+                                        {fNum(rs.Fields("NetCost").Value)},
+                                        '{fSqlFormat(rs.Fields("PurchaseDiscount").Value)}',
+                                        {fNum(rs.Fields("GrossCost").Value)},
+                                        {fNum(rs.Fields("RefKey").Value)},
+                                        {fNum(rs.Fields("SRPGross").Value)},
+                                        {fNum(rs.Fields("SRPDiscount").Value)},
+                                        {fNum(rs.Fields("SRPSurcharge").Value)},
+                                        {fNum(rs.Fields("SRPNet").Value)},
+                                        '{fSqlFormat(rs.Fields("Counter").Value)}',
+                                        '{fSqlFormat(rs.Fields("Cashier").Value)}',
+                                        '{fSqlFormat(rs.Fields("DocNumber").Value)}',
+                                        '{fSqlFormat(rs.Fields("LoginName").Value)}',
+                                        '{fSqlFormat(rs.Fields("DocRemarks").Value)}'
+                                    );"
 
                 ConnLocal.Execute(strSQL)
                 rs.MoveNext()

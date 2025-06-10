@@ -120,7 +120,7 @@ Partial Class FrmMain
         Me.Label3.BackColor = System.Drawing.Color.Transparent
         Me.Label3.Font = New System.Drawing.Font("Segoe UI", 26.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label3.ForeColor = System.Drawing.Color.Coral
-        Me.Label3.Location = New System.Drawing.Point(22, 11)
+        Me.Label3.Location = New System.Drawing.Point(22, 25)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(99, 47)
         Me.Label3.TabIndex = 6
@@ -130,10 +130,10 @@ Partial Class FrmMain
         '
         Me.Label4.AutoSize = True
         Me.Label4.BackColor = System.Drawing.Color.Transparent
-        Me.Label4.Font = New System.Drawing.Font("Microsoft Tai Le", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.Location = New System.Drawing.Point(27, 58)
+        Me.Label4.Font = New System.Drawing.Font("Microsoft Tai Le", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.Location = New System.Drawing.Point(27, 72)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(125, 16)
+        Me.Label4.Size = New System.Drawing.Size(159, 19)
         Me.Label4.TabIndex = 7
         Me.Label4.Text = "Data Export && iMports"
         '
@@ -143,7 +143,7 @@ Partial Class FrmMain
         Me.Label5.BackColor = System.Drawing.Color.Transparent
         Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label5.ForeColor = System.Drawing.Color.Maroon
-        Me.Label5.Location = New System.Drawing.Point(114, 21)
+        Me.Label5.Location = New System.Drawing.Point(114, 35)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(68, 29)
         Me.Label5.TabIndex = 8
@@ -175,7 +175,7 @@ Partial Class FrmMain
         Me.lblClose.Font = New System.Drawing.Font("Verdana", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblClose.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline
         Me.lblClose.LinkColor = System.Drawing.Color.Black
-        Me.lblClose.Location = New System.Drawing.Point(664, 11)
+        Me.lblClose.Location = New System.Drawing.Point(653, 29)
         Me.lblClose.Name = "lblClose"
         Me.lblClose.Size = New System.Drawing.Size(28, 25)
         Me.lblClose.TabIndex = 11
@@ -187,7 +187,7 @@ Partial Class FrmMain
         Me.Label8.AutoSize = True
         Me.Label8.BackColor = System.Drawing.Color.Transparent
         Me.Label8.Font = New System.Drawing.Font("Microsoft Tai Le", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label8.Location = New System.Drawing.Point(104, 402)
+        Me.Label8.Location = New System.Drawing.Point(84, 391)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(171, 16)
         Me.Label8.TabIndex = 29
@@ -198,7 +198,7 @@ Partial Class FrmMain
         Me.Label7.AutoSize = True
         Me.Label7.BackColor = System.Drawing.Color.Transparent
         Me.Label7.Font = New System.Drawing.Font("Microsoft Tai Le", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.Location = New System.Drawing.Point(104, 386)
+        Me.Label7.Location = New System.Drawing.Point(84, 375)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(193, 16)
         Me.Label7.TabIndex = 28
@@ -221,7 +221,7 @@ Partial Class FrmMain
         Me.lblSERVER.AutoSize = True
         Me.lblSERVER.BackColor = System.Drawing.Color.Transparent
         Me.lblSERVER.Font = New System.Drawing.Font("Microsoft Tai Le", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblSERVER.Location = New System.Drawing.Point(495, 21)
+        Me.lblSERVER.Location = New System.Drawing.Point(474, 42)
         Me.lblSERVER.Name = "lblSERVER"
         Me.lblSERVER.Size = New System.Drawing.Size(50, 16)
         Me.lblSERVER.TabIndex = 31
@@ -232,7 +232,7 @@ Partial Class FrmMain
         Me.lblDATABASE.AutoSize = True
         Me.lblDATABASE.BackColor = System.Drawing.Color.Transparent
         Me.lblDATABASE.Font = New System.Drawing.Font("Microsoft Tai Le", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblDATABASE.Location = New System.Drawing.Point(495, 37)
+        Me.lblDATABASE.Location = New System.Drawing.Point(474, 58)
         Me.lblDATABASE.Name = "lblDATABASE"
         Me.lblDATABASE.Size = New System.Drawing.Size(26, 16)
         Me.lblDATABASE.TabIndex = 32

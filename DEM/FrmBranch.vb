@@ -53,7 +53,10 @@ Public Class FrmBranch
                 ConnLocal.ConnectionTimeout = 30
                 ConnLocal.Open(str)
 
+
+
                 Local_CreateTable_tbl_info(dtpDate.Value, refFile, gbl_Counter)
+                Branch_CreateTable_tbl_ItemTransactions(pbBranchLoading, lblBranchLoading, dtpDate.Value)
 
                 Branch_CreateTable_tbl_VPlus_Codes(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_VPlus_Codes_Validity(pbBranchLoading, lblBranchLoading, dtpDate.Value)
@@ -72,10 +75,12 @@ Public Class FrmBranch
 
                 Branch_CreateTable_tbl_GiftCert_List(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_GiftCert_Payment(pbBranchLoading, lblBranchLoading, dtpDate.Value)
-
+                Branch_CreateTable_tbl_PS(pbBranchLoading, lblMainLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_PS_Tmp(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_PS_ItemsSold_Tmp(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_PS_ItemsSold_Voided(pbBranchLoading, lblBranchLoading, dtpDate.Value)
+
+
 
                 Branch_CreateTable_tbl_PS_MiscPay_Tmp(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_PS_MiscPay_Voided(pbBranchLoading, lblBranchLoading, dtpDate.Value)
@@ -150,17 +155,11 @@ Public Class FrmBranch
     Private Sub SaveIt()
 
         Insert_tbl_PCPOS_Cashiers(pbMainLoading, lblMainLoading)
-
-
         Insert_tbl_PCPOS_Cashiers_Changes(pbMainLoading, lblMainLoading)
-
         Insert_tbl_Items_Changes(pbMainLoading, lblMainLoading)
         Insert_tbl_ItemsForPLU_For_Effect(pbMainLoading, lblMainLoading)
         Insert_tbl_Items(pbMainLoading, lblMainLoading)
-
         Insert_tbl_ItemsForPLU(pbMainLoading, lblMainLoading)
-
-
 
 
         Insert_tbl_Bank(pbMainLoading, lblMainLoading)
