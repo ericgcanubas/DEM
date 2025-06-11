@@ -53,11 +53,9 @@ Public Class FrmBranch
                 ConnLocal.ConnectionTimeout = 30
                 ConnLocal.Open(str)
 
-
-
                 Local_CreateTable_tbl_info(dtpDate.Value, refFile, gbl_Counter)
-                Branch_CreateTable_tbl_ItemTransactions(pbBranchLoading, lblBranchLoading, dtpDate.Value)
-
+                'Branch_CreateTable_tbl_ItemTransactions(pbBranchLoading, lblBranchLoading, dtpDate.Value)
+                'Branch_CreateTable_tbl_PS_ItemsSold_Posting(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_VPlus_Codes(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_VPlus_Codes_Validity(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_VPlus_Purchases_Points(pbBranchLoading, lblBranchLoading, dtpDate.Value)
@@ -90,6 +88,7 @@ Public Class FrmBranch
 
                 Branch_CreateTable_tbl_CreditMemo(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_CreditMemo_CashRefund_Payment(pbBranchLoading, lblBranchLoading, dtpDate.Value)
+
 
 
                 SetLog(False)
@@ -154,6 +153,21 @@ Public Class FrmBranch
 
     Private Sub SaveIt()
 
+
+
+        Insert_tbl_PS_GT(pbMainLoading, lblMainLoading)
+        Insert_tbl_PS_GT_ZZ(pbMainLoading, lblMainLoading)
+
+        Insert_tbl_PS_GT_Adjustment_EJournal(pbMainLoading, lblMainLoading)
+        Insert_tbl_PS_GT_Adjustment_EJournal_Detail(pbMainLoading, lblMainLoading)
+
+
+        Insert_tbl_PS_E_Journal(pbMainLoading, lblMainLoading)
+        Insert_tbl_PS_E_Journal_Detail(pbMainLoading, lblMainLoading)
+
+
+
+
         Insert_tbl_PCPOS_Cashiers(pbMainLoading, lblMainLoading)
         Insert_tbl_PCPOS_Cashiers_Changes(pbMainLoading, lblMainLoading)
         Insert_tbl_Items_Changes(pbMainLoading, lblMainLoading)
@@ -187,14 +201,8 @@ Public Class FrmBranch
         Insert_tbl_VPlus_App(pbMainLoading, lblMainLoading)
         Insert_tbl_RetrieveHistoryForLocal(pbMainLoading, lblMainLoading)
 
-        Insert_tbl_PS_GT(pbMainLoading, lblMainLoading)
-        Insert_tbl_PS_GT_ZZ(pbMainLoading, lblMainLoading)
 
-        Insert_tbl_PS_E_Journal(pbMainLoading, lblMainLoading)
-        Insert_tbl_PS_E_Journal_Detail(pbMainLoading, lblMainLoading)
 
-        Insert_tbl_PS_GT_Adjustment_EJournal(pbMainLoading, lblMainLoading)
-        Insert_tbl_PS_GT_Adjustment_EJournal_Detail(pbMainLoading, lblMainLoading)
 
 
         Insert_tbl_PaidOutDenominations(pbMainLoading, lblMainLoading)

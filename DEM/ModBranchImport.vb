@@ -61,7 +61,7 @@ Module ModBranchImport
                 l.Text = "tbl_VPlus_Codes :" & pb.Maximum & "/" & pb.Value
 
                 n = 0
-                    Application.DoEvents()
+                Application.DoEvents()
 
                 Dim rx As New Recordset
                 rx.Open($"select TOP 1 * from tbl_VPlus_Codes WHERE Codes ='{fSqlFormat(rs.Fields("Codes").Value)}'  ", ConnServer, CursorTypeEnum.adOpenStatic)
@@ -117,7 +117,7 @@ Module ModBranchImport
 
                 Application.DoEvents()
 
-                    Dim rx As New Recordset
+                Dim rx As New Recordset
                 rx.Open($"select TOP 1 * FROM tbl_VPlus_Codes_Validity WHERE 
                         Codes='{fSqlFormat(rs.Fields("Codes").Value)}' and 
                         DateStarted={fDateIsEmpty(rs.Fields("DateStarted").Value.ToString())} and 
@@ -543,7 +543,7 @@ Module ModBranchImport
                 Application.DoEvents()
 
 
-                    Dim rx As New Recordset
+                Dim rx As New Recordset
                 rx.Open($"select TOP 1 * from tbl_PS_E_Journal_Detail WHERE 
                                                                         TransactionNumber='{fSqlFormat(rs.Fields("TransactionNumber").Value)}' and 
                                                                         PSDate = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and 
@@ -638,7 +638,7 @@ Module ModBranchImport
 
                 Application.DoEvents()
 
-                    Dim rx As New Recordset
+                Dim rx As New Recordset
                 rx.Open($"select * from tbl_PS_EmployeeATD Where TransactionNumber = '{fSqlFormat(rs.Fields("TransactionNumber").Value)}' and
                                                             PSDate = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and
                                                             [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}' and 
@@ -950,7 +950,7 @@ Module ModBranchImport
                                                 {fNum(rs.Fields("TotalATD").Value)},
                                                 '{fSqlFormat(rs.Fields("Location").Value)}',
                                                 '{fSqlFormat(rs.Fields("InvoiceNumber").Value)}',
-                                                {fNum(rs.Fields("Posted").Value)},
+                                                0,
                                                 {fNum(rs.Fields("POSTableKey").Value)},
                                                 {fNum(rs.Fields("TotalIncentiveCard").Value)},
                                                 {fNum(rs.Fields("IsZeroRated").Value)},
@@ -962,35 +962,35 @@ Module ModBranchImport
                     ConnServer.Execute(strSQL)
 
                 Else
-                    Dim strSQL As String = $"UPDATE tbl_PS_Tmp SET
-                            PSNumber            = '{fSqlFormat(rs.Fields("PSNumber").Value)}',
-                            PSDate              = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())},
-                            PSDateActual        = {fDateIsEmpty(rs.Fields("PSDateActual").Value.ToString())},
-                            Cashier             = '{fSqlFormat(rs.Fields("Cashier").Value)}',
-                            [Counter]           = '{fSqlFormat(rs.Fields("Counter").Value)}',
-                            [Series]            = '{fSqlFormat(rs.Fields("Series").Value)}',
-                            ExactDate           = {fDateIsEmpty(rs.Fields("ExactDate").Value.ToString())},
-                            Amount              = {fNum(rs.Fields("Amount").Value)},
-                            SRem                = '{fSqlFormat(rs.Fields("SRem").Value)}',
-                            TotalQty            = {fNum(rs.Fields("TotalQty").Value)},
-                            TotalSales          = {fNum(rs.Fields("TotalSales").Value)},
-                            TotalDiscount       = {fNum(rs.Fields("TotalDiscount").Value)},
-                            TotalGC             = {fNum(rs.Fields("TotalGC").Value)},
-                            TotalCard           = {fNum(rs.Fields("TotalCard").Value)},
-                            TotalVPlus          = {fNum(rs.Fields("TotalVPlus").Value)},
-                            TotalATD            = {fNum(rs.Fields("TotalATD").Value)},
-                            Location            = '{fSqlFormat(rs.Fields("Location").Value)}',
-                            InvoiceNumber       = '{fSqlFormat(rs.Fields("InvoiceNumber").Value)}',
-                            Posted              = {fNum(rs.Fields("Posted").Value)},
-                            POSTableKey         = {fNum(rs.Fields("POSTableKey").Value)},
-                            TotalIncentiveCard  = {fNum(rs.Fields("TotalIncentiveCard").Value)},
-                            IsZeroRated         = {fNum(rs.Fields("IsZeroRated").Value)},
-                            TotalCreditMemo     = {fNum(rs.Fields("TotalCreditMemo").Value)},
-                            TotalHomeCredit     = {fNum(rs.Fields("TotalHomeCredit").Value)},
-                            TotalQRPay          = {fNum(rs.Fields("TotalQRPay").Value)}
-                            WHERE PSNumber= '{fSqlFormat(rs.Fields("PSNumber").Value)}' and PSDate = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and Cashier= '{fSqlFormat(rs.Fields("Cashier").Value)}' and [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}' and [Series]= '{fSqlFormat(rs.Fields("Series").Value)}';"
+                    'Dim strSQL As String = $"UPDATE tbl_PS_Tmp SET
+                    '        PSNumber            = '{fSqlFormat(rs.Fields("PSNumber").Value)}',
+                    '        PSDate              = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())},
+                    '        PSDateActual        = {fDateIsEmpty(rs.Fields("PSDateActual").Value.ToString())},
+                    '        Cashier             = '{fSqlFormat(rs.Fields("Cashier").Value)}',
+                    '        [Counter]           = '{fSqlFormat(rs.Fields("Counter").Value)}',
+                    '        [Series]            = '{fSqlFormat(rs.Fields("Series").Value)}',
+                    '        ExactDate           = {fDateIsEmpty(rs.Fields("ExactDate").Value.ToString())},
+                    '        Amount              = {fNum(rs.Fields("Amount").Value)},
+                    '        SRem                = '{fSqlFormat(rs.Fields("SRem").Value)}',
+                    '        TotalQty            = {fNum(rs.Fields("TotalQty").Value)},
+                    '        TotalSales          = {fNum(rs.Fields("TotalSales").Value)},
+                    '        TotalDiscount       = {fNum(rs.Fields("TotalDiscount").Value)},
+                    '        TotalGC             = {fNum(rs.Fields("TotalGC").Value)},
+                    '        TotalCard           = {fNum(rs.Fields("TotalCard").Value)},
+                    '        TotalVPlus          = {fNum(rs.Fields("TotalVPlus").Value)},
+                    '        TotalATD            = {fNum(rs.Fields("TotalATD").Value)},
+                    '        Location            = '{fSqlFormat(rs.Fields("Location").Value)}',
+                    '        InvoiceNumber       = '{fSqlFormat(rs.Fields("InvoiceNumber").Value)}',
+                    '        Posted              = {fNum(rs.Fields("Posted").Value)},
+                    '        POSTableKey         = {fNum(rs.Fields("POSTableKey").Value)},
+                    '        TotalIncentiveCard  = {fNum(rs.Fields("TotalIncentiveCard").Value)},
+                    '        IsZeroRated         = {fNum(rs.Fields("IsZeroRated").Value)},
+                    '        TotalCreditMemo     = {fNum(rs.Fields("TotalCreditMemo").Value)},
+                    '        TotalHomeCredit     = {fNum(rs.Fields("TotalHomeCredit").Value)},
+                    '        TotalQRPay          = {fNum(rs.Fields("TotalQRPay").Value)}
+                    '        WHERE PSNumber= '{fSqlFormat(rs.Fields("PSNumber").Value)}' and PSDate = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and Cashier= '{fSqlFormat(rs.Fields("Cashier").Value)}' and [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}' and [Series]= '{fSqlFormat(rs.Fields("Series").Value)}';"
 
-                    ConnServer.Execute(strSQL)
+                    'ConnServer.Execute(strSQL)
 
                 End If
 
@@ -1727,65 +1727,126 @@ Module ModBranchImport
         End If
 
     End Sub
-    Public Sub Branch_Insert__tbl_ItemTransactions(pb As ProgressBar, l As Label)
+    'Public Sub Branch_Insert_tbl_ItemTransactions(pb As ProgressBar, l As Label)
 
-        Dim n As Integer = 0
-        rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_ItemTransactions ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
-        pb.Maximum = rs.RecordCount
-        pb.Value = 0
-        pb.Minimum = 0
-        If rs.RecordCount > 0 Then
-            While Not rs.EOF
-                pb.Value = pb.Value + 1
-                l.Text = "tbl_ItemTransactions  :" & pb.Maximum & "/" & pb.Value
-                Application.DoEvents()
+    '    Dim n As Integer = 0
+    '    rs = New ADODB.Recordset
+    '    rs.Open($"select * from tbl_ItemTransactions ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
+    '    pb.Maximum = rs.RecordCount
+    '    pb.Value = 0
+    '    pb.Minimum = 0
+    '    If rs.RecordCount > 0 Then
+    '        While Not rs.EOF
+    '            pb.Value = pb.Value + 1
+    '            l.Text = "tbl_ItemTransactions  :" & pb.Maximum & "/" & pb.Value
+    '            Application.DoEvents()
 
-                Dim rx As New Recordset
-                rx.Open($"SELECT TOP 1 * FROM tbl_ItemTransactions WHERE RefKey = {fNum(rs.Fields("RefKey").Value)} and 
-                        ItemKey = {fNum(rs.Fields("ItemKey").Value)} and  
-                        [Cashier] = '{fSqlFormat(rs.Fields("Cashier").Value)}' and  
-                        [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}' and 
-                        [DocDate] = {fDateIsEmpty(rs.Fields("DocDate").Value.ToString())} ", ConnServer, CursorTypeEnum.adOpenStatic)
-                If rx.RecordCount = 0 Then
-                    Dim strSQL As String = $"
-                                    INSERT INTO tbl_ItemTransactions (
-                                        Cleared, InOrOut, Location, ItemKey, DocDate, DocType,
-                                        StockIn, StockOut, StockUsed, NetCost, PurchaseDiscount, GrossCost,
-                                        RefKey, SRPGross, SRPDiscount, SRPSurcharge, SRPNet,
-                                        [Counter], [Cashier], DocNumber, LoginName, DocRemarks
-                                    ) VALUES (                      
-                                        {fNum(rs.Fields("Cleared").Value)},
-                                        '{fSqlFormat(rs.Fields("InOrOut").Value)}',
-                                        '{fSqlFormat(rs.Fields("Location").Value)}',
-                                        {fNum(rs.Fields("ItemKey").Value)},
-                                        {fDateIsEmpty(rs.Fields("DocDate").Value.ToString())},
-                                        {fNum(rs.Fields("DocType").Value)},
-                                        {fNum(rs.Fields("StockIn").Value)},
-                                        {fNum(rs.Fields("StockOut").Value)},
-                                        {fNum(rs.Fields("StockUsed").Value)},
-                                        {fNum(rs.Fields("NetCost").Value)},
-                                        '{fSqlFormat(rs.Fields("PurchaseDiscount").Value)}',
-                                        {fNum(rs.Fields("GrossCost").Value)},
-                                        {fNum(rs.Fields("RefKey").Value)},
-                                        {fNum(rs.Fields("SRPGross").Value)},
-                                        {fNum(rs.Fields("SRPDiscount").Value)},
-                                        {fNum(rs.Fields("SRPSurcharge").Value)},
-                                        {fNum(rs.Fields("SRPNet").Value)},
-                                        '{fSqlFormat(rs.Fields("Counter").Value)}',
-                                        '{fSqlFormat(rs.Fields("Cashier").Value)}',
-                                        '{fSqlFormat(rs.Fields("DocNumber").Value)}',
-                                        '{fSqlFormat(rs.Fields("LoginName").Value)}',
-                                        '{fSqlFormat(rs.Fields("DocRemarks").Value)}'
-                                    );"
+    '            Dim rx As New Recordset
+    '            rx.Open($"SELECT TOP 1 * FROM tbl_ItemTransactions WHERE RefKey = {fNum(rs.Fields("RefKey").Value)} and 
+    '                    ItemKey = {fNum(rs.Fields("ItemKey").Value)} and  
+    '                    [Cashier] = '{fSqlFormat(rs.Fields("Cashier").Value)}' and  
+    '                    [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}' and 
+    '                    [DocDate] = {fDateIsEmpty(rs.Fields("DocDate").Value.ToString())} ", ConnServer, CursorTypeEnum.adOpenStatic)
+    '            If rx.RecordCount = 0 Then
+    '                Dim strSQL As String = $"
+    '                                INSERT INTO tbl_ItemTransactions (
+    '                                    Cleared, InOrOut, Location, ItemKey, DocDate, DocType,
+    '                                    StockIn, StockOut, StockUsed, NetCost, PurchaseDiscount, GrossCost,
+    '                                    RefKey, SRPGross, SRPDiscount, SRPSurcharge, SRPNet,
+    '                                    [Counter], [Cashier], DocNumber, LoginName, DocRemarks
+    '                                ) VALUES (                      
+    '                                    {fNum(rs.Fields("Cleared").Value)},
+    '                                    '{fSqlFormat(rs.Fields("InOrOut").Value)}',
+    '                                    '{fSqlFormat(rs.Fields("Location").Value)}',
+    '                                    {fNum(rs.Fields("ItemKey").Value)},
+    '                                    {fDateIsEmpty(rs.Fields("DocDate").Value.ToString())},
+    '                                    {fNum(rs.Fields("DocType").Value)},
+    '                                    {fNum(rs.Fields("StockIn").Value)},
+    '                                    {fNum(rs.Fields("StockOut").Value)},
+    '                                    {fNum(rs.Fields("StockUsed").Value)},
+    '                                    {fNum(rs.Fields("NetCost").Value)},
+    '                                    '{fSqlFormat(rs.Fields("PurchaseDiscount").Value)}',
+    '                                    {fNum(rs.Fields("GrossCost").Value)},
+    '                                    {fNum(rs.Fields("RefKey").Value)},
+    '                                    {fNum(rs.Fields("SRPGross").Value)},
+    '                                    {fNum(rs.Fields("SRPDiscount").Value)},
+    '                                    {fNum(rs.Fields("SRPSurcharge").Value)},
+    '                                    {fNum(rs.Fields("SRPNet").Value)},
+    '                                    '{fSqlFormat(rs.Fields("Counter").Value)}',
+    '                                    '{fSqlFormat(rs.Fields("Cashier").Value)}',
+    '                                    '{fSqlFormat(rs.Fields("DocNumber").Value)}',
+    '                                    '{fSqlFormat(rs.Fields("LoginName").Value)}',
+    '                                    '{fSqlFormat(rs.Fields("DocRemarks").Value)}'
+    '                                );"
 
-                    ConnServer.Execute(strSQL)
+    '                ConnServer.Execute(strSQL)
 
-                End If
-                rs.MoveNext()
-            End While
-        End If
+    '            End If
+    '            rs.MoveNext()
+    '        End While
+    '    End If
+    'End Sub
 
-    End Sub
+    'Public Sub Branch_Insert_tbl_PS_ItemsSold_Posting(pb As ProgressBar, l As Label)
+
+    '    Dim n As Integer = 0
+    '    rs = New ADODB.Recordset
+    '    rs.Open($"select * from tbl_PS_ItemsSold_Posting ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
+    '    pb.Maximum = rs.RecordCount
+    '    pb.Value = 0
+    '    pb.Minimum = 0
+    '    If rs.RecordCount > 0 Then
+    '        While Not rs.EOF
+    '            pb.Value = pb.Value + 1
+    '            l.Text = "tbl_PS_ItemsSold_Posting  :" & pb.Maximum & "/" & pb.Value
+    '            Application.DoEvents()
+
+    '            Dim rx As New Recordset
+    '            rx.Open($"select TOP 1 * from tbl_PS_ItemsSold_Posting 
+    '            WHERE 
+    '            TransactionNumber = '{fSqlFormat(rs.Fields("TransactionNumber").Value)}'  and 
+    '            PSDate = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())}  and 
+    '            Counter =  '{fSqlFormat(rs.Fields("Counter").Value)}' and 
+    '            Cashier = '{fSqlFormat(rs.Fields("Cashier").Value)}' and 
+    '            ItemKey = {fNum(rs.Fields("ItemKey").Value)} and 
+    '            Location = '{fSqlFormat(rs.Fields("Location").Value)}' ", ConnServer, CursorTypeEnum.adOpenStatic)
+
+    '            If rx.RecordCount = 0 Then
+
+    '                Dim strSQL As String = $"
+    '                                INSERT INTO tbl_PS_ItemsSold_Posting (
+    '                                    TransactionNumber, PSDate, Series, Counter, Cashier,
+    '                                    ItemKey, SupplierKey, ItemCode, Quantity, PostedQty,
+    '                                    GrossSRP, Discount, DiscountAmount, Surcharge, SurchargeAmount,
+    '                                    SRPNet, ItemType, Location
+    '                                ) VALUES (                                
+    '                                    '{fSqlFormat(rs.Fields("TransactionNumber").Value)}',
+    '                                    {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())},
+    '                                    '{fSqlFormat(rs.Fields("Series").Value)}',
+    '                                    '{fSqlFormat(rs.Fields("Counter").Value)}',
+    '                                    '{fSqlFormat(rs.Fields("Cashier").Value)}',
+    '                                    {fNum(rs.Fields("ItemKey").Value)},
+    '                                    {fNum(rs.Fields("SupplierKey").Value)},
+    '                                    '{fSqlFormat(rs.Fields("ItemCode").Value)}',
+    '                                    {fNum(rs.Fields("Quantity").Value)},
+    '                                    {fNum(rs.Fields("PostedQty").Value)},
+    '                                    {fNum(rs.Fields("GrossSRP").Value)},
+    '                                    {fNum(rs.Fields("Discount").Value)},
+    '                                    {fNum(rs.Fields("DiscountAmount").Value)},
+    '                                    {fNum(rs.Fields("Surcharge").Value)},
+    '                                    {fNum(rs.Fields("SurchargeAmount").Value)},
+    '                                    {fNum(rs.Fields("SRPNet").Value)},
+    '                                    {fNum(rs.Fields("ItemType").Value)},
+    '                                    '{fSqlFormat(rs.Fields("Location").Value)}'
+    '                                );"
+
+    '                ConnServer.Execute(strSQL)
+    '            End If
+    '            rs.MoveNext()
+    '        End While
+    '    End If
+
+    'End Sub
+
 
 End Module

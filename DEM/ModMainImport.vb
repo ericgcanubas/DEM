@@ -361,7 +361,7 @@ Module ModMainImport
                 l.Text = "tbl_Bank_Terms :" & pb.Maximum & "/" & pb.Value
                 Application.DoEvents()
                 Dim rx As New Recordset
-                rx.Open($"select TOP 1 * from tbl_Bank_Terms where BankKey={rs.Fields("BankKey").Value} and Effectivity = {fDateIsEmpty(rs.Fields("Effectivity").Value.ToString())} ", ConnServer, CursorTypeEnum.adOpenStatic)
+                rx.Open($"select TOP 1 * from tbl_Bank_Terms where BankKey={rs.Fields("BankKey").Value} ", ConnServer, CursorTypeEnum.adOpenStatic)
                 If rx.RecordCount = 0 Then
                     Dim strSQL As String = $"INSERT INTO tbl_Bank_Terms 
                                     (BankKey,
@@ -376,16 +376,9 @@ Module ModMainImport
                                     '{fSqlFormat(rs.Fields("TermsDescription").Value)}'
                                 );"
                     ConnServer.Execute(strSQL)
-
                 Else
-                    Dim strSQL As String = $"
-                    UPDATE tbl_Bank_Terms SET
-                        Effectivity = {fDateIsEmpty(rs.Fields("Effectivity").Value.ToString())},
-                        [Type] = '{fSqlFormat(rs.Fields("Type").Value)}',
-                        Terms = '{fSqlFormat(rs.Fields("Terms").Value)}',
-                        TermsDescription = '{fSqlFormat(rs.Fields("TermsDescription").Value)}'
-                    WHERE BankKey = {fNum(rs.Fields("BankKey").Value)};"
-                    ConnServer.Execute(strSQL)
+
+
                 End If
                 rs.MoveNext()
             End While
@@ -1720,72 +1713,72 @@ Module ModMainImport
                     ConnServer.Execute(strSQL)
                 Else
 
-                    Dim strSQL As String = $"
-                                    UPDATE tbl_PS_GT SET 
-                                        TransactionCount = {fNum(rs.Fields("TransactionCount").Value)},
-                                        GrandTotal = {fNum(rs.Fields("GrandTotal").Value)},
-                                        ZZCount = {fNum(rs.Fields("ZZCount").Value)},
-                                        ResetCnt = '{fSqlFormat(rs.Fields("ResetCnt").Value)}',
-                                        ResetTrans = {fNum(rs.Fields("ResetTrans").Value)},
-                                        InvoiceNumberOld = '{fSqlFormat(rs.Fields("InvoiceNumberOld").Value)}',
-                                        InvoiceNumberCnt = {fNum(rs.Fields("InvoiceNumberCnt").Value)},
-                                        InvoiceNumber = '{fSqlFormat(rs.Fields("InvoiceNumber").Value)}',
-                                        RA = {fNum(rs.Fields("RA").Value)},
-                                        RACount = {fNum(rs.Fields("RACount").Value)},
-                                        Sales = {fNum(rs.Fields("Sales").Value)},
-                                        SalesCount = {fNum(rs.Fields("SalesCount").Value)},
-                                        Discount = {fNum(rs.Fields("Discount").Value)},
-                                        Surcharge = {fNum(rs.Fields("Surcharge").Value)},
-                                        TranCount = {fNum(rs.Fields("TranCount").Value)},
-                                        Cash = {fNum(rs.Fields("Cash").Value)},
-                                        CashCount = {fNum(rs.Fields("CashCount").Value)},
-                                        Card = {fNum(rs.Fields("Card").Value)},
-                                        CardCount = {fNum(rs.Fields("CardCount").Value)},
-                                        [GC] = {fNum(rs.Fields("GC").Value)},
-                                        GCCount = {fNum(rs.Fields("GCCount").Value)},
-                                        IncentiveCard = {fNum(rs.Fields("IncentiveCard").Value)},
-                                        IncentiveCardCount = {fNum(rs.Fields("IncentiveCardCount").Value)},
-                                        CreditMemo = {fNum(rs.Fields("CreditMemo").Value)},
-                                        CreditMemoCount = {fNum(rs.Fields("CreditMemoCount").Value)},
-                                        CM_CashRefund = {fNum(rs.Fields("CM_CashRefund").Value)},
-                                        CM_CashRefundCount = {fNum(rs.Fields("CM_CashRefundCount").Value)},
-                                        ATD = {fNum(rs.Fields("ATD").Value)},
-                                        ATDCount = {fNum(rs.Fields("ATDCount").Value)},
-                                        VPlus = {fNum(rs.Fields("VPlus").Value)},
-                                        VPlusCount = {fNum(rs.Fields("VPlusCount").Value)},
-                                        [Misc] = {fNum(rs.Fields("Misc").Value)},
-                                        MiscCount = {fNum(rs.Fields("MiscCount").Value)},
-                                        SN = '{fSqlFormat(rs.Fields("SN").Value)}',
-                                        PermitNo = '{fSqlFormat(rs.Fields("PermitNo").Value)}',
-                                        M_I_N = '{fSqlFormat(rs.Fields("M_I_N").Value)}',
-                                        Trans = {fNum(rs.Fields("Trans").Value)},
-                                        Locked = {fNum(rs.Fields("Locked").Value)},
-                                        VPlusCodeCount = {fNum(rs.Fields("VPlusCodeCount").Value)},
-                                        Header1 = '{fSqlFormat(rs.Fields("Header1").Value)}',
-                                        Header2 = '{fSqlFormat(rs.Fields("Header2").Value)}',
-                                        Header3 = '{fSqlFormat(rs.Fields("Header3").Value)}',
-                                        TIN = '{fSqlFormat(rs.Fields("TIN").Value)}',
-                                        ForOfflineMode = {fNum(rs.Fields("ForOfflineMode").Value)},
-                                        CapableOffline = {fNum(rs.Fields("CapableOffline").Value)},
-                                        WithEJournal = {fNum(rs.Fields("WithEJournal").Value)},
-                                        BankCommission = {fNum(rs.Fields("BankCommission").Value)},
-                                        SupplierName = '{fSqlFormat(rs.Fields("SupplierName").Value)}',
-                                        SupplierAddress1 = '{fSqlFormat(rs.Fields("SupplierAddress1").Value)}',
-                                        SupplierAddress2 = '{fSqlFormat(rs.Fields("SupplierAddress2").Value)}',
-                                        SupplierTIN = '{fSqlFormat(rs.Fields("SupplierTIN").Value)}',
-                                        SupplierAccreditationNo = '{fSqlFormat(rs.Fields("SupplierAccreditationNo").Value)}',
-                                        SupplierDateIssued = '{fSqlFormat(rs.Fields("SupplierDateIssued").Value)}',
-                                        SupplierValidUntil = '{fSqlFormat(rs.Fields("SupplierValidUntil").Value)}',
-                                        IsNewRegistered = {fNum(rs.Fields("IsNewRegistered").Value)},
-                                        IsNew = {fNum(rs.Fields("IsNew").Value)},
-                                        IsDisabled = {fNum(rs.Fields("IsDisabled").Value)},
-                                        HomeCredit = {fNum(rs.Fields("HomeCredit").Value)},
-                                        HomeCreditCount = {fNum(rs.Fields("HomeCreditCount").Value)},
-                                        QRPay = {fNum(rs.Fields("QRPay").Value)},
-                                        QRPayCount = {fNum(rs.Fields("QRPayCount").Value)}
-                                        WHERE [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}';"
+                    'Dim strSQL As String = $"
+                    '                UPDATE tbl_PS_GT SET 
+                    '                    TransactionCount = {fNum(rs.Fields("TransactionCount").Value)},
+                    '                    GrandTotal = {fNum(rs.Fields("GrandTotal").Value)},
+                    '                    ZZCount = {fNum(rs.Fields("ZZCount").Value)},
+                    '                    ResetCnt = '{fSqlFormat(rs.Fields("ResetCnt").Value)}',
+                    '                    ResetTrans = {fNum(rs.Fields("ResetTrans").Value)},
+                    '                    InvoiceNumberOld = '{fSqlFormat(rs.Fields("InvoiceNumberOld").Value)}',
+                    '                    InvoiceNumberCnt = {fNum(rs.Fields("InvoiceNumberCnt").Value)},
+                    '                    InvoiceNumber = '{fSqlFormat(rs.Fields("InvoiceNumber").Value)}',
+                    '                    RA = {fNum(rs.Fields("RA").Value)},
+                    '                    RACount = {fNum(rs.Fields("RACount").Value)},
+                    '                    Sales = {fNum(rs.Fields("Sales").Value)},
+                    '                    SalesCount = {fNum(rs.Fields("SalesCount").Value)},
+                    '                    Discount = {fNum(rs.Fields("Discount").Value)},
+                    '                    Surcharge = {fNum(rs.Fields("Surcharge").Value)},
+                    '                    TranCount = {fNum(rs.Fields("TranCount").Value)},
+                    '                    Cash = {fNum(rs.Fields("Cash").Value)},
+                    '                    CashCount = {fNum(rs.Fields("CashCount").Value)},
+                    '                    Card = {fNum(rs.Fields("Card").Value)},
+                    '                    CardCount = {fNum(rs.Fields("CardCount").Value)},
+                    '                    [GC] = {fNum(rs.Fields("GC").Value)},
+                    '                    GCCount = {fNum(rs.Fields("GCCount").Value)},
+                    '                    IncentiveCard = {fNum(rs.Fields("IncentiveCard").Value)},
+                    '                    IncentiveCardCount = {fNum(rs.Fields("IncentiveCardCount").Value)},
+                    '                    CreditMemo = {fNum(rs.Fields("CreditMemo").Value)},
+                    '                    CreditMemoCount = {fNum(rs.Fields("CreditMemoCount").Value)},
+                    '                    CM_CashRefund = {fNum(rs.Fields("CM_CashRefund").Value)},
+                    '                    CM_CashRefundCount = {fNum(rs.Fields("CM_CashRefundCount").Value)},
+                    '                    ATD = {fNum(rs.Fields("ATD").Value)},
+                    '                    ATDCount = {fNum(rs.Fields("ATDCount").Value)},
+                    '                    VPlus = {fNum(rs.Fields("VPlus").Value)},
+                    '                    VPlusCount = {fNum(rs.Fields("VPlusCount").Value)},
+                    '                    [Misc] = {fNum(rs.Fields("Misc").Value)},
+                    '                    MiscCount = {fNum(rs.Fields("MiscCount").Value)},
+                    '                    SN = '{fSqlFormat(rs.Fields("SN").Value)}',
+                    '                    PermitNo = '{fSqlFormat(rs.Fields("PermitNo").Value)}',
+                    '                    M_I_N = '{fSqlFormat(rs.Fields("M_I_N").Value)}',
+                    '                    Trans = {fNum(rs.Fields("Trans").Value)},
+                    '                    Locked = {fNum(rs.Fields("Locked").Value)},
+                    '                    VPlusCodeCount = {fNum(rs.Fields("VPlusCodeCount").Value)},
+                    '                    Header1 = '{fSqlFormat(rs.Fields("Header1").Value)}',
+                    '                    Header2 = '{fSqlFormat(rs.Fields("Header2").Value)}',
+                    '                    Header3 = '{fSqlFormat(rs.Fields("Header3").Value)}',
+                    '                    TIN = '{fSqlFormat(rs.Fields("TIN").Value)}',
+                    '                    ForOfflineMode = {fNum(rs.Fields("ForOfflineMode").Value)},
+                    '                    CapableOffline = {fNum(rs.Fields("CapableOffline").Value)},
+                    '                    WithEJournal = {fNum(rs.Fields("WithEJournal").Value)},
+                    '                    BankCommission = {fNum(rs.Fields("BankCommission").Value)},
+                    '                    SupplierName = '{fSqlFormat(rs.Fields("SupplierName").Value)}',
+                    '                    SupplierAddress1 = '{fSqlFormat(rs.Fields("SupplierAddress1").Value)}',
+                    '                    SupplierAddress2 = '{fSqlFormat(rs.Fields("SupplierAddress2").Value)}',
+                    '                    SupplierTIN = '{fSqlFormat(rs.Fields("SupplierTIN").Value)}',
+                    '                    SupplierAccreditationNo = '{fSqlFormat(rs.Fields("SupplierAccreditationNo").Value)}',
+                    '                    SupplierDateIssued = '{fSqlFormat(rs.Fields("SupplierDateIssued").Value)}',
+                    '                    SupplierValidUntil = '{fSqlFormat(rs.Fields("SupplierValidUntil").Value)}',
+                    '                    IsNewRegistered = {fNum(rs.Fields("IsNewRegistered").Value)},
+                    '                    IsNew = {fNum(rs.Fields("IsNew").Value)},
+                    '                    IsDisabled = {fNum(rs.Fields("IsDisabled").Value)},
+                    '                    HomeCredit = {fNum(rs.Fields("HomeCredit").Value)},
+                    '                    HomeCreditCount = {fNum(rs.Fields("HomeCreditCount").Value)},
+                    '                    QRPay = {fNum(rs.Fields("QRPay").Value)},
+                    '                    QRPayCount = {fNum(rs.Fields("QRPayCount").Value)}
+                    '                    WHERE [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}';"
 
-                    ConnServer.Execute(strSQL)
+                    'ConnServer.Execute(strSQL)
 
                 End If
 
@@ -1819,11 +1812,11 @@ Module ModMainImport
                                    );"
                     ConnServer.Execute(strSQL)
                 Else
-                    Dim strSQL As String = $"UPDATE tbl_PS_GT_ZZ SET
-                    [PSDate] = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())},
-                    ZZCount = {fNum(rs.Fields("ZZCount").Value)}
-                    WHERE  [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}';"
-                    ConnServer.Execute(strSQL)
+                    'Dim strSQL As String = $"UPDATE tbl_PS_GT_ZZ SET
+                    '[PSDate] = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())},
+                    'ZZCount = {fNum(rs.Fields("ZZCount").Value)}
+                    'WHERE  [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}';"
+                    'ConnServer.Execute(strSQL)
                 End If
                 rs.MoveNext()
             End While
@@ -2013,32 +2006,32 @@ Module ModMainImport
                     ConnServer.Execute(strSQL)
 
                 Else
-                    Dim strSQL As String = $"
-                    UPDATE tbl_PS_E_Journal_Detail SET
-                        TransactionNumber = '{fSqlFormat(rs.Fields("TransactionNumber").Value)}',
-                        PSDate = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())},
-                        [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}',
-                        Cashier = '{fSqlFormat(rs.Fields("Cashier").Value)}',
-                        ItemCode = '{fSqlFormat(rs.Fields("ItemCode").Value)}',
-                        ItemDescription = '{fSqlFormat(rs.Fields("ItemDescription").Value)}',
-                        Quantity = {fNum(rs.Fields("Quantity").Value)},
-                        GrossSRP = {fNum(rs.Fields("GrossSRP").Value)},
-                        Discount = {fNum(rs.Fields("Discount").Value)},
-                        Surcharge = {fNum(rs.Fields("Surcharge").Value)},
-                        TotalGross = {fNum(rs.Fields("TotalGross").Value)},
-                        TotalDiscount = {fNum(rs.Fields("TotalDiscount").Value)},
-                        TotalSurcharge = {fNum(rs.Fields("TotalSurcharge").Value)},
-                        TotalNet = {fNum(rs.Fields("TotalNet").Value)},
-                        Location = '{fSqlFormat(rs.Fields("Location").Value)}',
-                        POSTableKey = {fNum(rs.Fields("POSTableKey").Value)}
-                        WHERE  TransactionNumber='{fSqlFormat(rs.Fields("TransactionNumber").Value)}' and 
-                                [Counter] ='{gbl_Counter}' and
-                                PSDate= {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and 
-                                Cashier = '{fSqlFormat(rs.Fields("Cashier").Value)}' and 
-                                ItemCode='{fSqlFormat(rs.Fields("ItemCode").Value)}' and 
-                                POSTableKey = {fNum(rs.Fields("POSTableKey").Value)} ;"
+                    'Dim strSQL As String = $"
+                    'UPDATE tbl_PS_E_Journal_Detail SET
+                    '    TransactionNumber = '{fSqlFormat(rs.Fields("TransactionNumber").Value)}',
+                    '    PSDate = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())},
+                    '    [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}',
+                    '    Cashier = '{fSqlFormat(rs.Fields("Cashier").Value)}',
+                    '    ItemCode = '{fSqlFormat(rs.Fields("ItemCode").Value)}',
+                    '    ItemDescription = '{fSqlFormat(rs.Fields("ItemDescription").Value)}',
+                    '    Quantity = {fNum(rs.Fields("Quantity").Value)},
+                    '    GrossSRP = {fNum(rs.Fields("GrossSRP").Value)},
+                    '    Discount = {fNum(rs.Fields("Discount").Value)},
+                    '    Surcharge = {fNum(rs.Fields("Surcharge").Value)},
+                    '    TotalGross = {fNum(rs.Fields("TotalGross").Value)},
+                    '    TotalDiscount = {fNum(rs.Fields("TotalDiscount").Value)},
+                    '    TotalSurcharge = {fNum(rs.Fields("TotalSurcharge").Value)},
+                    '    TotalNet = {fNum(rs.Fields("TotalNet").Value)},
+                    '    Location = '{fSqlFormat(rs.Fields("Location").Value)}',
+                    '    POSTableKey = {fNum(rs.Fields("POSTableKey").Value)}
+                    '    WHERE  TransactionNumber='{fSqlFormat(rs.Fields("TransactionNumber").Value)}' and 
+                    '            [Counter] ='{gbl_Counter}' and
+                    '            PSDate= {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and 
+                    '            Cashier = '{fSqlFormat(rs.Fields("Cashier").Value)}' and 
+                    '            ItemCode='{fSqlFormat(rs.Fields("ItemCode").Value)}' and 
+                    '            POSTableKey = {fNum(rs.Fields("POSTableKey").Value)} ;"
 
-                    ConnServer.Execute(strSQL)
+                    'ConnServer.Execute(strSQL)
                 End If
 
                 rs.MoveNext()
@@ -2131,37 +2124,7 @@ Module ModMainImport
                     ConnServer.Execute(strSQL)
 
                 Else
-                    Dim strSQL As String = $"UPDATE tbl_PS_GT_Adjustment_EJournal SET                      
-                                Series = '{fSqlFormat(rs.Fields("Series").Value)}',
-                                ExactDate = {fDateIsEmpty(rs.Fields("ExactDate").Value.ToString())},
-                                Amount = {fNum(rs.Fields("Amount").Value)},
-                                SRem = '{fSqlFormat(rs.Fields("SRem").Value)}',
-                                TotalQty = {fNum(rs.Fields("TotalQty").Value)},
-                                TotalSales = {fNum(rs.Fields("TotalSales").Value)},
-                                TotalCash = {fNum(rs.Fields("TotalCash").Value)},
-                                TotalCard = {fNum(rs.Fields("TotalCard").Value)},
-                                TotalDiscount = {fNum(rs.Fields("TotalDiscount").Value)},
-                                TotalGC = {fNum(rs.Fields("TotalGC").Value)},
-                                TotalVPlus = {fNum(rs.Fields("TotalVPlus").Value)},
-                                TotalATD = {fNum(rs.Fields("TotalATD").Value)},
-                                Location = '{fSqlFormat(rs.Fields("Location").Value)}',
-                                InvoiceNo = '{fSqlFormat(rs.Fields("InvoiceNo").Value)}',
-                                VatPercent = '{fSqlFormat(rs.Fields("VatPercent").Value)}',
-                                VatSale = {fNum(rs.Fields("VatSale").Value)},
-                                Vat = {fNum(rs.Fields("Vat").Value)},
-                                POSTableKey = {fNum(rs.Fields("POSTableKey").Value)},
-                                TotalIncentiveCard = {fNum(rs.Fields("TotalIncentiveCard").Value)},
-                                IsZeroRated = {fNum(rs.Fields("IsZeroRated").Value)},
-                                UpdatedBy = '{fSqlFormat(rs.Fields("UpdatedBy").Value)}',
-                                LastUpdated = {fDateIsEmpty(rs.Fields("LastUpdated").Value.ToString())},
-                                TotalCreditMemo = {fNum(rs.Fields("TotalCreditMemo").Value)}
-                                WHERE PSNumber = '{fSqlFormat(rs.Fields("PSNumber").Value)}' and
-                                PSDate = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and 
-                                [Counter] = '{gbl_Counter}' and 
-                                Cashier = '{fSqlFormat(rs.Fields("Cashier").Value)}' and 
-                                POSTableKey = {fNum(rs.Fields("POSTableKey").Value)} ;"
 
-                    ConnServer.Execute(strSQL)
                 End If
                 rs.MoveNext()
             End While
@@ -2232,33 +2195,7 @@ Module ModMainImport
 
                     ConnServer.Execute(strSQL)
                 Else
-                    Dim strSQL As String = $"
-                        UPDATE tbl_PS_GT_Adjustment_EJournal_Detail SET
-                        TransactionNumber = '{fSqlFormat(rs.Fields("TransactionNumber").Value)}',
-                        PSDate = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())},
-                        [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}',
-                        Cashier = '{fSqlFormat(rs.Fields("Cashier").Value)}',
-                        ItemCode = '{fSqlFormat(rs.Fields("ItemCode").Value)}',
-                        ItemDescription = '{fSqlFormat(rs.Fields("ItemDescription").Value)}',
-                        Quantity = {fNum(rs.Fields("Quantity").Value)},
-                        GrossSRP = {fNum(rs.Fields("GrossSRP").Value)},
-                        Discount = {fNum(rs.Fields("Discount").Value)},
-                        Surcharge = {fNum(rs.Fields("Surcharge").Value)},
-                        TotalGross = {fNum(rs.Fields("TotalGross").Value)},
-                        TotalDiscount = {fNum(rs.Fields("TotalDiscount").Value)},
-                        TotalSurcharge = {fNum(rs.Fields("TotalSurcharge").Value)},
-                        TotalNet = {fNum(rs.Fields("TotalNet").Value)},
-                        Location = '{fSqlFormat(rs.Fields("Location").Value)}',
-                        POSTableKey = {fNum(rs.Fields("POSTableKey").Value)}
-                        WHERE 
-                        TransactionNumber = '{fSqlFormat(rs.Fields("TransactionNumber").Value)}' and 
-                        PSDate = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and 
-                        [Counter] = '{gbl_Counter}' and
-                        Cashier = '{fSqlFormat(rs.Fields("Cashier").Value)}' and
-                        ItemCode = '{fSqlFormat(rs.Fields("ItemCode").Value)}' and
-                        POSTableKey = {fNum(rs.Fields("POSTableKey").Value)};"
 
-                    ConnServer.Execute(strSQL)
 
                 End If
 

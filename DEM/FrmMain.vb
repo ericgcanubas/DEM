@@ -50,8 +50,6 @@ Public Class FrmMain
                 gbl_DownloadType = Val(GetParameter("GenerateType"))
                 NItemOnly = Val(GetParameter("ItemNotInclude"))
 
-
-
                 CreateTable_tbl_banks(pbMainLoading, lblMainLoading)
                 CreateTable_tbl_Banks_Changes(pbMainLoading, lblMainLoading)
 
@@ -269,7 +267,9 @@ Public Class FrmMain
                     Branch_Insert_tbl_PS_MiscPay_Tmp(pbBranchLoading, lblBranchLoading)
                     Branch_Insert_tbl_PS_MiscPay_Voided(pbBranchLoading, lblBranchLoading)
                     Branch_Insert_tbl_PaidOutTransactions(pbBranchLoading, lblBranchLoading)
-                    Branch_Insert__tbl_ItemTransactions(pbBranchLoading, lblBranchLoading)
+                    'Branch_Insert_tbl_ItemTransactions(pbBranchLoading, lblBranchLoading)
+                    'Branch_Insert_tbl_PS_ItemsSold_Posting(pbBranchLoading, lblBranchLoading)
+
                 End If
                 ConnLocal.Close()
                 MessageBox.Show("Successfully Branch Data Upload", "Upload Message", MessageBoxButtons.OK, MessageBoxIcon.Information)

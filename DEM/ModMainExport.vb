@@ -2193,8 +2193,7 @@ Module ModMainExport
                                     VALUES (
                                         '{fSqlFormat(rs.Fields("Counter").Value)}',
                                          {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())},
-                                        {fNum(rs.Fields("ZZCount").Value)}
-                                   );"
+                                        {fNum(rs.Fields("ZZCount").Value)} );"
 
                 ConnLocal.Execute(strSQL)
                 rs.MoveNext()
