@@ -62,7 +62,6 @@ Module ModBranchImport
 
                 n = 0
                 Application.DoEvents()
-
                 Dim rx As New Recordset
                 rx.Open($"select TOP 1 * from tbl_VPlus_Codes WHERE Codes ='{fSqlFormat(rs.Fields("Codes").Value)}'  ", ConnServer, CursorTypeEnum.adOpenStatic)
                 If rx.RecordCount = 0 Then
@@ -133,7 +132,6 @@ Module ModBranchImport
                                     {fDateIsEmpty(rs.Fields("DateStarted").Value.ToString())},
                                     {fDateIsEmpty(rs.Fields("DateExpired").Value.ToString())},    
                                     {fDateIsEmpty(rs.Fields("GracePeriod").Value.ToString())});"
-
                     ConnServer.Execute(strSQL)
                 End If
                 rs.MoveNext()
@@ -156,9 +154,8 @@ Module ModBranchImport
                 l.Text = "tbl_PS_GT :" & pb.Maximum & "/" & pb.Value
                 Application.DoEvents()
 
-
                 Dim rx As New Recordset
-                rx.Open($"select * from tbl_PS_GT WHERE [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}'", ConnServer, CursorTypeEnum.adOpenStatic)
+                rx.Open($"select TOP 1 * from tbl_PS_GT WHERE [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}'", ConnServer, CursorTypeEnum.adOpenStatic)
                 If rx.RecordCount = 0 Then
                     Dim strSQL As String = $"INSERT INTO tbl_PS_GT 
                                             ( [Counter],
@@ -421,11 +418,15 @@ Module ModBranchImport
                 Application.DoEvents()
 
                 Dim rx As New Recordset
-                rx.Open($"SELECT TOP 1 * From tbl_PS_E_Journal WHERE 
-                        PSNumber = '{fSqlFormat(rs.Fields("PSNumber").Value)}' and
-                        Cashier= '{fSqlFormat(rs.Fields("Cashier").Value)}' and 
-                        PSDate={fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and 
-                        Counter='{fSqlFormat(rs.Fields("Counter").Value)}'", ConnServer, CursorTypeEnum.adOpenStatic)
+                rx.Open($"SELECT TOP 1 * From tbl_PS_E_Journal 
+                        WHERE 
+                        PSNumber    = '{fSqlFormat(rs.Fields("PSNumber").Value)}' and
+                        Cashier     = '{fSqlFormat(rs.Fields("Cashier").Value)}' and 
+                        PSDate      =  {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and 
+                        Counter     = '{fSqlFormat(rs.Fields("Counter").Value)}' and 
+                        POSTableKey =  {fNum(rs.Fields("POSTableKey").Value)} ", ConnServer, CursorTypeEnum.adOpenStatic)
+
+
                 If rx.RecordCount = 0 Then
                     Dim strSQL As String = $"INSERT INTO tbl_PS_E_Journal  
                                             (PSNumber,
@@ -485,11 +486,7 @@ Module ModBranchImport
                     ConnServer.Execute(strSQL)
 
                 Else
-                    Dim strSQL As String = $"UPDATE tbl_PS_E_Journal SET
-                            PSNumber = '{fSqlFormat(rs.Fields("PSNumber").Value)}',
-                            PSDate = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())},
-                            Cashier = '{fSqlFormat(rs.Fields("Cashier").Value)}',
-                            [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}',
+                    Dim strSQL As String = $"UPDATE tbl_PS_E_Journal SET                    
                             Series = '{fSqlFormat(rs.Fields("Series").Value)}',
                             ExactDate = {fDateIsEmpty(rs.Fields("ExactDate").Value.ToString())},
                             Amount = {fNum(rs.Fields("Amount").Value)},
@@ -505,17 +502,18 @@ Module ModBranchImport
                             InvoiceNumber = '{fSqlFormat(rs.Fields("InvoiceNumber").Value)}',
                             VatPercent = '{fSqlFormat(rs.Fields("VatPercent").Value)}',
                             VatSale = {fNum(rs.Fields("VatSale").Value)},
-                            Vat = {fNum(rs.Fields("Vat").Value)},
-                            POSTableKey = {fNum(rs.Fields("POSTableKey").Value)},
+                            Vat = {fNum(rs.Fields("Vat").Value)},  
                             TotalIncentiveCard = {fNum(rs.Fields("TotalIncentiveCard").Value)},
                             IsZeroRated = {fNum(rs.Fields("IsZeroRated").Value)},
                             TotalCreditMemo = {fNum(rs.Fields("TotalCreditMemo").Value)},
                             TotalHomeCredit = {fNum(rs.Fields("TotalHomeCredit").Value)},
                             TotalQRPay = {fNum(rs.Fields("TotalQRPay").Value)}
-                            WHERE PSNumber = '{fSqlFormat(rs.Fields("PSNumber").Value)}' and
+                            WHERE 
+                            PSNumber = '{fSqlFormat(rs.Fields("PSNumber").Value)}' and
                             Cashier= '{fSqlFormat(rs.Fields("Cashier").Value)}' and 
                             PSDate={fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and 
-                            Counter='{fSqlFormat(rs.Fields("Counter").Value)}'"
+                            [Counter]='{fSqlFormat(rs.Fields("Counter").Value)}' and 
+                            POSTableKey = {fNum(rs.Fields("POSTableKey").Value)}"
 
                     ConnServer.Execute(strSQL)
                 End If
@@ -544,13 +542,15 @@ Module ModBranchImport
 
 
                 Dim rx As New Recordset
-                rx.Open($"select TOP 1 * from tbl_PS_E_Journal_Detail WHERE 
-                                                                        TransactionNumber='{fSqlFormat(rs.Fields("TransactionNumber").Value)}' and 
-                                                                        PSDate = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and 
-                                                                        [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}' and 
-                                                                        Cashier='{fSqlFormat(rs.Fields("Cashier").Value)}' and 
-                                                                        ItemCode= '{fSqlFormat(rs.Fields("ItemCode").Value)}' and 
-                                                                        POSTableKey = {fNum(rs.Fields("POSTableKey").Value)} ", ConnServer, CursorTypeEnum.adOpenStatic)
+                rx.Open($"SELECT TOP 1 * FROM tbl_PS_E_Journal_Detail 
+                WHERE 
+                TransactionNumber='{fSqlFormat(rs.Fields("TransactionNumber").Value)}' and 
+                PSDate = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and 
+                [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}' and 
+                Cashier='{fSqlFormat(rs.Fields("Cashier").Value)}' and 
+                ItemCode= '{fSqlFormat(rs.Fields("ItemCode").Value)}' and 
+                POSTableKey = {fNum(rs.Fields("POSTableKey").Value)} ", ConnServer, CursorTypeEnum.adOpenStatic)
+
                 If rx.RecordCount = 0 Then
                     Dim strSQL As String = $"INSERT INTO tbl_PS_E_Journal_Detail 
                                             (TransactionNumber,
@@ -607,12 +607,13 @@ Module ModBranchImport
                             TotalNet          = {fNum(rs.Fields("TotalNet").Value)},
                             Location          = '{fSqlFormat(rs.Fields("Location").Value)}',
                             POSTableKey       = {fNum(rs.Fields("POSTableKey").Value)}
-                            WHERE TransactionNumber='{fSqlFormat(rs.Fields("TransactionNumber").Value)}' and 
-                                PSDate = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and 
-                                [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}' and 
-                                Cashier='{fSqlFormat(rs.Fields("Cashier").Value)}' and 
-                                ItemCode= '{fSqlFormat(rs.Fields("ItemCode").Value)}' and 
-                                POSTableKey = {fNum(rs.Fields("POSTableKey").Value)} ;"
+                            WHERE 
+                                TransactionNumber   = '{fSqlFormat(rs.Fields("TransactionNumber").Value)}' and 
+                                PSDate              = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and 
+                                [Counter]           = '{fSqlFormat(rs.Fields("Counter").Value)}' and 
+                                Cashier             = '{fSqlFormat(rs.Fields("Cashier").Value)}' and 
+                                ItemCode            = '{fSqlFormat(rs.Fields("ItemCode").Value)}' and 
+                                POSTableKey         = {fNum(rs.Fields("POSTableKey").Value)} ;"
 
                     ConnServer.Execute(strSQL)
                 End If
@@ -639,11 +640,13 @@ Module ModBranchImport
                 Application.DoEvents()
 
                 Dim rx As New Recordset
-                rx.Open($"select * from tbl_PS_EmployeeATD Where TransactionNumber = '{fSqlFormat(rs.Fields("TransactionNumber").Value)}' and
-                                                            PSDate = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and
-                                                            [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}' and 
-                                                            Cashier='{fSqlFormat(rs.Fields("Cashier").Value)}' and 
-                                                            ATDNumber='{fSqlFormat(rs.Fields("ATDNumber").Value)}' ", ConnServer, CursorTypeEnum.adOpenStatic)
+                rx.Open($"SELECT TOP 1 * FROM tbl_PS_EmployeeATD 
+                WHERE 
+                TransactionNumber = '{fSqlFormat(rs.Fields("TransactionNumber").Value)}' and
+                PSDate = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and
+                [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}' and 
+                Cashier='{fSqlFormat(rs.Fields("Cashier").Value)}' and 
+                ATDNumber='{fSqlFormat(rs.Fields("ATDNumber").Value)}' ", ConnServer, CursorTypeEnum.adOpenStatic)
                 If rx.RecordCount = 0 Then
 
                     Dim strSQL As String = $"INSERT INTO tbl_PS_EmployeeATD 
@@ -668,7 +671,8 @@ Module ModBranchImport
                     Dim strSQL As String = $"UPDATE tbl_PS_EmployeeATD SET
                             EmpNo             = {fNum(rs.Fields("EmpNo").Value)},
                             Amount            = {fNum(rs.Fields("Amount").Value)}
-                            Where TransactionNumber = '{fSqlFormat(rs.Fields("TransactionNumber").Value)}' and
+                            WHERE 
+                            TransactionNumber = '{fSqlFormat(rs.Fields("TransactionNumber").Value)}' and
                             PSDate = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and
                             [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}' and 
                             Cashier='{fSqlFormat(rs.Fields("Cashier").Value)}' and 
@@ -686,7 +690,7 @@ Module ModBranchImport
 
 
         rs = New ADODB.Recordset
-        rs.Open($"SELECT * from tbl_GiftCert_Payment  ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"SELECT * FROM tbl_GiftCert_Payment  ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -697,7 +701,13 @@ Module ModBranchImport
 
                 Application.DoEvents()
                 Dim rx As New Recordset
-                rx.Open($"SELECT * from tbl_GiftCert_Payment WHERE PSNumber='{fSqlFormat(rs.Fields("PSNumber").Value)}' and PSDate= {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and [Counter]='{fSqlFormat(rs.Fields("Counter").Value)}' and Cashier='{fSqlFormat(rs.Fields("Cashier").Value)}' and GCNumber='{fSqlFormat(rs.Fields("GCNumber").Value)}'", ConnServer, CursorTypeEnum.adOpenStatic)
+                rx.Open($"SELECT TOP 1 * from tbl_GiftCert_Payment 
+                    WHERE 
+                    PSNumber    ='{fSqlFormat(rs.Fields("PSNumber").Value)}' and 
+                    PSDate      = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and 
+                    [Counter]   ='{fSqlFormat(rs.Fields("Counter").Value)}' and 
+                    Cashier     ='{fSqlFormat(rs.Fields("Cashier").Value)}' and 
+                    GCNumber    ='{fSqlFormat(rs.Fields("GCNumber").Value)}'", ConnServer, CursorTypeEnum.adOpenStatic)
                 If rx.RecordCount = 0 Then
                     Dim strSQL As String = $"INSERT INTO tbl_GiftCert_Payment 
                                                 (PSNumber,
@@ -721,11 +731,12 @@ Module ModBranchImport
                     Dim strSQL As String = $"UPDATE tbl_GiftCert_Payment SET
                             GCAmount = {fNum(rs.Fields("GCAmount").Value)},
                             Posted   = {fNum(rs.Fields("Posted").Value)}
-                            WHERE PSNumber='{fSqlFormat(rs.Fields("PSNumber").Value)}' and 
-                            PSDate= {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and 
-                            [Counter]='{fSqlFormat(rs.Fields("Counter").Value)}' and 
-                            Cashier='{fSqlFormat(rs.Fields("Cashier").Value)}' and 
-                            GCNumber='{fSqlFormat(rs.Fields("GCNumber").Value)}';"
+                            WHERE 
+                            PSNumber    ='{fSqlFormat(rs.Fields("PSNumber").Value)}' and 
+                            PSDate      = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and 
+                            [Counter]   ='{fSqlFormat(rs.Fields("Counter").Value)}' and 
+                            Cashier     ='{fSqlFormat(rs.Fields("Cashier").Value)}' and 
+                            GCNumber    ='{fSqlFormat(rs.Fields("GCNumber").Value)}';"
 
                     ConnServer.Execute(strSQL)
                 End If
@@ -751,11 +762,13 @@ Module ModBranchImport
                 Application.DoEvents()
 
                 Dim rx As New Recordset
-                rx.Open($"select TOP 1 * from tbl_VPlus_Purchases_Points WHERE TransactionNo = '{fSqlFormat(rs.Fields("TransactionNo").Value)}' and
-                    VDate= {fDateIsEmpty(rs.Fields("VDate").Value.ToString())} and 
-                    VPlusCodes = '{fSqlFormat(rs.Fields("VPlusCodes").Value)}' and 
-                    [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}' and 
-                    Cashier= '{fSqlFormat(rs.Fields("Cashier").Value)}'", ConnServer, CursorTypeEnum.adOpenStatic)
+                rx.Open($"select TOP 1 * from tbl_VPlus_Purchases_Points 
+                    WHERE 
+                    TransactionNo   = '{fSqlFormat(rs.Fields("TransactionNo").Value)}' and
+                    VDate           = {fDateIsEmpty(rs.Fields("VDate").Value.ToString())} and 
+                    VPlusCodes      = '{fSqlFormat(rs.Fields("VPlusCodes").Value)}' and 
+                    [Counter]       = '{fSqlFormat(rs.Fields("Counter").Value)}' and 
+                    Cashier         = '{fSqlFormat(rs.Fields("Cashier").Value)}'", ConnServer, CursorTypeEnum.adOpenStatic)
 
                 If rx.RecordCount = 0 Then
 
@@ -796,7 +809,13 @@ Module ModBranchImport
                             PointsPay      = {fNum(rs.Fields("PointsPay").Value)},
                             [Location]     = '{fSqlFormat(rs.Fields("Location").Value)}',
                             [Posted]       = {fNum(rs.Fields("Posted").Value)}
-                            WHERE TransactionNo = '{fSqlFormat(rs.Fields("TransactionNo").Value)}' and VDate= {fDateIsEmpty(rs.Fields("VDate").Value.ToString())} and VPlusCodes = '{fSqlFormat(rs.Fields("VPlusCodes").Value)}' and [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}' and Cashier= '{fSqlFormat(rs.Fields("Cashier").Value)}';"
+                            WHERE 
+                            TransactionNo   = '{fSqlFormat(rs.Fields("TransactionNo").Value)}' and 
+                            VDate           = {fDateIsEmpty(rs.Fields("VDate").Value.ToString())} and
+                            VPlusCodes      = '{fSqlFormat(rs.Fields("VPlusCodes").Value)}' and
+                            [Counter]       = '{fSqlFormat(rs.Fields("Counter").Value)}' and
+                            Cashier         = '{fSqlFormat(rs.Fields("Cashier").Value)}';"
+
                     ConnServer.Execute(strSQL)
                 End If
 
@@ -1015,7 +1034,16 @@ Module ModBranchImport
                 Application.DoEvents()
 
                 Dim rx As New Recordset
-                rx.Open($"select * from tbl_PS_ItemsSold_Tmp WHERE  TransactionNumber = '{fSqlFormat(rs.Fields("TransactionNumber").Value)}' and Line = {fNum(rs.Fields("Line").Value)} and PSDate = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}' and Cashier = '{fSqlFormat(rs.Fields("Cashier").Value)}' and ItemCode = '{fSqlFormat(rs.Fields("ItemCode").Value)}' and Quantity = {fNum(rs.Fields("Quantity").Value)} ", ConnServer, CursorTypeEnum.adOpenStatic)
+                rx.Open($"select * from tbl_PS_ItemsSold_Tmp WHERE  
+                TransactionNumber = '{fSqlFormat(rs.Fields("TransactionNumber").Value)}' and
+                Line = {fNum(rs.Fields("Line").Value)} and 
+                PSDate = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and 
+                [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}' and 
+                Cashier = '{fSqlFormat(rs.Fields("Cashier").Value)}' and 
+                ItemCode = '{fSqlFormat(rs.Fields("ItemCode").Value)}' and 
+                Quantity = {fNum(rs.Fields("Quantity").Value)} and 
+                POSTableKey = {fNum(rs.Fields("POSTableKey").Value)}", ConnServer, CursorTypeEnum.adOpenStatic)
+
                 If rx.RecordCount = 0 Then
                     Dim strSQL As String = $"INSERT INTO tbl_PS_ItemsSold_Tmp 
                                                 (TransactionNumber,
@@ -1051,31 +1079,30 @@ Module ModBranchImport
                                                 {fNum(rs.Fields("TotalSurcharge").Value)},
                                                 {fNum(rs.Fields("TotalNet").Value)},
                                                 '{fSqlFormat(rs.Fields("Location").Value)}',
-                                                {fNum(rs.Fields("Posted").Value)},
+                                                0,
                                                 {fNum(rs.Fields("POSTableKey").Value)});"
 
                     ConnServer.Execute(strSQL)
                 Else
-                    Dim strSQL As String = $"UPDATE tbl_PS_ItemsSold_Tmp SET
-                            GrossSRP          = {fNum(rs.Fields("GrossSRP").Value)},
-                            Discount          = {fNum(rs.Fields("Discount").Value)},
-                            Surcharge         = {fNum(rs.Fields("Surcharge").Value)},
-                            TotalGross        = {fNum(rs.Fields("TotalGross").Value)},
-                            TotalDiscount     = {fNum(rs.Fields("TotalDiscount").Value)},
-                            TotalSurcharge    = {fNum(rs.Fields("TotalSurcharge").Value)},
-                            TotalNet          = {fNum(rs.Fields("TotalNet").Value)},
-                            Location          = '{fSqlFormat(rs.Fields("Location").Value)}',
-                            Posted            = {fNum(rs.Fields("Posted").Value)},
-                            POSTableKey       = {fNum(rs.Fields("POSTableKey").Value)}
-                            WHERE  TransactionNumber = '{fSqlFormat(rs.Fields("TransactionNumber").Value)}' and 
-                            Line = {fNum(rs.Fields("Line").Value)} and 
-                            PSDate = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and 
-                            [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}' and 
-                            Cashier = '{fSqlFormat(rs.Fields("Cashier").Value)}' and 
-                            ItemCode = '{fSqlFormat(rs.Fields("ItemCode").Value)}' and 
-                            Quantity = {fNum(rs.Fields("Quantity").Value)};"
-
-                    ConnServer.Execute(strSQL)
+                    'Dim strSQL As String = $"UPDATE tbl_PS_ItemsSold_Tmp SET
+                    '        GrossSRP          = {fNum(rs.Fields("GrossSRP").Value)},
+                    '        Discount          = {fNum(rs.Fields("Discount").Value)},
+                    '        Surcharge         = {fNum(rs.Fields("Surcharge").Value)},
+                    '        TotalGross        = {fNum(rs.Fields("TotalGross").Value)},
+                    '        TotalDiscount     = {fNum(rs.Fields("TotalDiscount").Value)},
+                    '        TotalSurcharge    = {fNum(rs.Fields("TotalSurcharge").Value)},
+                    '        TotalNet          = {fNum(rs.Fields("TotalNet").Value)},
+                    '        Location          = '{fSqlFormat(rs.Fields("Location").Value)}',
+                    '        Posted            = {fNum(rs.Fields("Posted").Value)},
+                    '        POSTableKey       = {fNum(rs.Fields("POSTableKey").Value)}
+                    '        WHERE  TransactionNumber = '{fSqlFormat(rs.Fields("TransactionNumber").Value)}' and 
+                    '        Line = {fNum(rs.Fields("Line").Value)} and 
+                    '        PSDate = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} and 
+                    '        [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}' and 
+                    '        Cashier = '{fSqlFormat(rs.Fields("Cashier").Value)}' and 
+                    '        ItemCode = '{fSqlFormat(rs.Fields("ItemCode").Value)}' and 
+                    '        Quantity = {fNum(rs.Fields("Quantity").Value)};"
+                    'ConnServer.Execute(strSQL)
 
                 End If
 
