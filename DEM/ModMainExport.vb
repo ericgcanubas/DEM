@@ -815,8 +815,11 @@ Module ModMainExport
             Exit Sub
         End If
         Dim year As Integer = Now.Year - 1
+        Dim dateTo As Date = Now.Date
+        Dim dateFrom As Date = dateTo.AddMonths(-1)
+
         rs = New ADODB.Recordset
-        rs.Open($"select top 1000 * from tbl_Items_Change where year(DateChange) >= {year} order by dateChange desc", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select top 1000 * from tbl_Items_Change where DateChange between '{dateFrom}' and '{dateTo}' order by dateChange desc", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0

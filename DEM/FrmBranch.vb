@@ -161,17 +161,15 @@ Public Class FrmBranch
         Insert_tbl_PS_GT_Adjustment_EJournal(pbMainLoading, lblMainLoading)
         Insert_tbl_PS_GT_Adjustment_EJournal_Detail(pbMainLoading, lblMainLoading)
 
-
         Insert_tbl_PS_E_Journal(pbMainLoading, lblMainLoading)
         Insert_tbl_PS_E_Journal_Detail(pbMainLoading, lblMainLoading)
 
-
-
-
         Insert_tbl_PCPOS_Cashiers(pbMainLoading, lblMainLoading)
         Insert_tbl_PCPOS_Cashiers_Changes(pbMainLoading, lblMainLoading)
+
         Insert_tbl_Items_Changes(pbMainLoading, lblMainLoading)
         Insert_tbl_ItemsForPLU_For_Effect(pbMainLoading, lblMainLoading)
+
         Insert_tbl_Items(pbMainLoading, lblMainLoading)
         Insert_tbl_ItemsForPLU(pbMainLoading, lblMainLoading)
 
@@ -180,6 +178,7 @@ Public Class FrmBranch
         Insert_tbl_Banks(pbMainLoading, lblMainLoading)
         Insert_tbl_Banks_Changes(pbMainLoading, lblMainLoading)
         Insert_tbl_Bank_Changes(pbMainLoading, lblMainLoading)
+
         Insert_tbl_Bank_Terms(pbMainLoading, lblMainLoading)
 
         Insert_tbl_QRPay_Type(pbMainLoading, lblMainLoading)
@@ -200,10 +199,6 @@ Public Class FrmBranch
         Insert_tbl_VPlus_Codes_For_Offline(pbMainLoading, lblMainLoading)
         Insert_tbl_VPlus_App(pbMainLoading, lblMainLoading)
         Insert_tbl_RetrieveHistoryForLocal(pbMainLoading, lblMainLoading)
-
-
-
-
 
         Insert_tbl_PaidOutDenominations(pbMainLoading, lblMainLoading)
         Insert_tbl_PaidOutTransactions(pbMainLoading, lblMainLoading)
