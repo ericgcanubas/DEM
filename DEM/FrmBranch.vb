@@ -56,6 +56,13 @@ Public Class FrmBranch
                 Local_CreateTable_tbl_info(dtpDate.Value, refFile, gbl_Counter)
                 'Branch_CreateTable_tbl_ItemTransactions(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 'Branch_CreateTable_tbl_PS_ItemsSold_Posting(pbBranchLoading, lblBranchLoading, dtpDate.Value)
+
+
+
+
+
+
+
                 Branch_CreateTable_tbl_VPlus_Codes(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_VPlus_Codes_Validity(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_VPlus_Purchases_Points(pbBranchLoading, lblBranchLoading, dtpDate.Value)
@@ -142,8 +149,6 @@ Public Class FrmBranch
                     MessageBox.Show("Main data not found", "Upload Message", MessageBoxButtons.OK, MessageBoxIcon.Information)
                 End If
 
-
-
             Catch ex As Exception
                 MessageBox.Show("Error uploading file: " & ex.Message)
             End Try
@@ -154,6 +159,8 @@ Public Class FrmBranch
     Private Sub SaveIt()
 
 
+        'Insert_Collect_tbl_CreditMemo(pbMainLoading, lblMainLoading)
+        'Insert_Collect_tbl_CreditMemo_CashRefund_Payment(pbMainLoading, lblMainLoading)
 
         Insert_tbl_PS_GT(pbMainLoading, lblMainLoading)
         Insert_tbl_PS_GT_ZZ(pbMainLoading, lblMainLoading)

@@ -186,7 +186,7 @@ Partial Class FrmBranch
         Me.dtpDate.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
         Me.dtpDate.Location = New System.Drawing.Point(162, 152)
         Me.dtpDate.Name = "dtpDate"
-        Me.dtpDate.Size = New System.Drawing.Size(125, 20)
+        Me.dtpDate.Size = New System.Drawing.Size(112, 20)
         Me.dtpDate.TabIndex = 24
         '
         'Label7

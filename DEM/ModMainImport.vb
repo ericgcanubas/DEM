@@ -16,7 +16,7 @@ Module ModMainImport
                 l.Text = "tbl_PCPOS_Cashiers :" & pb.Maximum & "/" & pb.Value
                 Application.DoEvents()
                 Dim rx As New ADODB.Recordset
-                rx.Open($"select top 1 * from tbl_PCPOS_Cashiers where CashierCode = '{rs.Fields("CashierCode").Value}' ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+                rx.Open($"SELECT top 1 * FROM tbl_PCPOS_Cashiers where [CashierCode] = '{rs.Fields("CashierCode").Value}' ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
                 If rx.RecordCount = 0 Then
                     ConnServer.Execute($"INSERT INTO tbl_PCPOS_Cashiers 
                                     (CashierCode,
@@ -980,9 +980,6 @@ Module ModMainImport
     End Sub
     Public Sub Insert_tbl_VPlus_Codes_Changes(pb As ProgressBar, l As Label)
 
-        ConnServer.Execute("TRUNCATE TABLE tbl_VPlus_Codes_Changes;") ' clean table
-
-
         rs = New ADODB.Recordset
         rs.Open($"select * from tbl_VPlus_Codes_Changes ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
@@ -997,16 +994,16 @@ Module ModMainImport
                 Application.DoEvents()
 
                 Dim rx As New Recordset
-
-                Dim strSQL As String = $"INSERT INTO tbl_VPlus_Codes_Changes 
+                rx.Open($"SELECT * FROM tbl_VPlus_Codes_Changes WHERE [Codes] = '{rs.Fields("Codes")}'", ConnServer, CursorTypeEnum.adOpenStatic)
+                If rx.RecordCount = 0 Then
+                    Dim strSQL As String = $"INSERT INTO tbl_VPlus_Codes_Changes 
                     (Codes,
                     DateChange)
                     VALUES ('{fSqlFormat(rs.Fields("Codes").Value)}',               
                     {fDateIsEmpty(rs.Fields("DateChange").Value.ToString())}   
                     );"
-
-                ConnServer.Execute(strSQL)
-
+                    ConnServer.Execute(strSQL)
+                End If
 
                 rs.MoveNext()
             End While
@@ -1343,7 +1340,7 @@ Module ModMainImport
                 l.Text = "tbl_GiftCert_Changes :" & pb.Maximum & "/" & pb.Value
                 Application.DoEvents()
                 Dim rx As New Recordset
-                rx.Open($"select TOP 1 * from tbl_GiftCert_Change Where PK = {rs.Fields("PK").Value}", ConnServer, CursorTypeEnum.adOpenStatic)
+                rx.Open($"select TOP 1 * from tbl_GiftCert_Changes Where [PK] = {rs.Fields("PK").Value}", ConnServer, CursorTypeEnum.adOpenStatic)
                 If rx.RecordCount Then
                     Dim strSQL As String = $"INSERT INTO tbl_GiftCert_Changes 
                                     (PK,
@@ -1367,22 +1364,20 @@ Module ModMainImport
                             GCAmount = {rs.Fields("GCAmount").Value},
                             [Changes] = '{fSqlFormat(rs.Fields("Changes").Value)}'
                         WHERE PK = {rs.Fields("PK").Value};"
-
                     ConnServer.Execute(strSQL)
-
                 End If
 
                 rs.MoveNext()
             End While
 
         End If
-
         ConnServer.Execute("SET IDENTITY_INSERT tbl_GiftCert_Changes OFF;")
     End Sub
 
     Public Sub Insert_tbl_PS_Upload_Utility(pb As ProgressBar, l As Label)
 
-        ConnServer.Execute("TRUNCATE TABLE tbl_PS_Upload_Utility;") ' clean table
+
+
         rs = New ADODB.Recordset
         rs.Open($"select * from tbl_PS_Upload_Utility ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
@@ -1394,14 +1389,23 @@ Module ModMainImport
                 l.Text = "tbl_PS_Upload_Utility :" & pb.Maximum & "/" & pb.Value
                 Application.DoEvents()
 
-                Dim strSQL As String = $"INSERT INTO tbl_PS_Upload_Utility 
+                Dim rx As New Recordset
+                rx.Open($"SELECT * FROM tbl_PS_Upload_Utility WHERE EffectDate = { fDateIsEmpty(rs.Fields("EffectDate").Value.ToString)}", ConnServer, CursorTypeEnum.adOpenStatic)
+                If rx.RecordCount = 0 Then
+
+                    Dim strSQL As String = $"INSERT INTO tbl_PS_Upload_Utility 
                                     (EffectDate,
                                     StopUpload)
                                     VALUES (    
                                     {fDateIsEmpty(rs.Fields("EffectDate").Value.ToString())}, 
-                                    {rs.Fields("StopUpload").Value}
+                                    { fNum(rs.Fields("StopUpload").Value)}
+
                                 );"
-                ConnServer.Execute(strSQL)
+
+                    ConnServer.Execute(strSQL)
+                End If
+
+
                 rs.MoveNext()
             End While
         End If
@@ -1477,7 +1481,8 @@ Module ModMainImport
     End Sub
 
     Public Sub Insert_tbl_VPlus_Codes_For_Offline(pb As ProgressBar, l As Label)
-        ConnServer.Execute("TRUNCATE TABLE tbl_VPlus_Codes_For_Offline;") ' clean table
+
+
         rs = New ADODB.Recordset
         rs.Open($"select * from tbl_VPlus_Codes_For_Offline ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
@@ -1490,8 +1495,10 @@ Module ModMainImport
                 l.Text = "tbl_VPlus_Codes_For_Offline :" & pb.Maximum & "/" & pb.Value
 
                 Application.DoEvents()
-
-                Dim strSQL As String = $"INSERT INTO tbl_VPlus_Codes_For_Offline 
+                Dim rx As New Recordset
+                rx.Open($"SELECT TOP 1 * FROM tbl_VPlus_Codes_For_Offline WHERE [Codes] =  '{fSqlFormat(rs.Fields("Codes").Value)}'", ConnServer, CursorTypeEnum.adOpenStatic)
+                If rx.RecordCount = 0 Then
+                    Dim strSQL As String = $"INSERT INTO tbl_VPlus_Codes_For_Offline 
                                             (Codes,
                                             POSName,
                                             Used,
@@ -1503,7 +1510,8 @@ Module ModMainImport
                                          {fDateIsEmpty(rs.Fields("CreatedOn").Value.ToString())}
                                    );"
 
-                ConnServer.Execute(strSQL)
+                    ConnServer.Execute(strSQL)
+                End If
                 rs.MoveNext()
             End While
 
@@ -1512,8 +1520,6 @@ Module ModMainImport
     End Sub
 
     Public Sub Insert_tbl_VPlus_App(pb As ProgressBar, l As Label)
-
-        ConnServer.Execute("TRUNCATE TABLE tbl_VPlus_App;") ' clean table
 
         rs = New ADODB.Recordset
         rs.Open($"select * from tbl_VPlus_App ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
@@ -1525,13 +1531,19 @@ Module ModMainImport
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_VPlus_App :" & pb.Maximum & "/" & pb.Value
                 Application.DoEvents()
-                Dim strSQL As String = $"INSERT INTO tbl_VPlus_App 
+                Dim rx As New Recordset
+                rx.Open($"SELECT TOP 1 * from tbl_VPlus_App WHERE PLU = '{fSqlFormat(rs.Fields("PLU").Value)}' ", ConnServer, CursorTypeEnum.adOpenStatic)
+                If rx.RecordCount = 0 Then
+                    Dim strSQL As String = $"INSERT INTO tbl_VPlus_App 
                                             (PLU)
                                             VALUES (
                                                 '{fSqlFormat(rs.Fields("PLU").Value)}'
                                            );"
 
-                ConnServer.Execute(strSQL)
+                    ConnServer.Execute(strSQL)
+                End If
+
+
                 rs.MoveNext()
             End While
 
@@ -1539,7 +1551,7 @@ Module ModMainImport
 
     End Sub
     Public Sub Insert_tbl_RetrieveHistoryForLocal(pb As ProgressBar, l As Label)
-        ConnServer.Execute("TRUNCATE TABLE tbl_RetrieveHistoryForLocal;") ' clean table
+
 
         rs = New ADODB.Recordset
         rs.Open($"select * from tbl_RetrieveHistoryForLocal ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
@@ -1551,7 +1563,10 @@ Module ModMainImport
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_RetrieveHistoryForLocal :" & pb.Maximum & "/" & pb.Value
                 Application.DoEvents()
-                Dim strSQL As String = $"INSERT INTO tbl_RetrieveHistoryForLocal 
+                Dim rx As New Recordset
+                rx.Open($"SELECT TOP 1 * from tbl_RetrieveHistoryForLocal WHERE [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}' ", ConnServer, CursorTypeEnum.adOpenStatic)
+                If rx.RecordCount = 0 Then
+                    Dim strSQL As String = $"INSERT INTO tbl_RetrieveHistoryForLocal 
                                             ([Counter],
                                             [ForRetrieval])
                                     VALUES (
@@ -1559,7 +1574,9 @@ Module ModMainImport
                                         {fNum(rs.Fields("ForRetrieval").Value)}
                                    );"
 
-                ConnServer.Execute(strSQL)
+                    ConnServer.Execute(strSQL)
+                End If
+
                 rs.MoveNext()
             End While
 
@@ -2203,7 +2220,7 @@ Module ModMainImport
 
     Public Sub Insert_tbl_PaidOutDenominations(pb As ProgressBar, l As Label)
 
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_PaidOutDenominations ON;")
+
         rs = New ADODB.Recordset
         rs.CursorLocation = ADODB.CursorLocationEnum.adUseClient
         rs.Open($"select * from tbl_PaidOutDenominations ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
@@ -2253,12 +2270,12 @@ Module ModMainImport
             End While
 
         End If
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_PaidOutDenominations OFF;")
+
     End Sub
 
     Public Sub Insert_tbl_PaidOutTransactions(pb As ProgressBar, l As Label)
         Exit Sub
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_PaidOutTransactions ON;")
+
         Dim year As Integer = Now.Year - 1
         Dim n As Integer = 0
         rs = New ADODB.Recordset
@@ -2339,7 +2356,7 @@ Module ModMainImport
                 rs.MoveNext()
             End While
         End If
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_PaidOutTransactions OFF;")
+
     End Sub
     Public Function GetMainInfo() As Boolean
         Dim isHave As Boolean
@@ -2586,6 +2603,158 @@ Module ModMainImport
         End If
         ConnServer.Execute("SET IDENTITY_INSERT tbl_PS_GT_Zero_Out OFF;")
     End Sub
+    Public Sub Insert_Collect_tbl_CreditMemo(pb As ProgressBar, l As Label)
 
+        Dim dt As Date = Now.Date()
+
+        Dim n As Integer = 0
+        rs = New ADODB.Recordset
+        rs.Open($"select * from tbl_CreditMemo  where EntryDate = {fDateIsEmpty(dt.ToShortDateString())} ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_CreditMemo  :" & pb.Maximum & "/" & pb.Value
+                Application.DoEvents()
+
+                Dim rx As New Recordset
+                rx.Open($"select * from tbl_CreditMemo WHERE TransNo ={fNum(rs.Fields("TransNo").Value)} and CM_StockAdjustNo = '{fSqlFormat(rs.Fields("CM_StockAdjustNo").Value)}' ", ConnServer, CursorTypeEnum.adOpenStatic)
+                If rx.RecordCount = 0 Then
+
+                    Dim strSQL As String = $"INSERT INTO tbl_CreditMemo
+                                                        (
+                                                        TransNo,
+                                                        ControlNo,
+                                                        CM_StockAdjustNo,
+                                                        CMNo_Manual,
+                                                        EntryDate,
+                                                        POSTransactionNo,
+                                                        PurchaseDate,
+                                                        [POSNo_TransNo],
+                                                        Cashier,
+                                                        ValidUntil,
+                                                        VPlusPoints,
+                                                        VPlusCode,
+                                                        PaymentType,
+                                                        Location,
+                                                        IsSalesReturn,
+                                                        IsCashRefund,
+                                                        CustomerName,
+                                                        TotalPurchaseQty,
+                                                        TotalPurchase,
+                                                        TotalReturnQty,
+                                                        TotalReturn,
+                                                        TotalReturnVPlus,
+                                                        Remarks,
+                                                        PreparedBy,
+                                                        IsPosted,
+                                                        PostedBy ,
+                                                        DatePosted,
+                                                        ApprovedBy,
+                                                        IsCancelled,
+                                                        CancelledBy,
+                                                        ReasonForCancel,
+                                                        DateCancelled,
+                                                        UpdatedBy,
+                                                        LastUpdated,
+                                                        IsUsed,
+                                                        IsPrinted)
+                                                VALUES (
+                                                        {fNum(rs.Fields("TransNo").Value)} ,  
+                                                        '{fSqlFormat(rs.Fields("ControlNo").Value)}',
+                                                        '{fSqlFormat(rs.Fields("CM_StockAdjustNo").Value)}',
+                                                        '{fSqlFormat(rs.Fields("CMNo_Manual").Value)}',
+                                                         {fDateIsEmpty(rs.Fields("EntryDate").Value.ToString())},
+                                                        '{fSqlFormat(rs.Fields("POSTransactionNo").Value)}',
+                                                         {fDateIsEmpty(rs.Fields("PurchaseDate").Value.ToString())},
+                                                        '{fSqlFormat(rs.Fields("POSNo_TransNo").Value)}',                                                
+                                                        '{fSqlFormat(rs.Fields("Cashier").Value)}',
+                                                         {fDateIsEmpty(rs.Fields("ValidUntil").Value.ToString())},
+                                                         {fNum(rs.Fields("VPlusPoints").Value)} ,  
+                                                         '{fSqlFormat(rs.Fields("VPlusCode").Value)}',
+                                                         '{fSqlFormat(rs.Fields("PaymentType").Value)}',
+                                                         '{fSqlFormat(rs.Fields("Location").Value)}',
+                                                         {fNum(rs.Fields("IsSalesReturn").Value)} ,  
+                                                         {fNum(rs.Fields("IsCashRefund").Value)} , 
+                                                        '{fSqlFormat(rs.Fields("CustomerName").Value)}',
+                                                         {fNum(rs.Fields("TotalPurchaseQty").Value)} ,
+                                                         {fNum(rs.Fields("TotalPurchase").Value)} ,
+                                                         {fNum(rs.Fields("TotalReturnQty").Value)} ,
+                                                         {fNum(rs.Fields("TotalReturn").Value)} ,
+                                                         {fNum(rs.Fields("TotalReturnVPlus").Value)} ,
+                                                        '{fSqlFormat(rs.Fields("Remarks").Value)}',
+                                                         '{fSqlFormat(rs.Fields("PreparedBy").Value)}',
+                                                         {fNum(rs.Fields("IsPosted").Value)} ,
+                                                        '{fSqlFormat(rs.Fields("PostedBy").Value)}',
+                                                         {fDateIsEmpty(rs.Fields("DatePosted").Value.ToString())},
+                                                        '{fSqlFormat(rs.Fields("ApprovedBy").Value)}',
+                                                         {fNum(rs.Fields("IsCancelled").Value)} ,
+                                                        '{fSqlFormat(rs.Fields("CancelledBy").Value)}',
+                                                        '{fSqlFormat(rs.Fields("ReasonForCancel").Value)}',
+                                                         {fDateIsEmpty(rs.Fields("DateCancelled").Value.ToString())},
+                                                        '{fSqlFormat(rs.Fields("UpdatedBy").Value)}',
+                                                         {fDateIsEmpty(rs.Fields("LastUpdated").Value.ToString())},
+                                                         {fNum(rs.Fields("IsUsed").Value)} ,
+                                                         {fNum(rs.Fields("IsPrinted").Value)} 
+
+                                                );"
+
+                    ConnServer.Execute(strSQL)
+                End If
+                rs.MoveNext()
+            End While
+        End If
+
+    End Sub
+
+    Public Sub Insert_Collect_tbl_CreditMemo_CashRefund_Payment(pb As ProgressBar, l As Label)
+        Dim dt As Date = Now.Date()
+        Dim n As Integer = 0
+        rs = New ADODB.Recordset
+        rs.Open($"select * from tbl_CreditMemo_CashRefund_Payment WHERE  PaymentDate = {fDateIsEmpty(dt.ToShortDateString())} ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_CreditMemo_CashRefund_Payment  :" & pb.Maximum & "/" & pb.Value
+                Application.DoEvents()
+                Dim rx As New Recordset
+                rx.Open($"select TOP 1 * from tbl_CreditMemo_CashRefund_Payment 
+                    WHERE CMNo = '{fSqlFormat(rs.Fields("CMNo").Value)}' and
+                    PaymentDate = {fDateIsEmpty(rs.Fields("PaymentDate").Value.ToString())}  and
+                    Amount = {fNum(rs.Fields("Amount").Value)} ",
+                        ConnServer, CursorTypeEnum.adOpenStatic)
+                If rx.RecordCount = 0 Then
+                    Dim strSQL As String = $"INSERT INTO tbl_CreditMemo_CashRefund_Payment
+                                                    (   
+                                                        CMNo,
+                                                        PaymentDate DATETIME NOT NULL,
+                                                        Amount CURRENCY NOT NULL,
+                                                        Cashier TEXT(3) NOT NULL,
+                                                        Senior TEXT(100) NOT NULL,
+                                                        ApprovedBy TEXT(100) NOT NULL,
+                                                        LastUpdated DATETIME NOT NULL)
+                                                VALUES (
+                                                        '{fSqlFormat(rs.Fields("CMNo").Value)}',
+                                                        {fDateIsEmpty(rs.Fields("PaymentDate").Value.ToString())},
+                                                        {fNum(rs.Fields("Amount").Value)} ,                               
+                                                        '{fSqlFormat(rs.Fields("Cashier").Value)}',
+                                                        '{fSqlFormat(rs.Fields("Senior").Value)}',
+                                                        '{fSqlFormat(rs.Fields("ApprovedBy").Value)}',
+                                                        {fDateIsEmpty(rs.Fields("LastUpdated").Value.ToString())}
+                                                       
+                                            );"
+
+                    ConnServer.Execute(strSQL)
+                End If
+                rs.MoveNext()
+            End While
+        End If
+
+    End Sub
 
 End Module

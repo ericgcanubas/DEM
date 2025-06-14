@@ -15,6 +15,7 @@ Public Class FrmMain
     Const HTCAPTION As Integer = 2
     Private Sub btnExport_Click(sender As Object, e As EventArgs) Handles btnExport.Click
         gbl_AdjustmentOnly = chkAdjustment.Checked
+        gbl_Branches = chkByBranch.Checked
 
         saveIt()
 
@@ -49,6 +50,9 @@ Public Class FrmMain
 
                 gbl_DownloadType = Val(GetParameter("GenerateType"))
                 NItemOnly = Val(GetParameter("ItemNotInclude"))
+
+                'CreateTable_tbl_CreditMemo(pbMainLoading, lblMainLoading)
+                'CreateTable_tbl_CreditMemo_CashRefund_Payment(pbMainLoading, lblMainLoading)
 
                 CreateTable_tbl_banks(pbMainLoading, lblMainLoading)
                 CreateTable_tbl_Banks_Changes(pbMainLoading, lblMainLoading)
@@ -102,6 +106,7 @@ Public Class FrmMain
 
                 CreateTable_tbl_PaidOutDenominations(pbMainLoading, lblMainLoading)
                 CreateTable_tbl_PaidOutTransactions(pbMainLoading, lblMainLoading)
+
 
                 SetLog(False)
                 lblMainLoading.Text = ""
@@ -269,6 +274,7 @@ Public Class FrmMain
                     Branch_Insert_tbl_PaidOutTransactions(pbBranchLoading, lblBranchLoading)
                     'Branch_Insert_tbl_ItemTransactions(pbBranchLoading, lblBranchLoading)
                     'Branch_Insert_tbl_PS_ItemsSold_Posting(pbBranchLoading, lblBranchLoading)
+
 
                 End If
                 ConnLocal.Close()

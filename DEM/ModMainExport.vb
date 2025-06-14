@@ -57,6 +57,10 @@ Module ModMainExport
         If gbl_AdjustmentOnly = True Then
             Exit Sub
         End If
+        If gbl_Branches = True Then
+            Exit Sub
+        End If
+
         rs = New ADODB.Recordset
         rs.Open("select * from tbl_PCPOS_Cashiers ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
@@ -138,6 +142,11 @@ Module ModMainExport
         If gbl_AdjustmentOnly = True Then
             Exit Sub
         End If
+
+        If gbl_Branches = True Then
+            Exit Sub
+        End If
+
         rs = New ADODB.Recordset
 
         If gbl_DownloadType = 0 Then
@@ -231,6 +240,10 @@ Module ModMainExport
     End Sub
     Private Sub Collect_tbl_Bank(pb As ProgressBar, l As Label)
 
+        If gbl_Branches = True Then
+            Exit Sub
+        End If
+
         rs = New ADODB.Recordset
         rs.Open("select * from tbl_Bank ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
@@ -295,6 +308,9 @@ Module ModMainExport
         End Try
     End Sub
     Private Sub Collect_tbl_Banks(pb As ProgressBar, l As Label)
+        If gbl_Branches = True Then
+            Exit Sub
+        End If
 
         rs = New ADODB.Recordset
         rs.Open("select * from tbl_Banks ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
@@ -351,7 +367,9 @@ Module ModMainExport
     End Sub
     Private Sub Collect_tbl_Banks_Changes(pb As ProgressBar, l As Label)
 
-
+        If gbl_Branches = True Then
+            Exit Sub
+        End If
         rs = New ADODB.Recordset
         rs.Open($"select * from tbl_Banks_Changes ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
@@ -399,7 +417,9 @@ Module ModMainExport
     End Sub
     Private Sub Collect_tbl_Bank_Changes(pb As ProgressBar, l As Label)
 
-
+        If gbl_Branches = True Then
+            Exit Sub
+        End If
         rs = New ADODB.Recordset
         rs.Open($"select * from tbl_Bank_Changes", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
@@ -428,7 +448,6 @@ Module ModMainExport
         End If
 
     End Sub
-
     Public Sub CreateTable_tbl_Bank_Terms(pb As ProgressBar, l As Label)
         Try
             Dim createTableSql As String = "CREATE TABLE tbl_Bank_Terms (
@@ -447,7 +466,9 @@ Module ModMainExport
     End Sub
 
     Private Sub Collect_tbl_Bank_Terms(pb As ProgressBar, l As Label)
-
+        If gbl_Branches = True Then
+            Exit Sub
+        End If
 
 
         rs = New ADODB.Recordset
@@ -481,6 +502,8 @@ Module ModMainExport
 
     End Sub
     Public Sub CreateTable_tbl_QRPay_Type(pb As ProgressBar, l As Label)
+
+
         Try
             Dim createTableSql As String = " CREATE TABLE tbl_QRPay_Type (
                                                 nQRPTypeID INTEGER PRIMARY KEY,
@@ -498,7 +521,9 @@ Module ModMainExport
     End Sub
     Private Sub Collect_tbl_QRPay_Type(pb As ProgressBar, l As Label)
 
-
+        If gbl_Branches = True Then
+            Exit Sub
+        End If
         rs = New ADODB.Recordset
         rs.Open("select * from tbl_QRPay_Type ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
@@ -552,7 +577,9 @@ Module ModMainExport
 
     Private Sub Collect_tbl_GiftCert_List(pb As ProgressBar, l As Label)
 
-
+        If gbl_Branches = True Then
+            Exit Sub
+        End If
 
         Dim year As Integer = Now.Year - 1
 
@@ -621,7 +648,9 @@ Module ModMainExport
         End Try
     End Sub
     Private Sub Collect_tbl_VPlus_Codes(pb As ProgressBar, l As Label)
-
+        If gbl_Branches = True Then
+            Exit Sub
+        End If
         Dim year As Integer = Now.Year - 5
         Dim n As Integer = 0
         rs = New ADODB.Recordset
@@ -691,7 +720,9 @@ Module ModMainExport
         End Try
     End Sub
     Private Sub Collect_tbl_VPlus_Codes_Validity(pb As ProgressBar, l As Label)
-
+        If gbl_Branches = True Then
+            Exit Sub
+        End If
 
         Dim year As Integer = Now.Year - 5
 
@@ -757,6 +788,10 @@ Module ModMainExport
             Exit Sub
         End If
 
+        If gbl_Branches = True Then
+            Exit Sub
+        End If
+
         rs = New ADODB.Recordset
         rs.Open($"select * from tbl_PCPOS_Cashiers_Changes", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
@@ -814,6 +849,11 @@ Module ModMainExport
         If gbl_DownloadType = 0 Then
             Exit Sub
         End If
+
+        If gbl_Branches = True Then
+            Exit Sub
+        End If
+
         Dim year As Integer = Now.Year - 1
         Dim dateTo As Date = Now.Date
         Dim dateFrom As Date = dateTo.AddMonths(-1)
@@ -882,7 +922,9 @@ Module ModMainExport
         If gbl_DownloadType = 0 Then
             Exit Sub
         End If
-
+        If gbl_Branches = True Then
+            Exit Sub
+        End If
         Dim year As Integer = Now.Year - 1
         rs = New ADODB.Recordset
         rs.Open($"select * from tbl_ItemsForPLU_For_Effect", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
@@ -999,6 +1041,11 @@ Module ModMainExport
         If gbl_AdjustmentOnly = True Then
             Exit Sub
         End If
+
+        If gbl_Branches = True Then
+            Exit Sub
+        End If
+
         Dim year As Integer = Now.Year - 1
 
         rs = New ADODB.Recordset
@@ -1232,7 +1279,9 @@ Module ModMainExport
         End Try
     End Sub
     Private Sub Collect_tbl_Concession_PCR(pb As ProgressBar, l As Label)
-
+        If gbl_Branches = True Then
+            Exit Sub
+        End If
         Dim year As Integer = Now.Year - 1
         rs = New ADODB.Recordset
         rs.Open($"select * from tbl_Concession_PCR where YYear >= '{year}' ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
@@ -1431,7 +1480,9 @@ Module ModMainExport
     End Sub
 
     Private Sub Collect_tbl_Concession_PCR_Det(pb As ProgressBar, l As Label)
-
+        If gbl_Branches = True Then
+            Exit Sub
+        End If
         Dim year As Integer = Now.Year - 1
         rs = New ADODB.Recordset
         rs.Open($"select dd.* from [tbl_Concession_PCR_Det] as dd INNER JOIN tbl_Concession_PCR on tbl_Concession_PCR.PK = dd.ConcPCRKey WHERE tbl_Concession_PCR.YYear >='{year}' ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
@@ -1540,7 +1591,9 @@ Module ModMainExport
     End Sub
 
     Private Sub Collect_tbl_Concession_PCR_Effectivity(pb As ProgressBar, l As Label)
-
+        If gbl_Branches = True Then
+            Exit Sub
+        End If
         Dim year As Integer = Now.Year - 1
         rs = New ADODB.Recordset
         rs.Open($"select * from tbl_Concession_PCR_Effectivity where YEAR(Effect_To) >= {year} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
@@ -1600,7 +1653,9 @@ Module ModMainExport
     End Sub
 
     Private Sub Collect_tbl_GiftCert_Changes(pb As ProgressBar, l As Label)
-
+        If gbl_Branches = True Then
+            Exit Sub
+        End If
         Dim year As Integer = Now.Year - 1
 
         rs = New ADODB.Recordset
@@ -1649,7 +1704,9 @@ Module ModMainExport
         If gbl_AdjustmentOnly = True Then
             Exit Sub
         End If
-
+        If gbl_Branches = True Then
+            Exit Sub
+        End If
         Dim year As Integer = Now.Year - 1
 
         rs = New ADODB.Recordset
@@ -1695,7 +1752,9 @@ Module ModMainExport
         If gbl_AdjustmentOnly = True Then
             Exit Sub
         End If
-
+        If gbl_Branches = True Then
+            Exit Sub
+        End If
         Dim year As Integer = Now.Year - 1
 
         rs = New ADODB.Recordset
@@ -1752,7 +1811,9 @@ Module ModMainExport
         If gbl_AdjustmentOnly = True Then
             Exit Sub
         End If
-
+        If gbl_Branches = True Then
+            Exit Sub
+        End If
         Dim year As Integer = Now.Year - 1
 
         rs = New ADODB.Recordset
@@ -1818,7 +1879,9 @@ Module ModMainExport
         End Try
     End Sub
     Private Sub Collect_tbl_VPlus_Codes_For_Offline(pb As ProgressBar, l As Label)
-
+        If gbl_Branches = True Then
+            Exit Sub
+        End If
         Dim year As Integer = Now.Year - 1
         rs = New ADODB.Recordset
         rs.Open($"select * from tbl_VPlus_Codes_For_Offline where year(CreatedOn) >= {year} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
@@ -1866,10 +1929,9 @@ Module ModMainExport
         End Try
     End Sub
     Private Sub Collect_tbl_VPlus_App(pb As ProgressBar, l As Label)
-
-
-        Dim year As Integer = Now.Year - 5
-
+        If gbl_Branches = True Then
+            Exit Sub
+        End If
         rs = New ADODB.Recordset
         rs.Open($"select * from tbl_VPlus_App ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
@@ -1906,6 +1968,7 @@ Module ModMainExport
             MessageBox.Show(ex.Message, "tbl_RetrieveHistoryForLocal")
             Application.Exit()
         End Try
+
     End Sub
     Private Sub Collect_tbl_RetrieveHistoryForLocal(pb As ProgressBar, l As Label)
 
@@ -2687,7 +2750,9 @@ Module ModMainExport
         If gbl_AdjustmentOnly = True Then
             Exit Sub
         End If
-
+        If gbl_Branches = True Then
+            Exit Sub
+        End If
         rs = New ADODB.Recordset
         rs.CursorLocation = ADODB.CursorLocationEnum.adUseClient
         rs.Open($"select * from tbl_PaidOutDenominations ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
@@ -2753,6 +2818,11 @@ Module ModMainExport
         If gbl_AdjustmentOnly = True Then
             Exit Sub
         End If
+
+        If gbl_Branches = True Then
+            Exit Sub
+        End If
+
         Dim year As Integer = Now.Year - 1
         Dim CounterList As String = getCounterList()
 
@@ -3065,5 +3135,217 @@ Module ModMainExport
             End While
         End If
     End Sub
+    Public Sub CreateTable_tbl_CreditMemo(pb As ProgressBar, l As Label)
+        Try
+            Dim createTableSql As String = "CREATE TABLE tbl_CreditMemo (
+                                                        ID INTEGER PRIMARY KEY,
+                                                        TransNo NUMERIC(18, 0),
+                                                        ControlNo TEXT(7),
+                                                        CM_StockAdjustNo TEXT(10),
+                                                        CMNo_Manual TEXT(20),
+                                                        EntryDate DATETIME,
+                                                        POSTransactionNo TEXT(20),
+                                                        PurchaseDate DATETIME,
+                                                        [POSNo_TransNo] TEXT(20),
+                                                        Cashier TEXT(10),
+                                                        ValidUntil DATETIME,
+                                                        VPlusPoints CURRENCY,
+                                                        VPlusCode TEXT(20),
+                                                        PaymentType TEXT(20),
+                                                        Location TEXT(10),
+                                                        IsSalesReturn YESNO,
+                                                        IsCashRefund YESNO,
+                                                        CustomerName TEXT(100),
+                                                        TotalPurchaseQty DOUBLE,
+                                                        TotalPurchase CURRENCY,
+                                                        TotalReturnQty DOUBLE,
+                                                        TotalReturn CURRENCY,
+                                                        TotalReturnVPlus CURRENCY,
+                                                        Remarks TEXT(200),
+                                                        PreparedBy TEXT(100),
+                                                        IsPosted YESNO,
+                                                        PostedBy TEXT(100),
+                                                        DatePosted DATETIME,
+                                                        ApprovedBy TEXT(100),
+                                                        IsCancelled YESNO,
+                                                        CancelledBy TEXT(100),
+                                                        ReasonForCancel TEXT(100),
+                                                        DateCancelled DATETIME,
+                                                        UpdatedBy TEXT(50),
+                                                        LastUpdated DATETIME,
+                                                        IsUsed YESNO,
+                                                        IsPrinted YESNO
+                                                    );
+"
 
+            ConnLocal.Execute(createTableSql)
+            Collect_tbl_CreditMemo(pb, l)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "tbl_CreditMemo  ")
+            Application.Exit()
+        End Try
+    End Sub
+    Private Sub Collect_tbl_CreditMemo(pb As ProgressBar, l As Label)
+        Dim CounterList As String = getCounterList()
+        If CounterList = "" Then
+            MessageBox.Show("Counter not found")
+            Exit Sub
+        End If
+        Dim dt As Date = Now.Date()
+
+        Dim n As Integer = 0
+        rs = New ADODB.Recordset
+        rs.Open($"select * from tbl_CreditMemo  where EntryDate = {fDateIsEmpty(dt.ToShortDateString())} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_CreditMemo  :" & pb.Maximum & "/" & pb.Value
+                Application.DoEvents()
+                Dim strSQL As String = $"INSERT INTO tbl_CreditMemo
+                                                        (ID,
+                                                        TransNo,
+                                                        ControlNo,
+                                                        CM_StockAdjustNo,
+                                                        CMNo_Manual,
+                                                        EntryDate,
+                                                        POSTransactionNo,
+                                                        PurchaseDate,
+                                                        [POSNo_TransNo],
+                                                        Cashier,
+                                                        ValidUntil,
+                                                        VPlusPoints,
+                                                        VPlusCode,
+                                                        PaymentType,
+                                                        Location,
+                                                        IsSalesReturn,
+                                                        IsCashRefund,
+                                                        CustomerName,
+                                                        TotalPurchaseQty,
+                                                        TotalPurchase,
+                                                        TotalReturnQty,
+                                                        TotalReturn,
+                                                        TotalReturnVPlus,
+                                                        Remarks,
+                                                        PreparedBy,
+                                                        IsPosted,
+                                                        PostedBy ,
+                                                        DatePosted,
+                                                        ApprovedBy,
+                                                        IsCancelled,
+                                                        CancelledBy,
+                                                        ReasonForCancel,
+                                                        DateCancelled,
+                                                        UpdatedBy,
+                                                        LastUpdated,
+                                                        IsUsed,
+                                                        IsPrinted)
+                                                VALUES ({fNum(rs.Fields("ID").Value)},
+                                                        {fNum(rs.Fields("TransNo").Value)} ,  
+                                                        '{fSqlFormat(rs.Fields("ControlNo").Value)}',
+                                                        '{fSqlFormat(rs.Fields("CM_StockAdjustNo").Value)}',
+                                                        '{fSqlFormat(rs.Fields("CMNo_Manual").Value)}',
+                                                         {fDateIsEmpty(rs.Fields("EntryDate").Value.ToString())},
+                                                        '{fSqlFormat(rs.Fields("POSTransactionNo").Value)}',
+                                                         {fDateIsEmpty(rs.Fields("PurchaseDate").Value.ToString())},
+                                                        '{fSqlFormat(rs.Fields("POSNo_TransNo").Value)}',                                                
+                                                        '{fSqlFormat(rs.Fields("Cashier").Value)}',
+                                                         {fDateIsEmpty(rs.Fields("ValidUntil").Value.ToString())},
+                                                         {fNum(rs.Fields("VPlusPoints").Value)} ,  
+                                                         '{fSqlFormat(rs.Fields("VPlusCode").Value)}',
+                                                         '{fSqlFormat(rs.Fields("PaymentType").Value)}',
+                                                         '{fSqlFormat(rs.Fields("Location").Value)}',
+                                                         {fNum(rs.Fields("IsSalesReturn").Value)} ,  
+                                                         {fNum(rs.Fields("IsCashRefund").Value)} , 
+                                                        '{fSqlFormat(rs.Fields("CustomerName").Value)}',
+                                                         {fNum(rs.Fields("TotalPurchaseQty").Value)} ,
+                                                         {fNum(rs.Fields("TotalPurchase").Value)} ,
+                                                         {fNum(rs.Fields("TotalReturnQty").Value)} ,
+                                                         {fNum(rs.Fields("TotalReturn").Value)} ,
+                                                         {fNum(rs.Fields("TotalReturnVPlus").Value)} ,
+                                                        '{fSqlFormat(rs.Fields("Remarks").Value)}',
+                                                         '{fSqlFormat(rs.Fields("PreparedBy").Value)}',
+                                                         {fNum(rs.Fields("IsPosted").Value)} ,
+                                                        '{fSqlFormat(rs.Fields("PostedBy").Value)}',
+                                                         {fDateIsEmpty(rs.Fields("DatePosted").Value.ToString())},
+                                                        '{fSqlFormat(rs.Fields("ApprovedBy").Value)}',
+                                                         {fNum(rs.Fields("IsCancelled").Value)} ,
+                                                        '{fSqlFormat(rs.Fields("CancelledBy").Value)}',
+                                                        '{fSqlFormat(rs.Fields("ReasonForCancel").Value)}',
+                                                         {fDateIsEmpty(rs.Fields("DateCancelled").Value.ToString())},
+                                                        '{fSqlFormat(rs.Fields("UpdatedBy").Value)}',
+                                                         {fDateIsEmpty(rs.Fields("LastUpdated").Value.ToString())},
+                                                         {fNum(rs.Fields("IsUsed").Value)} ,
+                                                         {fNum(rs.Fields("IsPrinted").Value)} 
+
+                                                );"
+
+                ConnLocal.Execute(strSQL)
+                rs.MoveNext()
+            End While
+        End If
+
+    End Sub
+    Public Sub CreateTable_tbl_CreditMemo_CashRefund_Payment(pb As ProgressBar, l As Label)
+        Try
+            Dim createTableSql As String = "CREATE TABLE tbl_CreditMemo_CashRefund_Payment (
+                                            ID INTEGER PRIMARY KEY,
+                                            CMNo TEXT(20) NOT NULL,
+                                            PaymentDate DATETIME NOT NULL,
+                                            Amount CURRENCY NOT NULL,
+                                            Cashier TEXT(3) NOT NULL,
+                                            Senior TEXT(100) NOT NULL,
+                                            ApprovedBy TEXT(100) NOT NULL,
+                                            LastUpdated DATETIME NOT NULL
+                                        );
+"
+
+            ConnLocal.Execute(createTableSql)
+            Collect_tbl_CreditMemo_CashRefund_Payment(pb, l)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "tbl_CreditMemo_CashRefund_Payment  ")
+            Application.Exit()
+        End Try
+    End Sub
+    Private Sub Collect_tbl_CreditMemo_CashRefund_Payment(pb As ProgressBar, l As Label)
+        Dim dt As Date = Now.Date()
+        Dim n As Integer = 0
+        rs = New ADODB.Recordset
+        rs.Open($"select * from tbl_CreditMemo_CashRefund_Payment WHERE PaymentDate = {fDateIsEmpty(dt.ToShortDateString())} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_CreditMemo_CashRefund_Payment  :" & pb.Maximum & "/" & pb.Value
+                Application.DoEvents()
+                Dim strSQL As String = $"INSERT INTO tbl_CreditMemo_CashRefund_Payment
+                                                    (   ID,
+                                                        CMNo,
+                                                        PaymentDate DATETIME NOT NULL,
+                                                        Amount CURRENCY NOT NULL,
+                                                        Cashier TEXT(3) NOT NULL,
+                                                        Senior TEXT(100) NOT NULL,
+                                                        ApprovedBy TEXT(100) NOT NULL,
+                                                        LastUpdated DATETIME NOT NULL)
+                                                VALUES ({fNum(rs.Fields("ID").Value)},
+                                                        '{fSqlFormat(rs.Fields("CMNo").Value)}',
+                                                        {fDateIsEmpty(rs.Fields("PaymentDate").Value.ToString())},
+                                                        {fNum(rs.Fields("Amount").Value)} ,                               
+                                                        '{fSqlFormat(rs.Fields("Cashier").Value)}',
+                                                        '{fSqlFormat(rs.Fields("Senior").Value)}',
+                                                        '{fSqlFormat(rs.Fields("ApprovedBy").Value)}',
+                                                        {fDateIsEmpty(rs.Fields("LastUpdated").Value.ToString())}
+                                                       
+                                            );"
+
+                ConnLocal.Execute(strSQL)
+                rs.MoveNext()
+            End While
+        End If
+
+    End Sub
 End Module

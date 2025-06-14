@@ -44,6 +44,7 @@ Partial Class FrmMain
         Me.lblLogDownload = New System.Windows.Forms.Label()
         Me.lblLogUpload = New System.Windows.Forms.Label()
         Me.chkAdjustment = New System.Windows.Forms.CheckBox()
+        Me.chkByBranch = New System.Windows.Forms.CheckBox()
         CType(Me.picOpenMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -262,12 +263,27 @@ Partial Class FrmMain
         '
         Me.chkAdjustment.AutoSize = True
         Me.chkAdjustment.BackColor = System.Drawing.Color.Transparent
-        Me.chkAdjustment.Location = New System.Drawing.Point(216, 143)
+        Me.chkAdjustment.Checked = True
+        Me.chkAdjustment.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkAdjustment.Location = New System.Drawing.Point(129, 142)
         Me.chkAdjustment.Name = "chkAdjustment"
-        Me.chkAdjustment.Size = New System.Drawing.Size(102, 17)
+        Me.chkAdjustment.Size = New System.Drawing.Size(78, 17)
         Me.chkAdjustment.TabIndex = 35
-        Me.chkAdjustment.Text = "Adjustment Only"
+        Me.chkAdjustment.Text = "Adjustment"
         Me.chkAdjustment.UseVisualStyleBackColor = False
+        '
+        'chkByBranch
+        '
+        Me.chkByBranch.AutoSize = True
+        Me.chkByBranch.BackColor = System.Drawing.Color.Transparent
+        Me.chkByBranch.Checked = True
+        Me.chkByBranch.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkByBranch.Location = New System.Drawing.Point(217, 143)
+        Me.chkByBranch.Name = "chkByBranch"
+        Me.chkByBranch.Size = New System.Drawing.Size(86, 17)
+        Me.chkByBranch.TabIndex = 36
+        Me.chkByBranch.Text = "By Branches"
+        Me.chkByBranch.UseVisualStyleBackColor = False
         '
         'FrmMain
         '
@@ -278,6 +294,7 @@ Partial Class FrmMain
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ClientSize = New System.Drawing.Size(704, 447)
         Me.ControlBox = False
+        Me.Controls.Add(Me.chkByBranch)
         Me.Controls.Add(Me.chkAdjustment)
         Me.Controls.Add(Me.lblLogUpload)
         Me.Controls.Add(Me.lblLogDownload)
@@ -331,4 +348,5 @@ Partial Class FrmMain
     Friend WithEvents lblLogDownload As Label
     Friend WithEvents lblLogUpload As Label
     Friend WithEvents chkAdjustment As CheckBox
+    Friend WithEvents chkByBranch As CheckBox
 End Class

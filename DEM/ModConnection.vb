@@ -10,6 +10,7 @@ Module ModConnection
 
     Public gbl_Counter As String
     Public gbl_AdjustmentOnly As Boolean
+    Public gbl_Branches As Boolean
     Public gbl_Database As String
     Public gbl_Server As String
     Public IsConnected As Boolean
