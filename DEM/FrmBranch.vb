@@ -57,12 +57,6 @@ Public Class FrmBranch
                 'Branch_CreateTable_tbl_ItemTransactions(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 'Branch_CreateTable_tbl_PS_ItemsSold_Posting(pbBranchLoading, lblBranchLoading, dtpDate.Value)
 
-
-
-
-
-
-
                 Branch_CreateTable_tbl_VPlus_Codes(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_VPlus_Codes_Validity(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_VPlus_Purchases_Points(pbBranchLoading, lblBranchLoading, dtpDate.Value)
@@ -81,11 +75,10 @@ Public Class FrmBranch
                 Branch_CreateTable_tbl_GiftCert_List(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_GiftCert_Payment(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_PS(pbBranchLoading, lblMainLoading, dtpDate.Value)
+
                 Branch_CreateTable_tbl_PS_Tmp(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_PS_ItemsSold_Tmp(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_PS_ItemsSold_Voided(pbBranchLoading, lblBranchLoading, dtpDate.Value)
-
-
 
                 Branch_CreateTable_tbl_PS_MiscPay_Tmp(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_PS_MiscPay_Voided(pbBranchLoading, lblBranchLoading, dtpDate.Value)
@@ -95,7 +88,6 @@ Public Class FrmBranch
 
                 Branch_CreateTable_tbl_CreditMemo(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_CreditMemo_CashRefund_Payment(pbBranchLoading, lblBranchLoading, dtpDate.Value)
-
 
 
                 SetLog(False)
@@ -138,7 +130,65 @@ Public Class FrmBranch
 
                 If GetMainInfo() = True Then
                     EnableControl(False)
-                    SaveIt()
+
+                    Insert_Collect_tbl_CreditMemo(pbMainLoading, lblMainLoading)
+                    Insert_Collect_tbl_PS_MiscPay_Tmp(pbMainLoading, lblMainLoading)
+                    Insert_Collect_tbl_PS_MiscPay(pbMainLoading, lblMainLoading)
+
+
+                    Insert_tbl_PS_GT(pbMainLoading, lblMainLoading)
+                    Insert_tbl_PS_GT_ZZ(pbMainLoading, lblMainLoading)
+
+                    Insert_tbl_PS_GT_Adjustment_EJournal(pbMainLoading, lblMainLoading)
+                    Insert_tbl_PS_GT_Adjustment_EJournal_Detail(pbMainLoading, lblMainLoading)
+
+                    Insert_tbl_PS_E_Journal(pbMainLoading, lblMainLoading)
+                    Insert_tbl_PS_E_Journal_Detail(pbMainLoading, lblMainLoading)
+
+                    Insert_tbl_PCPOS_Cashiers(pbMainLoading, lblMainLoading)
+                    Insert_tbl_PCPOS_Cashiers_Changes(pbMainLoading, lblMainLoading)
+
+                    Insert_tbl_Items_Changes(pbMainLoading, lblMainLoading)
+                    Insert_tbl_ItemsForPLU_For_Effect(pbMainLoading, lblMainLoading)
+
+                    Insert_tbl_Items(pbMainLoading, lblMainLoading)
+                    Insert_tbl_ItemsForPLU(pbMainLoading, lblMainLoading)
+
+                    Insert_tbl_Bank(pbMainLoading, lblMainLoading)
+                    Insert_tbl_Banks(pbMainLoading, lblMainLoading)
+
+                    Insert_tbl_Banks_Changes(pbMainLoading, lblMainLoading)
+                    Insert_tbl_Bank_Changes(pbMainLoading, lblMainLoading)
+
+                    Insert_tbl_Bank_Terms(pbMainLoading, lblMainLoading)
+
+                    Insert_tbl_QRPay_Type(pbMainLoading, lblMainLoading)
+                    Insert_tbl_GiftCert_List(pbMainLoading, lblMainLoading)
+
+                    Insert_tbl_VPlus_Codes(pbMainLoading, lblMainLoading)
+                    Insert_tbl_VPlus_Codes_Validity(pbMainLoading, lblMainLoading)
+                    Insert_tbl_VPlus_Codes_Changes(pbMainLoading, lblMainLoading)
+
+                    Insert_tbl_Concession_PCR(pbMainLoading, lblMainLoading)
+                    Insert_tbl_Concession_PCR_Det(pbMainLoading, lblMainLoading)
+                    Insert_tbl_Concession_PCR_Effectivity(pbMainLoading, lblMainLoading)
+
+                    Insert_tbl_GiftCert_Changes(pbMainLoading, lblMainLoading)
+                    Insert_tbl_PS_Upload_Utility(pbMainLoading, lblMainLoading)
+
+                    Insert_tbl_VPlus_Summary(pbMainLoading, lblMainLoading)
+                    Insert_tbl_VPlus_Codes_For_Offline(pbMainLoading, lblMainLoading)
+                    Insert_tbl_VPlus_App(pbMainLoading, lblMainLoading)
+                    Insert_tbl_RetrieveHistoryForLocal(pbMainLoading, lblMainLoading)
+
+                    Insert_tbl_PaidOutDenominations(pbMainLoading, lblMainLoading)
+                    Insert_tbl_PaidOutTransactions(pbMainLoading, lblMainLoading)
+
+                    Insert_Collect_tbl_PS_GT_History(pbMainLoading, lblMainLoading)
+                    Insert_Collect_tbl_PS_GT_Zero_Out(pbMainLoading, lblMainLoading)
+
+                    lblMainLoading.Text = ""
+                    pbMainLoading.Value = 0
 
                     ConnLocal.Close()
                     SetLog(True)
@@ -156,67 +206,6 @@ Public Class FrmBranch
         End If
     End Sub
 
-    Private Sub SaveIt()
-
-
-        'Insert_Collect_tbl_CreditMemo(pbMainLoading, lblMainLoading)
-        'Insert_Collect_tbl_CreditMemo_CashRefund_Payment(pbMainLoading, lblMainLoading)
-
-        Insert_tbl_PS_GT(pbMainLoading, lblMainLoading)
-        Insert_tbl_PS_GT_ZZ(pbMainLoading, lblMainLoading)
-
-        Insert_tbl_PS_GT_Adjustment_EJournal(pbMainLoading, lblMainLoading)
-        Insert_tbl_PS_GT_Adjustment_EJournal_Detail(pbMainLoading, lblMainLoading)
-
-        Insert_tbl_PS_E_Journal(pbMainLoading, lblMainLoading)
-        Insert_tbl_PS_E_Journal_Detail(pbMainLoading, lblMainLoading)
-
-        Insert_tbl_PCPOS_Cashiers(pbMainLoading, lblMainLoading)
-        Insert_tbl_PCPOS_Cashiers_Changes(pbMainLoading, lblMainLoading)
-
-        Insert_tbl_Items_Changes(pbMainLoading, lblMainLoading)
-        Insert_tbl_ItemsForPLU_For_Effect(pbMainLoading, lblMainLoading)
-
-        Insert_tbl_Items(pbMainLoading, lblMainLoading)
-        Insert_tbl_ItemsForPLU(pbMainLoading, lblMainLoading)
-
-
-        Insert_tbl_Bank(pbMainLoading, lblMainLoading)
-        Insert_tbl_Banks(pbMainLoading, lblMainLoading)
-        Insert_tbl_Banks_Changes(pbMainLoading, lblMainLoading)
-        Insert_tbl_Bank_Changes(pbMainLoading, lblMainLoading)
-
-        Insert_tbl_Bank_Terms(pbMainLoading, lblMainLoading)
-
-        Insert_tbl_QRPay_Type(pbMainLoading, lblMainLoading)
-        Insert_tbl_GiftCert_List(pbMainLoading, lblMainLoading)
-
-        Insert_tbl_VPlus_Codes(pbMainLoading, lblMainLoading)
-        Insert_tbl_VPlus_Codes_Validity(pbMainLoading, lblMainLoading)
-        Insert_tbl_VPlus_Codes_Changes(pbMainLoading, lblMainLoading)
-
-        Insert_tbl_Concession_PCR(pbMainLoading, lblMainLoading)
-        Insert_tbl_Concession_PCR_Det(pbMainLoading, lblMainLoading)
-        Insert_tbl_Concession_PCR_Effectivity(pbMainLoading, lblMainLoading)
-
-        Insert_tbl_GiftCert_Changes(pbMainLoading, lblMainLoading)
-        Insert_tbl_PS_Upload_Utility(pbMainLoading, lblMainLoading)
-
-        Insert_tbl_VPlus_Summary(pbMainLoading, lblMainLoading)
-        Insert_tbl_VPlus_Codes_For_Offline(pbMainLoading, lblMainLoading)
-        Insert_tbl_VPlus_App(pbMainLoading, lblMainLoading)
-        Insert_tbl_RetrieveHistoryForLocal(pbMainLoading, lblMainLoading)
-
-        Insert_tbl_PaidOutDenominations(pbMainLoading, lblMainLoading)
-        Insert_tbl_PaidOutTransactions(pbMainLoading, lblMainLoading)
-
-        Insert_Collect_tbl_PS_GT_History(pbMainLoading, lblMainLoading)
-        Insert_Collect_tbl_PS_GT_Zero_Out(pbMainLoading, lblMainLoading)
-
-        lblMainLoading.Text = ""
-        pbMainLoading.Value = 0
-
-    End Sub
     Private Sub RefreshLog()
         lblLogDownload.Text = $"Last Download On : { GetLog(False)}"
         lblLogUpload.Text = $"Last Upload On : { GetLog(True)}"

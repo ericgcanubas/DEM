@@ -3191,11 +3191,11 @@ Module ModMainExport
             MessageBox.Show("Counter not found")
             Exit Sub
         End If
-        Dim dt As Date = Now.Date()
+        Dim year As Integer = Now.Year - 1
 
         Dim n As Integer = 0
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_CreditMemo  where EntryDate = {fDateIsEmpty(dt.ToShortDateString())} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_CreditMemo  where YEAR(EntryDate) >= {year} and LEFT([POSNo_TransNo], CHARINDEX(' ', [POSNo_TransNo]) - 1) in ({CounterList})  ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -3288,58 +3288,81 @@ Module ModMainExport
         End If
 
     End Sub
-    Public Sub CreateTable_tbl_CreditMemo_CashRefund_Payment(pb As ProgressBar, l As Label)
+    Public Sub CreateTable_tbl_HomeCredit_DeliveryAdvice(pb As ProgressBar, l As Label)
         Try
-            Dim createTableSql As String = "CREATE TABLE tbl_CreditMemo_CashRefund_Payment (
-                                            ID INTEGER PRIMARY KEY,
-                                            CMNo TEXT(20) NOT NULL,
-                                            PaymentDate DATETIME NOT NULL,
-                                            Amount CURRENCY NOT NULL,
-                                            Cashier TEXT(3) NOT NULL,
-                                            Senior TEXT(100) NOT NULL,
-                                            ApprovedBy TEXT(100) NOT NULL,
-                                            LastUpdated DATETIME NOT NULL
-                                        );
-"
+            Dim createTableSql As String = "CREATE TABLE tbl_HomeCredit_DeliveryAdvice (
+                                                            TransactionID INTEGER PRIMARY KEY,
+                                                            ControlNo TEXT(50) NOT NULL,
+                                                            [Name] TEXT(50) NOT NULL,
+                                                            DeliveryAdviceNo TEXT(50),
+                                                            [Date] DATE,
+                                                            DateExpired DATE,
+                                                            TotalAmount CURRENCY,
+                                                            HomeCreditAmount CURRENCY,
+                                                            CustomersDownpaymentAmount CURRENCY,
+                                                            [Status] INTEGER NOT NULL,
+                                                            [Transacted] INTEGER NOT NULL,
+                                                            Remarks TEXT(255) NOT NULL,
+                                                            PreparedBy TEXT(100) NOT NULL,
+                                                            LastUser TEXT(50),
+                                                            DateModified DATETIME,
+                                                            DateCreated DATETIME NOT NULL
+                                                        );
+                                                        "
 
             ConnLocal.Execute(createTableSql)
-            Collect_tbl_CreditMemo_CashRefund_Payment(pb, l)
+            Collect_tbl_HomeCredit_DeliveryAdvice(pb, l)
         Catch ex As Exception
-            MessageBox.Show(ex.Message, "tbl_CreditMemo_CashRefund_Payment  ")
+            MessageBox.Show(ex.Message, "tbl_HomeCredit_DeliveryAdvice  ")
             Application.Exit()
         End Try
     End Sub
-    Private Sub Collect_tbl_CreditMemo_CashRefund_Payment(pb As ProgressBar, l As Label)
-        Dim dt As Date = Now.Date()
+    Private Sub Collect_tbl_HomeCredit_DeliveryAdvice(pb As ProgressBar, l As Label)
+        Dim year As Integer = Now.Year - 1
         Dim n As Integer = 0
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_CreditMemo_CashRefund_Payment WHERE PaymentDate = {fDateIsEmpty(dt.ToShortDateString())} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_HomeCredit_DeliveryAdvice WHERE Year([Date]) >= {year} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
         If rs.RecordCount > 0 Then
             While Not rs.EOF
                 pb.Value = pb.Value + 1
-                l.Text = "tbl_CreditMemo_CashRefund_Payment  :" & pb.Maximum & "/" & pb.Value
+                l.Text = "tbl_HomeCredit_DeliveryAdvice  :" & pb.Maximum & "/" & pb.Value
                 Application.DoEvents()
-                Dim strSQL As String = $"INSERT INTO tbl_CreditMemo_CashRefund_Payment
-                                                    (   ID,
-                                                        CMNo,
-                                                        PaymentDate DATETIME NOT NULL,
-                                                        Amount CURRENCY NOT NULL,
-                                                        Cashier TEXT(3) NOT NULL,
-                                                        Senior TEXT(100) NOT NULL,
-                                                        ApprovedBy TEXT(100) NOT NULL,
-                                                        LastUpdated DATETIME NOT NULL)
-                                                VALUES ({fNum(rs.Fields("ID").Value)},
-                                                        '{fSqlFormat(rs.Fields("CMNo").Value)}',
-                                                        {fDateIsEmpty(rs.Fields("PaymentDate").Value.ToString())},
-                                                        {fNum(rs.Fields("Amount").Value)} ,                               
-                                                        '{fSqlFormat(rs.Fields("Cashier").Value)}',
-                                                        '{fSqlFormat(rs.Fields("Senior").Value)}',
-                                                        '{fSqlFormat(rs.Fields("ApprovedBy").Value)}',
-                                                        {fDateIsEmpty(rs.Fields("LastUpdated").Value.ToString())}
-                                                       
+                Dim strSQL As String = $"INSERT INTO tbl_HomeCredit_DeliveryAdvice
+                                                    (       TransactionID,
+                                                            ControlNo,
+                                                            [Name],
+                                                            DeliveryAdviceNo,
+                                                            [Date],
+                                                            DateExpired,
+                                                            TotalAmount,
+                                                            HomeCreditAmount,
+                                                            CustomersDownpaymentAmount,
+                                                            [Status],
+                                                            [Transacted],
+                                                            Remarks ,
+                                                            PreparedBy,
+                                                            LastUser,
+                                                            DateModified,
+                                                            DateCreated)
+                                                VALUES ({fNum(rs.Fields("TransactionID").Value)},
+                                                        '{fSqlFormat(rs.Fields("ControlNo").Value)}',
+                                                        '{fSqlFormat(rs.Fields("Name").Value)}',
+                                                       '{fSqlFormat(rs.Fields("DeliveryAdviceNo").Value)}',
+                                                        {fDateIsEmpty(rs.Fields("Date").Value.ToString())},
+                                                        {fDateIsEmpty(rs.Fields("DateExpired").Value.ToString())},
+                                                        {fNum(rs.Fields("TotalAmount").Value)} ,        
+                                                        {fNum(rs.Fields("HomeCreditAmount").Value)} ,  
+                                                        {fNum(rs.Fields("CustomersDownpaymentAmount").Value)} ,   
+                                                        {fNum(rs.Fields("Status").Value)} ,          
+                                                        {fNum(rs.Fields("Transacted").Value)} ,                         
+                                                        '{fSqlFormat(rs.Fields("Remarks").Value)}',
+                                                        '{fSqlFormat(rs.Fields("PreparedBy").Value)}',
+                                                        '{fSqlFormat(rs.Fields("LastUser").Value)}',
+                                                        {fDateIsEmpty(rs.Fields("DateModified").Value.ToString())},
+                                                        {fDateIsEmpty(rs.Fields("DateCreated").Value.ToString())}                           
                                             );"
 
                 ConnLocal.Execute(strSQL)
@@ -3348,4 +3371,223 @@ Module ModMainExport
         End If
 
     End Sub
+    Public Sub CreateTable_tbl_PS_MiscPay_Tmp(pb As ProgressBar, l As Label)
+
+        Try
+            Dim createTableSql As String = "CREATE TABLE tbl_PS_MiscPay_Tmp (
+                                            PK INTEGER PRIMARY KEY,
+                                            TransactionNumber TEXT(15) NOT NULL,
+                                            Line INTEGER NOT NULL,
+                                            PSDate DATETIME NOT NULL,
+                                            [Counter] TEXT(3) NOT NULL,
+                                            Cashier TEXT(3) NOT NULL,
+                                            Track1 TEXT(50),
+                                            Track2 TEXT(50),
+                                            Type TEXT(50) NOT NULL,
+                                            Code TEXT(50) NOT NULL,
+                                            BankKey INTEGER,
+                                            TypePayment INTEGER NOT NULL,
+                                            CardTerms TEXT(50) NOT NULL,
+                                            [Account] TEXT(50),
+                                            [Name] TEXT(50),
+                                            Amount DOUBLE NOT NULL,
+                                            SSU DOUBLE NOT NULL,
+                                            Location TEXT(1) NOT NULL,
+                                            Posted BYTE NOT NULL,
+                                            POSTableKey INTEGER NOT NULL,
+                                            AmountAct DOUBLE NOT NULL,
+                                            [Tax] DOUBLE NOT NULL,
+                                            BankComm DOUBLE NOT NULL
+                                        ); "
+
+            ConnLocal.Execute(createTableSql)
+            Collect_tbl_PS_MiscPay_Tmp(pb, l)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "tbl_PS_MiscPay_Tmp ")
+            Application.Exit()
+        End Try
+    End Sub
+    Private Sub Collect_tbl_PS_MiscPay_Tmp(pb As ProgressBar, l As Label)
+        Dim CounterList As String = getCounterList()
+        If CounterList = "" Then
+            MessageBox.Show("Counter not found")
+            Exit Sub
+        End If
+
+        Dim year As Integer = Now.Year - 1
+        Dim n As Integer = 0
+
+        rs = New ADODB.Recordset
+        rs.Open($"select * from tbl_PS_MiscPay_Tmp  where year(PSDate) >= {year} and [Counter] IN ({CounterList}) ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_PS_MiscPay_Tmp  :" & pb.Maximum & "/" & pb.Value
+                n = 0
+                Application.DoEvents()
+                Dim strSQL As String = $"INSERT INTO tbl_PS_MiscPay_Tmp 
+                                                    (PK,
+                                                    TransactionNumber,
+                                                    Line,
+                                                    PSDate,
+                                                    [Counter],
+                                                    Cashier,
+                                                    Track1,
+                                                    Track2,
+                                                    Type,
+                                                    Code,
+                                                    BankKey,
+                                                    TypePayment,
+                                                    CardTerms,
+                                                    [Account],
+                                                    [Name],
+                                                    Amount,
+                                                    SSU,
+                                                    Location,
+                                                    Posted,
+                                                    POSTableKey,
+                                                    AmountAct,
+                                                    [Tax],
+                                                    BankComm
+)
+                                                VALUES ({fNum(rs.Fields("PK").Value)},      
+                                                '{fSqlFormat(rs.Fields("TransactionNumber").Value)}',
+                                                 {fNum(rs.Fields("Line").Value)},
+                                                 {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())},
+                                                '{fSqlFormat(rs.Fields("Counter").Value)}',
+                                                '{fSqlFormat(rs.Fields("Cashier").Value)}',
+                                                '{fSqlFormat(rs.Fields("Track1").Value)}',
+                                                '{fSqlFormat(rs.Fields("Track2").Value)}',
+                                                '{fSqlFormat(rs.Fields("Type").Value)}',
+                                                '{fSqlFormat(rs.Fields("Code").Value)}',
+                                                {fNum(rs.Fields("BankKey").Value)},
+                                                {fNum(rs.Fields("TypePayment").Value)},
+                                                '{fSqlFormat(rs.Fields("CardTerms").Value)}',
+                                                '{fSqlFormat(rs.Fields("Account").Value)}',
+                                                '{fSqlFormat(rs.Fields("Name").Value)}',
+                                                 {fNum(rs.Fields("Amount").Value)},
+                                                 {fNum(rs.Fields("SSU").Value)},
+                                                '{fSqlFormat(rs.Fields("Location").Value)}',
+                                                 {fNum(rs.Fields("Posted").Value)},
+                                                 {fNum(rs.Fields("POSTableKey").Value)},
+                                                 {fNum(rs.Fields("AmountAct").Value)},
+                                                 {fNum(rs.Fields("Tax").Value)},
+                                                 {fNum(rs.Fields("BankComm").Value)}
+                                                );"
+                ConnLocal.Execute(strSQL)
+                rs.MoveNext()
+            End While
+        End If
+
+    End Sub
+
+    Public Sub CreateTable_tbl_PS_MiscPay(pb As ProgressBar, l As Label)
+
+        Try
+            Dim createTableSql As String = "CREATE TABLE tbl_PS_MiscPay (
+                                        PK INTEGER PRIMARY KEY,
+                                        TransactionNumber TEXT(15) NOT NULL,
+                                        PSDate DATETIME NOT NULL,
+                                        [Counter] TEXT(3) NOT NULL,
+                                        Cashier TEXT(3) NOT NULL,
+                                        Track1 TEXT(50),
+                                        Track2 TEXT(50),
+                                        [Type] TEXT(50),
+                                        [Code] TEXT(50),
+                                        BankKey INTEGER,
+                                        TypePayment INTEGER NOT NULL,
+                                        CardTerms TEXT(50) NOT NULL,
+                                        Account TEXT(50),
+                                        [Name] TEXT(50),
+                                        Amount DOUBLE NOT NULL,
+                                        SSU DOUBLE NOT NULL,
+                                        Location TEXT(1) NOT NULL,
+                                        Posted INTEGER NOT NULL,
+                                        AmountAct DOUBLE NOT NULL,
+                                        Tax DOUBLE NOT NULL,
+                                        BankComm DOUBLE NOT NULL
+                                    ); "
+
+            ConnLocal.Execute(createTableSql)
+            Collect_tbl_PS_MiscPay(pb, l)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "tbl_PS_MiscPay ")
+            Application.Exit()
+        End Try
+    End Sub
+    Private Sub Collect_tbl_PS_MiscPay(pb As ProgressBar, l As Label)
+        Dim CounterList As String = getCounterList()
+        If CounterList = "" Then
+            MessageBox.Show("Counter not found")
+            Exit Sub
+        End If
+
+        Dim year As Integer = Now.Year - 1
+        Dim n As Integer = 0
+
+        rs = New ADODB.Recordset
+        rs.Open($"select * from tbl_PS_MiscPay where year(PSDate) >= {year} and [Counter] IN ({CounterList}) ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_PS_MiscPay  :" & pb.Maximum & "/" & pb.Value
+                n = 0
+                Application.DoEvents()
+                Dim strSQL As String = $"INSERT INTO tbl_PS_MiscPay
+                                                    ( PK,
+                                                    TransactionNumber,
+                                                    PSDate,
+                                                    [Counter],
+                                                    Cashier,
+                                                    Track1 ,
+                                                    Track2,
+                                                    [Type],
+                                                    [Code],
+                                                    BankKey,
+                                                    TypePayment,
+                                                    CardTerms,
+                                                    Account,
+                                                    [Name],
+                                                    Amount,
+                                                    SSU,
+                                                    Location,
+                                                    Posted,
+                                                    AmountAct,
+                                                    TaX,
+                                                    BankComm)
+                                                VALUES ({fNum(rs.Fields("PK").Value)},      
+                                                '{fSqlFormat(rs.Fields("TransactionNumber").Value)}',
+                                                 {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())},
+                                                '{fSqlFormat(rs.Fields("Counter").Value)}',
+                                                '{fSqlFormat(rs.Fields("Cashier").Value)}',
+                                                '{fSqlFormat(rs.Fields("Track1").Value)}',
+                                                '{fSqlFormat(rs.Fields("Track2").Value)}',
+                                                '{fSqlFormat(rs.Fields("Type").Value)}',
+                                                '{fSqlFormat(rs.Fields("Code").Value)}',
+                                                {fNum(rs.Fields("BankKey").Value)},
+                                                {fNum(rs.Fields("TypePayment").Value)},
+                                                '{fSqlFormat(rs.Fields("CardTerms").Value)}',
+                                                '{fSqlFormat(rs.Fields("Account").Value)}',
+                                                '{fSqlFormat(rs.Fields("Name").Value)}',
+                                                 {fNum(rs.Fields("Amount").Value)},
+                                                 {fNum(rs.Fields("SSU").Value)},
+                                                '{fSqlFormat(rs.Fields("Location").Value)}',
+                                                 {fNum(rs.Fields("Posted").Value)},                             
+                                                 {fNum(rs.Fields("AmountAct").Value)},
+                                                 {fNum(rs.Fields("Tax").Value)},
+                                                 {fNum(rs.Fields("BankComm").Value)}
+                                                );"
+                ConnLocal.Execute(strSQL)
+                rs.MoveNext()
+            End While
+        End If
+
+    End Sub
+
 End Module

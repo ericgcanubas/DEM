@@ -2605,11 +2605,10 @@ Module ModMainImport
     End Sub
     Public Sub Insert_Collect_tbl_CreditMemo(pb As ProgressBar, l As Label)
 
-        Dim dt As Date = Now.Date()
 
         Dim n As Integer = 0
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_CreditMemo  where EntryDate = {fDateIsEmpty(dt.ToShortDateString())} ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"SELECT * FROM tbl_CreditMemo  WHERE LEFT([POSNo_TransNo], CHARINDEX(' ', [POSNo_TransNo]) - 1) = '{gbl_Counter}' ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -2618,13 +2617,11 @@ Module ModMainImport
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_CreditMemo  :" & pb.Maximum & "/" & pb.Value
                 Application.DoEvents()
-
                 Dim rx As New Recordset
-                rx.Open($"select * from tbl_CreditMemo WHERE TransNo ={fNum(rs.Fields("TransNo").Value)} and CM_StockAdjustNo = '{fSqlFormat(rs.Fields("CM_StockAdjustNo").Value)}' ", ConnServer, CursorTypeEnum.adOpenStatic)
+                rx.Open($"SELECT TOP 1 * FROM tbl_CreditMemo WHERE [ID] = {fNum(rs.Fields("ID").Value)} ", ConnServer, CursorTypeEnum.adOpenStatic)
                 If rx.RecordCount = 0 Then
-
                     Dim strSQL As String = $"INSERT INTO tbl_CreditMemo
-                                                        (
+                                                        (ID,
                                                         TransNo,
                                                         ControlNo,
                                                         CM_StockAdjustNo,
@@ -2650,7 +2647,7 @@ Module ModMainImport
                                                         Remarks,
                                                         PreparedBy,
                                                         IsPosted,
-                                                        PostedBy ,
+                                                        PostedBy,
                                                         DatePosted,
                                                         ApprovedBy,
                                                         IsCancelled,
@@ -2661,8 +2658,8 @@ Module ModMainImport
                                                         LastUpdated,
                                                         IsUsed,
                                                         IsPrinted)
-                                                VALUES (
-                                                        {fNum(rs.Fields("TransNo").Value)} ,  
+                                                VALUES ({fNum(rs.Fields("ID").Value)},
+                                                        {fNum(rs.Fields("TransNo").Value)},  
                                                         '{fSqlFormat(rs.Fields("ControlNo").Value)}',
                                                         '{fSqlFormat(rs.Fields("CM_StockAdjustNo").Value)}',
                                                         '{fSqlFormat(rs.Fields("CMNo_Manual").Value)}',
@@ -2697,60 +2694,248 @@ Module ModMainImport
                                                         '{fSqlFormat(rs.Fields("UpdatedBy").Value)}',
                                                          {fDateIsEmpty(rs.Fields("LastUpdated").Value.ToString())},
                                                          {fNum(rs.Fields("IsUsed").Value)} ,
-                                                         {fNum(rs.Fields("IsPrinted").Value)} 
+                                                         {fNum(rs.Fields("IsPrinted").Value)});"
 
-                                                );"
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_CreditMemo ON;")
+                    ConnServer.Execute(strSQL)
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_CreditMemo OFF;")
+
+                Else
+                    Dim strSQL As String = $"
+                            UPDATE tbl_CreditMemo SET
+                                ControlNo = '{fSqlFormat(rs.Fields("ControlNo").Value)}',
+                                CM_StockAdjustNo = '{fSqlFormat(rs.Fields("CM_StockAdjustNo").Value)}',
+                                CMNo_Manual = '{fSqlFormat(rs.Fields("CMNo_Manual").Value)}',
+                                EntryDate = {fDateIsEmpty(rs.Fields("EntryDate").Value.ToString())},                           
+                                PurchaseDate = {fDateIsEmpty(rs.Fields("PurchaseDate").Value.ToString())},
+                                [POSNo_TransNo] = '{fSqlFormat(rs.Fields("POSNo_TransNo").Value)}',
+                                Cashier = '{fSqlFormat(rs.Fields("Cashier").Value)}',
+                                ValidUntil = {fDateIsEmpty(rs.Fields("ValidUntil").Value.ToString())},
+                                VPlusPoints = {fNum(rs.Fields("VPlusPoints").Value)},
+                                VPlusCode = '{fSqlFormat(rs.Fields("VPlusCode").Value)}',
+                                PaymentType = '{fSqlFormat(rs.Fields("PaymentType").Value)}',
+                                Location = '{fSqlFormat(rs.Fields("Location").Value)}',
+                                IsSalesReturn = {fNum(rs.Fields("IsSalesReturn").Value)},
+                                IsCashRefund = {fNum(rs.Fields("IsCashRefund").Value)},
+                                CustomerName = '{fSqlFormat(rs.Fields("CustomerName").Value)}',
+                                TotalPurchaseQty = {fNum(rs.Fields("TotalPurchaseQty").Value)},
+                                TotalPurchase = {fNum(rs.Fields("TotalPurchase").Value)},
+                                TotalReturnQty = {fNum(rs.Fields("TotalReturnQty").Value)},
+                                TotalReturn = {fNum(rs.Fields("TotalReturn").Value)},
+                                TotalReturnVPlus = {fNum(rs.Fields("TotalReturnVPlus").Value)},
+                                Remarks = '{fSqlFormat(rs.Fields("Remarks").Value)}',
+                                PreparedBy = '{fSqlFormat(rs.Fields("PreparedBy").Value)}',
+                                IsPosted = {fNum(rs.Fields("IsPosted").Value)},
+                                PostedBy = '{fSqlFormat(rs.Fields("PostedBy").Value)}',
+                                DatePosted = {fDateIsEmpty(rs.Fields("DatePosted").Value.ToString())},
+                                ApprovedBy = '{fSqlFormat(rs.Fields("ApprovedBy").Value)}',
+                                IsCancelled = {fNum(rs.Fields("IsCancelled").Value)},
+                                CancelledBy = '{fSqlFormat(rs.Fields("CancelledBy").Value)}',
+                                ReasonForCancel = '{fSqlFormat(rs.Fields("ReasonForCancel").Value)}',
+                                DateCancelled = {fDateIsEmpty(rs.Fields("DateCancelled").Value.ToString())},
+                                UpdatedBy = '{fSqlFormat(rs.Fields("UpdatedBy").Value)}',
+                                LastUpdated = {fDateIsEmpty(rs.Fields("LastUpdated").Value.ToString())},
+                                IsUsed = {fNum(rs.Fields("IsUsed").Value)},
+                                IsPrinted = {fNum(rs.Fields("IsPrinted").Value)}
+                                WHERE [ID] = {fNum(rs.Fields("ID").Value)};"
 
                     ConnServer.Execute(strSQL)
                 End If
                 rs.MoveNext()
             End While
         End If
-
     End Sub
-
-    Public Sub Insert_Collect_tbl_CreditMemo_CashRefund_Payment(pb As ProgressBar, l As Label)
-        Dim dt As Date = Now.Date()
+    Public Sub Insert_Collect_tbl_PS_MiscPay_Tmp(pb As ProgressBar, l As Label)
+        Dim year As Integer = Now.Year - 1
         Dim n As Integer = 0
+
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_CreditMemo_CashRefund_Payment WHERE  PaymentDate = {fDateIsEmpty(dt.ToShortDateString())} ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_PS_MiscPay_Tmp where [Counter] = '{gbl_Counter}' ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
         If rs.RecordCount > 0 Then
             While Not rs.EOF
                 pb.Value = pb.Value + 1
-                l.Text = "tbl_CreditMemo_CashRefund_Payment  :" & pb.Maximum & "/" & pb.Value
+                l.Text = "tbl_PS_MiscPay_Tmp  :" & pb.Maximum & "/" & pb.Value
+                n = 0
                 Application.DoEvents()
+
                 Dim rx As New Recordset
-                rx.Open($"select TOP 1 * from tbl_CreditMemo_CashRefund_Payment 
-                    WHERE CMNo = '{fSqlFormat(rs.Fields("CMNo").Value)}' and
-                    PaymentDate = {fDateIsEmpty(rs.Fields("PaymentDate").Value.ToString())}  and
-                    Amount = {fNum(rs.Fields("Amount").Value)} ",
-                        ConnServer, CursorTypeEnum.adOpenStatic)
+                rx.Open($"select * from tbl_PS_MiscPay_Tmp WHERE TransactionNumber = '{fSqlFormat(rs.Fields("TransactionNumber").Value)}' and [PSDate] = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} ", ConnServer, CursorTypeEnum.adOpenStatic)
                 If rx.RecordCount = 0 Then
-                    Dim strSQL As String = $"INSERT INTO tbl_CreditMemo_CashRefund_Payment
-                                                    (   
-                                                        CMNo,
-                                                        PaymentDate DATETIME NOT NULL,
-                                                        Amount CURRENCY NOT NULL,
-                                                        Cashier TEXT(3) NOT NULL,
-                                                        Senior TEXT(100) NOT NULL,
-                                                        ApprovedBy TEXT(100) NOT NULL,
-                                                        LastUpdated DATETIME NOT NULL)
-                                                VALUES (
-                                                        '{fSqlFormat(rs.Fields("CMNo").Value)}',
-                                                        {fDateIsEmpty(rs.Fields("PaymentDate").Value.ToString())},
-                                                        {fNum(rs.Fields("Amount").Value)} ,                               
-                                                        '{fSqlFormat(rs.Fields("Cashier").Value)}',
-                                                        '{fSqlFormat(rs.Fields("Senior").Value)}',
-                                                        '{fSqlFormat(rs.Fields("ApprovedBy").Value)}',
-                                                        {fDateIsEmpty(rs.Fields("LastUpdated").Value.ToString())}
-                                                       
-                                            );"
+                    Dim strSQL As String = $"INSERT INTO tbl_PS_MiscPay_Tmp 
+                                                    (TransactionNumber,
+                                                    Line,
+                                                    PSDate,
+                                                    [Counter],
+                                                    Cashier,
+                                                    Track1,
+                                                    Track2,
+                                                    Type,
+                                                    Code,
+                                                    BankKey,
+                                                    TypePayment,
+                                                    CardTerms,
+                                                    [Account],
+                                                    [Name],
+                                                    Amount,
+                                                    SSU,
+                                                    Location,
+                                                    Posted,
+                                                    POSTableKey,
+                                                    AmountAct,
+                                                    [Tax],
+                                                    BankComm)
+                                                VALUES (      
+                                                '{fSqlFormat(rs.Fields("TransactionNumber").Value)}',
+                                                 {fNum(rs.Fields("Line").Value)},
+                                                 {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())},
+                                                '{fSqlFormat(rs.Fields("Counter").Value)}',
+                                                '{fSqlFormat(rs.Fields("Cashier").Value)}',
+                                                '{fSqlFormat(rs.Fields("Track1").Value)}',
+                                                '{fSqlFormat(rs.Fields("Track2").Value)}',
+                                                '{fSqlFormat(rs.Fields("Type").Value)}',
+                                                '{fSqlFormat(rs.Fields("Code").Value)}',
+                                                {fNum(rs.Fields("BankKey").Value)},
+                                                {fNum(rs.Fields("TypePayment").Value)},
+                                                '{fSqlFormat(rs.Fields("CardTerms").Value)}',
+                                                '{fSqlFormat(rs.Fields("Account").Value)}',
+                                                '{fSqlFormat(rs.Fields("Name").Value)}',
+                                                 {fNum(rs.Fields("Amount").Value)},
+                                                 {fNum(rs.Fields("SSU").Value)},
+                                                '{fSqlFormat(rs.Fields("Location").Value)}',
+                                                 {fNum(rs.Fields("Posted").Value)},
+                                                 {fNum(rs.Fields("POSTableKey").Value)},
+                                                 {fNum(rs.Fields("AmountAct").Value)},
+                                                 {fNum(rs.Fields("Tax").Value)},
+                                                 {fNum(rs.Fields("BankComm").Value)});"
+                    ConnServer.Execute(strSQL)
+                Else
+                    Dim strSQL As String = $"
+                            UPDATE tbl_PS_MiscPay_Tmp SET
+                                PSDate = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())},
+                                [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}',
+                                Cashier = '{fSqlFormat(rs.Fields("Cashier").Value)}',
+                                Track1 = '{fSqlFormat(rs.Fields("Track1").Value)}',
+                                Track2 = '{fSqlFormat(rs.Fields("Track2").Value)}',
+                                [Type] = '{fSqlFormat(rs.Fields("Type").Value)}',
+                                Code = '{fSqlFormat(rs.Fields("Code").Value)}',
+                                BankKey = {fNum(rs.Fields("BankKey").Value)},
+                                TypePayment = {fNum(rs.Fields("TypePayment").Value)},
+                                CardTerms = '{fSqlFormat(rs.Fields("CardTerms").Value)}',
+                                [Account] = '{fSqlFormat(rs.Fields("Account").Value)}',
+                                [Name] = '{fSqlFormat(rs.Fields("Name").Value)}',
+                                Amount = {fNum(rs.Fields("Amount").Value)},
+                                SSU = {fNum(rs.Fields("SSU").Value)},
+                                Location = '{fSqlFormat(rs.Fields("Location").Value)}',
+                                Posted = {fNum(rs.Fields("Posted").Value)},
+                                POSTableKey = {fNum(rs.Fields("POSTableKey").Value)},
+                                AmountAct = {fNum(rs.Fields("AmountAct").Value)},
+                                [Tax] = {fNum(rs.Fields("Tax").Value)},
+                                BankComm = {fNum(rs.Fields("BankComm").Value)}
+                                WHERE TransactionNumber = '{fSqlFormat(rs.Fields("TransactionNumber").Value)}' and [PSDate] = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} ;"
+
+                    ConnServer.Execute(strSQL)
+
+                End If
+                rs.MoveNext()
+            End While
+        End If
+    End Sub
+    Public Sub Insert_Collect_tbl_PS_MiscPay(pb As ProgressBar, l As Label)
+
+
+        Dim year As Integer = Now.Year - 1
+        Dim n As Integer = 0
+
+        rs = New ADODB.Recordset
+        rs.Open($"select * from tbl_PS_MiscPay where [Counter] = '{gbl_Counter}' ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_PS_MiscPay  :" & pb.Maximum & "/" & pb.Value
+                n = 0
+                Application.DoEvents()
+
+                Dim rx As New Recordset
+                rx.Open($"SELECT * FROM tbl_PS_MiscPay WHERE  [Counter] = '{gbl_Counter}' and TransactionNumber = '{fSqlFormat(rs.Fields("TransactionNumber").Value)}' and [PSDate] = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())} ", ConnServer, CursorTypeEnum.adOpenStatic)
+
+                If rx.RecordCount = 0 Then
+                    Dim strSQL As String = $"INSERT INTO tbl_PS_MiscPay
+                                                    (TransactionNumber,
+                                                    PSDate,
+                                                    [Counter],
+                                                    Cashier,
+                                                    Track1 ,
+                                                    Track2,
+                                                    [Type],
+                                                    [Code],
+                                                    BankKey,
+                                                    TypePayment,
+                                                    CardTerms,
+                                                    Account,
+                                                    [Name],
+                                                    Amount,
+                                                    SSU,
+                                                    Location,
+                                                    Posted,
+                                                    AmountAct,
+                                                    TaX,
+                                                    BankComm)
+                                                VALUES ({fNum(rs.Fields("PK").Value)},      
+                                                '{fSqlFormat(rs.Fields("TransactionNumber").Value)}',
+                                                 {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())},
+                                                '{fSqlFormat(rs.Fields("Counter").Value)}',
+                                                '{fSqlFormat(rs.Fields("Cashier").Value)}',
+                                                '{fSqlFormat(rs.Fields("Track1").Value)}',
+                                                '{fSqlFormat(rs.Fields("Track2").Value)}',
+                                                '{fSqlFormat(rs.Fields("Type").Value)}',
+                                                '{fSqlFormat(rs.Fields("Code").Value)}',
+                                                {fNum(rs.Fields("BankKey").Value)},
+                                                {fNum(rs.Fields("TypePayment").Value)},
+                                                '{fSqlFormat(rs.Fields("CardTerms").Value)}',
+                                                '{fSqlFormat(rs.Fields("Account").Value)}',
+                                                '{fSqlFormat(rs.Fields("Name").Value)}',
+                                                 {fNum(rs.Fields("Amount").Value)},
+                                                 {fNum(rs.Fields("SSU").Value)},
+                                                '{fSqlFormat(rs.Fields("Location").Value)}',
+                                                 {fNum(rs.Fields("Posted").Value)},                             
+                                                 {fNum(rs.Fields("AmountAct").Value)},
+                                                 {fNum(rs.Fields("Tax").Value)},
+                                                 {fNum(rs.Fields("BankComm").Value)});"
+                    ConnServer.Execute(strSQL)
+
+                Else
+                    Dim strSQL As String = $"
+                                UPDATE tbl_PS_MiscPay SET
+                                    Cashier = '{fSqlFormat(rs.Fields("Cashier").Value)}',
+                                    Track1 = '{fSqlFormat(rs.Fields("Track1").Value)}',
+                                    Track2 = '{fSqlFormat(rs.Fields("Track2").Value)}',
+                                    [Type] = '{fSqlFormat(rs.Fields("Type").Value)}',
+                                    [Code] = '{fSqlFormat(rs.Fields("Code").Value)}',
+                                    BankKey = {fNum(rs.Fields("BankKey").Value)},
+                                    TypePayment = {fNum(rs.Fields("TypePayment").Value)},
+                                    CardTerms = '{fSqlFormat(rs.Fields("CardTerms").Value)}',
+                                    Account = '{fSqlFormat(rs.Fields("Account").Value)}',
+                                    [Name] = '{fSqlFormat(rs.Fields("Name").Value)}',
+                                    Amount = {fNum(rs.Fields("Amount").Value)},
+                                    SSU = {fNum(rs.Fields("SSU").Value)},
+                                    Location = '{fSqlFormat(rs.Fields("Location").Value)}',
+                                    Posted = {fNum(rs.Fields("Posted").Value)},
+                                    AmountAct = {fNum(rs.Fields("AmountAct").Value)},
+                                    [Tax] = {fNum(rs.Fields("Tax").Value)},
+                                    BankComm = {fNum(rs.Fields("BankComm").Value)}
+                                    WHERE [Counter] = '{gbl_Counter}' and 
+                                    TransactionNumber = '{fSqlFormat(rs.Fields("TransactionNumber").Value)}' and 
+                                    [PSDate] = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())};"
 
                     ConnServer.Execute(strSQL)
                 End If
+
                 rs.MoveNext()
             End While
         End If

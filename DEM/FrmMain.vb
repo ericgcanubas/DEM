@@ -51,8 +51,11 @@ Public Class FrmMain
                 gbl_DownloadType = Val(GetParameter("GenerateType"))
                 NItemOnly = Val(GetParameter("ItemNotInclude"))
 
-                'CreateTable_tbl_CreditMemo(pbMainLoading, lblMainLoading)
-                'CreateTable_tbl_CreditMemo_CashRefund_Payment(pbMainLoading, lblMainLoading)
+                CreateTable_tbl_CreditMemo(pbMainLoading, lblMainLoading)
+                CreateTable_tbl_HomeCredit_DeliveryAdvice(pbMainLoading, lblMainLoading)
+
+                CreateTable_tbl_PS_MiscPay_Tmp(pbMainLoading, lblMainLoading)
+                CreateTable_tbl_PS_MiscPay(pbMainLoading, lblMainLoading)
 
                 CreateTable_tbl_banks(pbMainLoading, lblMainLoading)
                 CreateTable_tbl_Banks_Changes(pbMainLoading, lblMainLoading)
@@ -83,7 +86,6 @@ Public Class FrmMain
                 CreateTable_tbl_PS_GT_Zero_Out(pbMainLoading, lblMainLoading)
 
                 CreateTable_tbl_PS_GT(pbMainLoading, lblMainLoading)
-
                 CreateTable_tbl_PS_GT_ZZ(pbMainLoading, lblMainLoading)
 
                 CreateTable_tbl_PS_Upload_Utility(pbMainLoading, lblMainLoading)
