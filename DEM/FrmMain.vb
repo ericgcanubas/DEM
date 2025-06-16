@@ -17,12 +17,6 @@ Public Class FrmMain
         gbl_AdjustmentOnly = chkAdjustment.Checked
         gbl_Branches = chkByBranch.Checked
 
-        saveIt()
-
-    End Sub
-    Private Sub saveIt()
-
-
         Dim saveFileDialog As New SaveFileDialog()
 
         ' Optional: Set filters and default settings
@@ -251,9 +245,11 @@ Public Class FrmMain
                 ConnLocal.Open(str)
                 If GetBranchInfo() = True Then
                     EnableControl(False)
+
                     Branch_Insert_tbl_GiftCert_List(pbBranchLoading, lblBranchLoading)
                     Branch_Insert_tbl_VPlus_Codes(pbBranchLoading, lblBranchLoading)
                     Branch_Insert_tbl_VPlus_Codes_Validity(pbBranchLoading, lblBranchLoading)
+
                     Branch_Insert_tbl_PS_GT(pbBranchLoading, lblBranchLoading)
                     Branch_Insert_tbl_PS_GT_ZZ(pbBranchLoading, lblBranchLoading)
 
@@ -271,12 +267,17 @@ Public Class FrmMain
                     Branch_Insert_tbl_PS_Tmp(pbBranchLoading, lblBranchLoading)
                     Branch_Insert_tbl_PS_ItemsSold_Tmp(pbBranchLoading, lblBranchLoading)
                     Branch_Insert_tbl_PS_ItemsSold_Voided(pbBranchLoading, lblBranchLoading)
+
+                    Branch_Insert_tbl_PS_MiscPay(pbBranchLoading, lblBranchLoading)
                     Branch_Insert_tbl_PS_MiscPay_Tmp(pbBranchLoading, lblBranchLoading)
                     Branch_Insert_tbl_PS_MiscPay_Voided(pbBranchLoading, lblBranchLoading)
-                    Branch_Insert_tbl_PaidOutTransactions(pbBranchLoading, lblBranchLoading)
-                    'Branch_Insert_tbl_ItemTransactions(pbBranchLoading, lblBranchLoading)
-                    'Branch_Insert_tbl_PS_ItemsSold_Posting(pbBranchLoading, lblBranchLoading)
 
+                    Branch_Insert_tbl_PaidOutTransactions(pbBranchLoading, lblBranchLoading)
+                    Branch_Insert_tbl_CreditMemo(pbBranchLoading, lblBranchLoading)
+                    Branch_Insert_tbl_CreditMemo_CashRefund_Payment(pbBranchLoading, lblBranchLoading)
+                    Branch_Insert_tbl_CreditMemo_Payment(pbBranchLoading, lblBranchLoading)
+
+                    Branch_Insert_tbl_HomeCredit_DeliveryAdvice(pbBranchLoading, lblBranchLoading)
 
                 End If
                 ConnLocal.Close()

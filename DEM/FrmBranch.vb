@@ -33,8 +33,6 @@ Public Class FrmBranch
 
         Dim saveFileDialog As New SaveFileDialog()
 
-        ' Optional: Set filters and default settings
-        ' Set filter for .mdb files
         saveFileDialog.Filter = ""
         saveFileDialog.Title = "Save data"
         saveFileDialog.DefaultExt = ""
@@ -42,7 +40,7 @@ Public Class FrmBranch
         saveFileDialog.FileName = $"{gbl_Counter}_" & refFile
 
         If saveFileDialog.ShowDialog() = DialogResult.OK Then
-            ' Get the selected file path
+
             GL_EXPORT_PATH = saveFileDialog.FileName
             Dim DBNAME As String = CreateData()
 
@@ -54,8 +52,7 @@ Public Class FrmBranch
                 ConnLocal.Open(str)
 
                 Local_CreateTable_tbl_info(dtpDate.Value, refFile, gbl_Counter)
-                'Branch_CreateTable_tbl_ItemTransactions(pbBranchLoading, lblBranchLoading, dtpDate.Value)
-                'Branch_CreateTable_tbl_PS_ItemsSold_Posting(pbBranchLoading, lblBranchLoading, dtpDate.Value)
+
 
                 Branch_CreateTable_tbl_VPlus_Codes(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_VPlus_Codes_Validity(pbBranchLoading, lblBranchLoading, dtpDate.Value)
@@ -80,6 +77,7 @@ Public Class FrmBranch
                 Branch_CreateTable_tbl_PS_ItemsSold_Tmp(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_PS_ItemsSold_Voided(pbBranchLoading, lblBranchLoading, dtpDate.Value)
 
+                Branch_CreateTable_tbl_PS_MiscPay(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_PS_MiscPay_Tmp(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_PS_MiscPay_Voided(pbBranchLoading, lblBranchLoading, dtpDate.Value)
 
@@ -88,6 +86,9 @@ Public Class FrmBranch
 
                 Branch_CreateTable_tbl_CreditMemo(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_CreditMemo_CashRefund_Payment(pbBranchLoading, lblBranchLoading, dtpDate.Value)
+                Branch_CreateTable_tbl_CreditMemo_Payment(pbBranchLoading, lblBranchLoading, dtpDate.Value)
+
+                Branch_CreateTable_tbl_HomeCredit_DeliveryAdvice(pbBranchLoading, lblBranchLoading, dtpDate.Value)
 
 
                 SetLog(False)
@@ -132,9 +133,10 @@ Public Class FrmBranch
                     EnableControl(False)
 
                     Insert_Collect_tbl_CreditMemo(pbMainLoading, lblMainLoading)
+                    Insert_Collect_tbl_HomeCredit_DeliveryAdvice(pbMainLoading, lblMainLoading)
+
                     Insert_Collect_tbl_PS_MiscPay_Tmp(pbMainLoading, lblMainLoading)
                     Insert_Collect_tbl_PS_MiscPay(pbMainLoading, lblMainLoading)
-
 
                     Insert_tbl_PS_GT(pbMainLoading, lblMainLoading)
                     Insert_tbl_PS_GT_ZZ(pbMainLoading, lblMainLoading)
@@ -178,6 +180,7 @@ Public Class FrmBranch
 
                     Insert_tbl_VPlus_Summary(pbMainLoading, lblMainLoading)
                     Insert_tbl_VPlus_Codes_For_Offline(pbMainLoading, lblMainLoading)
+
                     Insert_tbl_VPlus_App(pbMainLoading, lblMainLoading)
                     Insert_tbl_RetrieveHistoryForLocal(pbMainLoading, lblMainLoading)
 

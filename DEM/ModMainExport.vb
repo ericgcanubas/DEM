@@ -3540,7 +3540,7 @@ Module ModMainExport
                 n = 0
                 Application.DoEvents()
                 Dim strSQL As String = $"INSERT INTO tbl_PS_MiscPay
-                                                    ( PK,
+                                                    (PK,
                                                     TransactionNumber,
                                                     PSDate,
                                                     [Counter],

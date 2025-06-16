@@ -3,7 +3,7 @@ Module ModMainImport
 
 
     Public Sub Insert_tbl_PCPOS_Cashiers(pb As ProgressBar, l As Label)
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_PCPOS_Cashiers ON;")
+
         rs = New ADODB.Recordset
         rs.Open("select * from tbl_PCPOS_Cashiers ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
@@ -18,6 +18,7 @@ Module ModMainImport
                 Dim rx As New ADODB.Recordset
                 rx.Open($"SELECT top 1 * FROM tbl_PCPOS_Cashiers where [CashierCode] = '{rs.Fields("CashierCode").Value}' ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
                 If rx.RecordCount = 0 Then
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_PCPOS_Cashiers ON;")
                     ConnServer.Execute($"INSERT INTO tbl_PCPOS_Cashiers 
                                     (CashierCode,
                                     [Password],
@@ -54,38 +55,39 @@ Module ModMainImport
                                     {rs.Fields("Admin").Value},
                                     {rs.Fields("Transfered").Value}
                                 ) ")
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_PCPOS_Cashiers OFF;")
 
                 Else
 
-                    '    ConnServer.Execute($"
-                    '    UPDATE tbl_PCPOS_Cashiers SET                       
-                    '        [Password] = '{rs.Fields("Password").Value}',
-                    '        Senior = {rs.Fields("Senior").Value},
-                    '        Track2 = '{rs.Fields("Track2").Value}',
-                    '        Track1 = '{rs.Fields("Track1").Value}',
-                    '        DirectVoid = {rs.Fields("DirectVoid").Value},
-                    '        DirectDiscount = {rs.Fields("DirectDiscount").Value},
-                    '        DirectSurcharge = {rs.Fields("DirectSurcharge").Value},
-                    '        SecureCode = '{rs.Fields("SecureCode").Value}',
-                    '        FullName = '{rs.Fields("FullName").Value}',
-                    '        CodeType = {rs.Fields("CodeType").Value},
-                    '        DiscountLimit = {rs.Fields("DiscountLimit").Value},
-                    '        Active = {rs.Fields("Active").Value},
-                    '        Changes = {rs.Fields("Changes").Value},
-                    '        Admin = {rs.Fields("Admin").Value},
-                    '        Transfered = {rs.Fields("Transfered").Value}
-                    '    WHERE CashierCode = '{rs.Fields("CashierCode").Value}';
-                    '")
+                    ConnServer.Execute($"
+                        UPDATE tbl_PCPOS_Cashiers SET                       
+                            [Password] = '{rs.Fields("Password").Value}',
+                            Senior = {rs.Fields("Senior").Value},
+                            Track2 = '{rs.Fields("Track2").Value}',
+                            Track1 = '{rs.Fields("Track1").Value}',
+                            DirectVoid = {rs.Fields("DirectVoid").Value},
+                            DirectDiscount = {rs.Fields("DirectDiscount").Value},
+                            DirectSurcharge = {rs.Fields("DirectSurcharge").Value},
+                            SecureCode = '{rs.Fields("SecureCode").Value}',
+                            FullName = '{rs.Fields("FullName").Value}',
+                            CodeType = {rs.Fields("CodeType").Value},
+                            DiscountLimit = {rs.Fields("DiscountLimit").Value},
+                            Active = {rs.Fields("Active").Value},
+                            Changes = {rs.Fields("Changes").Value},
+                            Admin = {rs.Fields("Admin").Value},
+                            Transfered = {rs.Fields("Transfered").Value}
+                        WHERE CashierCode = '{rs.Fields("CashierCode").Value}';
+                    ")
 
                 End If
                 rs.MoveNext()
             End While
         End If
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_PCPOS_Cashiers OFF;")
+
     End Sub
     Public Sub Insert_tbl_ItemsForPLU(pb As ProgressBar, l As Label)
         rs = New ADODB.Recordset
-        rs.Open("select tbl_ItemsForPLU.*  FROM tbl_ItemsForPLU  ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open("select tbl_ItemsForPLU.* FROM tbl_ItemsForPLU  ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -138,7 +140,7 @@ Module ModMainImport
         End If
     End Sub
     Public Sub Insert_tbl_Bank(pb As ProgressBar, l As Label)
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_Bank ON;")
+
         rs = New ADODB.Recordset
         rs.Open("select * from tbl_Bank ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
@@ -177,8 +179,10 @@ Module ModMainImport
                                     {rs.Fields("IsDefault").Value}
                             
                                 );"
-                    ConnServer.Execute(strSQL)
 
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_Bank ON;")
+                    ConnServer.Execute(strSQL)
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_Bank OFF;")
                 Else
                     Dim strSQL As String = $"
                                 UPDATE tbl_Bank SET
@@ -200,10 +204,10 @@ Module ModMainImport
             End While
 
         End If
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_Bank OFF;")
+
     End Sub
     Public Sub Insert_tbl_Banks(pb As ProgressBar, l As Label)
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_Banks ON;")
+
         rs = New ADODB.Recordset
         rs.Open("select * from tbl_Banks ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
@@ -235,7 +239,10 @@ Module ModMainImport
                                             '{fSqlFormat(rs.Fields("Description").Value)}',
                                              {fNum(rs.Fields("Bank").Value)}       
                                              );"
+
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_Banks ON;")
                     ConnServer.Execute(strSQL)
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_Banks OFF;")
 
                 Else
 
@@ -256,7 +263,7 @@ Module ModMainImport
             End While
 
         End If
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_Banks OFF;")
+
 
     End Sub
     Public Sub Insert_tbl_Banks_Changes(pb As ProgressBar, l As Label)
@@ -385,7 +392,7 @@ Module ModMainImport
         End If
     End Sub
     Public Sub Insert_tbl_QRPay_Type(pb As ProgressBar, l As Label)
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_QRPay_Type ON;")
+
 
         rs = New ADODB.Recordset
         rs.Open("select * from tbl_QRPay_Type ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
@@ -410,15 +417,18 @@ Module ModMainImport
                                     {rs.Fields("nPercRate").Value},
                                     {rs.Fields("nSort").Value}
                                 );"
+
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_QRPay_Type ON;")
                     ConnServer.Execute(strSQL)
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_QRPay_Type OFF;")
                 End If
                 rs.MoveNext()
             End While
         End If
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_QRPay_Type OFF;")
+
     End Sub
     Public Sub Insert_tbl_GiftCert_List(pb As ProgressBar, l As Label)
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_GiftCert_List ON;")
+
 
         rs = New ADODB.Recordset
         rs.Open($"select * from tbl_GiftCert_List ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
@@ -453,8 +463,9 @@ Module ModMainImport
                                     {rs.Fields("Used").Value},
                                     {fDateIsEmpty(rs.Fields("DateUsed").Value.ToString())} );"
 
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_GiftCert_List ON;")
                     ConnServer.Execute(strSQL)
-
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_GiftCert_List OFF;")
                 Else
 
                     Dim strSQL As String = $"
@@ -476,7 +487,7 @@ Module ModMainImport
             End While
 
         End If
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_GiftCert_List OFF;")
+
     End Sub
     Public Sub Insert_tbl_VPlus_Codes(pb As ProgressBar, l As Label)
 
@@ -601,7 +612,7 @@ Module ModMainImport
     End Sub
     Public Sub Insert_tbl_PCPOS_Cashiers_Changes(pb As ProgressBar, l As Label)
 
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_PCPOS_Cashiers_Changes ON;")
+
         rs = New ADODB.Recordset
         rs.Open($"select * from tbl_PCPOS_Cashiers_Changes", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
@@ -625,9 +636,9 @@ Module ModMainImport
                                     {fNum(rs.Fields("CashierPK").Value)},    
                                     '{fSqlFormat(rs.Fields("Changes").Value)}'   
                                    );"
-
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_PCPOS_Cashiers_Changes ON;")
                     ConnServer.Execute(strSQL)
-
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_PCPOS_Cashiers_Changes OFF;")
                 Else
                     Dim strSQL As String = $"
                         UPDATE tbl_PCPOS_Cashiers_Changes SET
@@ -642,10 +653,10 @@ Module ModMainImport
                 rs.MoveNext()
             End While
         End If
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_PCPOS_Cashiers_Changes OFF;")
+
     End Sub
     Public Sub Insert_tbl_Items_Changes(pb As ProgressBar, l As Label)
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_Items_Change ON;")
+
         rs = New ADODB.Recordset
         rs.Open($"select  * from tbl_Items_Change ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
@@ -680,9 +691,9 @@ Module ModMainImport
                                       {fDateIsEmpty(rs.Fields("DateTimeChange").Value.ToString())},
                                       {fNum(rs.Fields("ItemKey").Value)}                         
                                    );"
-
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_Items_Change ON;")
                     ConnServer.Execute(strSQL)
-
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_Items_Change OFF;")
                 Else
                     Dim strSQL As String = $"
                             UPDATE tbl_Items_Change SET
@@ -701,12 +712,11 @@ Module ModMainImport
                 rs.MoveNext()
             End While
         End If
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_Items_Change OFF;")
+
     End Sub
 
     Public Sub Insert_tbl_ItemsForPLU_For_Effect(pb As ProgressBar, l As Label)
 
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_ItemsForPLU_For_Effect ON;")
         Dim year As Integer = Now.Year - 1
         rs = New ADODB.Recordset
         rs.Open($"select * from tbl_ItemsForPLU_For_Effect", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
@@ -741,7 +751,10 @@ Module ModMainImport
                                     {fDateIsEmpty(rs.Fields("PromoFrom").Value.ToString())},       
                                     {fDateIsEmpty(rs.Fields("PromoTo").Value.ToString())}                    
                                    );"
+
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_ItemsForPLU_For_Effect ON;")
                     ConnServer.Execute(strSQL)
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_ItemsForPLU_For_Effect OFF;")
                 Else
 
                     Dim strSQL As String = $"
@@ -760,10 +773,10 @@ Module ModMainImport
                 rs.MoveNext()
             End While
         End If
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_ItemsForPLU_For_Effect OFF;")
+
     End Sub
     Public Sub Insert_tbl_Items(pb As ProgressBar, l As Label)
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_Items ON;")
+
 
         rs = New ADODB.Recordset
         rs.Open($"select * from tbl_Items as i ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
@@ -905,8 +918,10 @@ Module ModMainImport
                                       {fNum(rs.Fields("Status").Value)}
 
                                    );"
-                    ConnServer.Execute(strSQL)
 
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_Items ON;")
+                    ConnServer.Execute(strSQL)
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_Items OFF;")
                 Else
                     Dim strSQL As String = $"
                         UPDATE tbl_Items SET
@@ -976,7 +991,7 @@ Module ModMainImport
                 rs.MoveNext()
             End While
         End If
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_Items OFF;")
+
     End Sub
     Public Sub Insert_tbl_VPlus_Codes_Changes(pb As ProgressBar, l As Label)
 
@@ -994,7 +1009,7 @@ Module ModMainImport
                 Application.DoEvents()
 
                 Dim rx As New Recordset
-                rx.Open($"SELECT * FROM tbl_VPlus_Codes_Changes WHERE [Codes] = '{rs.Fields("Codes")}'", ConnServer, CursorTypeEnum.adOpenStatic)
+                rx.Open($"SELECT TOP 1 * FROM tbl_VPlus_Codes_Changes WHERE [Codes] = '{rs.Fields("Codes")}'", ConnServer, CursorTypeEnum.adOpenStatic)
                 If rx.RecordCount = 0 Then
                     Dim strSQL As String = $"INSERT INTO tbl_VPlus_Codes_Changes 
                     (Codes,
@@ -1012,7 +1027,7 @@ Module ModMainImport
 
     End Sub
     Public Sub Insert_tbl_Concession_PCR(pb As ProgressBar, l As Label)
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_Concession_PCR ON;")
+
         rs = New ADODB.Recordset
         rs.Open($"select * from tbl_Concession_PCR  ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
@@ -1162,8 +1177,9 @@ Module ModMainImport
                                        {fNum(rs.Fields("Sel_MD").Value)}, 
                                        {fNum(rs.Fields("Sel_PL").Value)}
                                    );"
-
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_Concession_PCR ON;")
                     ConnServer.Execute(strSQL)
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_Concession_PCR OFF;")
                 End If
 
                 rs.MoveNext()
@@ -1171,10 +1187,10 @@ Module ModMainImport
 
             End While
         End If
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_Concession_PCR OFF;")
+
     End Sub
     Public Sub Insert_tbl_Concession_PCR_Det(pb As ProgressBar, l As Label)
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_Concession_PCR_Det ON;")
+
         rs = New ADODB.Recordset
         rs.Open($"select dd.* from [tbl_Concession_PCR_Det] as dd ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
@@ -1191,6 +1207,7 @@ Module ModMainImport
                 Dim rx As New Recordset
                 rx.Open($"select TOP 1 dd.* from [tbl_Concession_PCR_Det] as dd  where dd.PK = {fNum(rs.Fields("PK").Value)} ", ConnServer, CursorTypeEnum.adOpenStatic)
                 If rx.RecordCount = 0 Then
+
                     Dim strSQL As String = $"INSERT INTO tbl_Concession_PCR_Det 
                                             (PK,
                                             ConcPCRKey,
@@ -1251,20 +1268,20 @@ Module ModMainImport
                                    '{fSqlFormat(rs.Fields("DiscPercent_new").Value)}', 
                                    '{fSqlFormat(rs.Fields("DiscAmount_new").Value)}', 
                                    '{fSqlFormat(rs.Fields("BrandName").Value)}', 
-                                    {fNum(rs.Fields("IsCurrentlyMarkdown").Value)}
-                                    
-                                   );"
+                                    {fNum(rs.Fields("IsCurrentlyMarkdown").Value)});"
 
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_Concession_PCR_Det ON;")
                     ConnServer.Execute(strSQL)
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_Concession_PCR_Det OFF;")
                 End If
 
                 rs.MoveNext()
             End While
         End If
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_Concession_PCR_Det OFF;")
+
     End Sub
     Public Sub Insert_tbl_Concession_PCR_Effectivity(pb As ProgressBar, l As Label)
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_Concession_PCR_Effectivity ON;")
+
         rs = New ADODB.Recordset
         rs.Open($"select * from tbl_Concession_PCR_Effectivity ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
@@ -1299,16 +1316,13 @@ Module ModMainImport
                                     {fNum(rs.Fields("ExtendedBy").Value)},   
                                     {fNum(rs.Fields("LastModifiedBy").Value)}                   
                                    );"
-
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_Concession_PCR_Effectivity ON;")
                     ConnServer.Execute(strSQL)
-
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_Concession_PCR_Effectivity OFF;")
                 Else
 
                     Dim strSQL As String = $"
-                    UPDATE tbl_Concession_PCR_Effectivity SET
-                        ConcPCRKey = {fNum(rs.Fields("ConcPCRKey").Value)},
-                        Effect_From = {fDateIsEmpty(rs.Fields("Effect_From").Value.ToString())},
-                        Effect_To = {fDateIsEmpty(rs.Fields("Effect_To").Value.ToString())},
+                    UPDATE tbl_Concession_PCR_Effectivity SET               
                         Posted = {fNum(rs.Fields("Posted").Value)},
                         IsExtended = {fNum(rs.Fields("IsExtended").Value)},
                         ExtendedBy = {fNum(rs.Fields("ExtendedBy").Value)},
@@ -1324,11 +1338,11 @@ Module ModMainImport
 
             End While
         End If
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_Concession_PCR_Effectivity OFF;")
+
     End Sub
     Public Sub Insert_tbl_GiftCert_Changes(pb As ProgressBar, l As Label)
 
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_GiftCert_Changes ON;")
+
         rs = New ADODB.Recordset
         rs.Open($"select * from tbl_GiftCert_Changes ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
@@ -1354,8 +1368,10 @@ Module ModMainImport
                                     {rs.Fields("GCAmount").Value},
                                    '{fSqlFormat(rs.Fields("Changes").Value)}');"
 
-                    ConnServer.Execute(strSQL)
 
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_GiftCert_Changes ON;")
+                    ConnServer.Execute(strSQL)
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_GiftCert_Changes OFF;")
                 Else
                     Dim strSQL As String = $"
                         UPDATE tbl_GiftCert_Changes SET
@@ -1371,7 +1387,7 @@ Module ModMainImport
             End While
 
         End If
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_GiftCert_Changes OFF;")
+
     End Sub
 
     Public Sub Insert_tbl_PS_Upload_Utility(pb As ProgressBar, l As Label)
@@ -1414,7 +1430,7 @@ Module ModMainImport
 
     Public Sub Insert_tbl_VPlus_Summary(pb As ProgressBar, l As Label)
 
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_VPlus_Summary ON;")
+
         rs = New ADODB.Recordset
         rs.Open($"select * from tbl_VPlus_Summary ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
@@ -1455,8 +1471,10 @@ Module ModMainImport
                                         {fNum(rs.Fields("InPoints").Value)},  
                                         {fNum(rs.Fields("OutPoints").Value)} 
                                    );"
-                    ConnServer.Execute(strSQL)
 
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_VPlus_Summary ON;")
+                    ConnServer.Execute(strSQL)
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_VPlus_Summary OFF;")
                 Else
                     Dim strSQL As String = $"
                         UPDATE tbl_VPlus_Summary SET
@@ -1477,7 +1495,7 @@ Module ModMainImport
             End While
 
         End If
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_VPlus_Summary OFF;")
+
     End Sub
 
     Public Sub Insert_tbl_VPlus_Codes_For_Offline(pb As ProgressBar, l As Label)
@@ -2234,7 +2252,7 @@ Module ModMainImport
                 Application.DoEvents()
 
                 Dim rx As New Recordset
-                rx.Open($"select TOP 1 * from tbl_PaidOutDenominations  where [DenomPK] = {fNum(rs.Fields("DenomPK").Value)} ", ConnServer, CursorTypeEnum.adOpenStatic)
+                rx.Open($"select TOP 1 * FROM tbl_PaidOutDenominations  WHERE [DenomPK] = {fNum(rs.Fields("DenomPK").Value)} ", ConnServer, CursorTypeEnum.adOpenStatic)
                 If rx.RecordCount = 0 Then
                     Dim strSQL As String = $"INSERT INTO tbl_PaidOutDenominations 
                                             ([DenomPK],
@@ -2380,7 +2398,7 @@ Module ModMainImport
 
     Public Sub Insert_Collect_tbl_PS_GT_History(pb As ProgressBar, l As Label)
         Dim year As Integer = Now.Year - 1
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_PS_GT_History ON;")
+
         rs = New ADODB.Recordset
         rs.Open($"select * from tbl_PS_GT_History  where [Counter] = '{gbl_Counter}'  ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
@@ -2502,7 +2520,9 @@ Module ModMainImport
                             {fDateIsEmpty(rs.Fields("LastUpdated").Value.ToString())}
                         );"
 
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_PS_GT_History ON;")
                     ConnServer.Execute(strSQL)
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_PS_GT_History OFF;")
                 Else
                     Dim strSQL As String = $"
                     UPDATE tbl_PS_GT_History SET
@@ -2563,10 +2583,10 @@ Module ModMainImport
             End While
         End If
 
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_PS_GT_History OFF;")
+
     End Sub
     Public Sub Insert_Collect_tbl_PS_GT_Zero_Out(pb As ProgressBar, l As Label)
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_PS_GT_Zero_Out ON;")
+
         Dim year As Integer = Now.Year - 1
         rs = New ADODB.Recordset
         rs.Open($"select * from tbl_PS_GT_Zero_Out  where [Counter] = '{gbl_Counter}'   ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
@@ -2591,7 +2611,10 @@ Module ModMainImport
                         {fDateIsEmpty(rs.Fields("DDate").Value.ToString())},
                         '{fSqlFormat(rs.Fields("Counter").Value)}'
                     );"
+
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_PS_GT_Zero_Out ON;")
                     ConnServer.Execute(strSQL)
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_PS_GT_Zero_Out OFF;")
                 Else
                     Dim strSQL As String = $"UPDATE tbl_PS_GT_Zero_Out 
                                 SET DDate = {fDateIsEmpty(rs.Fields("DDate").Value.ToString())},
@@ -2601,7 +2624,7 @@ Module ModMainImport
                 rs.MoveNext()
             End While
         End If
-        ConnServer.Execute("SET IDENTITY_INSERT tbl_PS_GT_Zero_Out OFF;")
+
     End Sub
     Public Sub Insert_Collect_tbl_CreditMemo(pb As ProgressBar, l As Label)
 
@@ -2886,7 +2909,7 @@ Module ModMainImport
                                                     AmountAct,
                                                     TaX,
                                                     BankComm)
-                                                VALUES ({fNum(rs.Fields("PK").Value)},      
+                                                VALUES (    
                                                 '{fSqlFormat(rs.Fields("TransactionNumber").Value)}',
                                                  {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())},
                                                 '{fSqlFormat(rs.Fields("Counter").Value)}',
@@ -2941,5 +2964,84 @@ Module ModMainImport
         End If
 
     End Sub
+    Public Sub Insert_Collect_tbl_HomeCredit_DeliveryAdvice(pb As ProgressBar, l As Label)
+        Dim year As Integer = Now.Year - 1
+        Dim n As Integer = 0
+        rs = New ADODB.Recordset
+        rs.Open($"select * from tbl_HomeCredit_DeliveryAdvice ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
+        pb.Maximum = rs.RecordCount
+        pb.Value = 0
+        pb.Minimum = 0
+        If rs.RecordCount > 0 Then
+            While Not rs.EOF
+                pb.Value = pb.Value + 1
+                l.Text = "tbl_HomeCredit_DeliveryAdvice  :" & pb.Maximum & "/" & pb.Value
+                Application.DoEvents()
+                Dim rx As New Recordset
+                rx.Open($"SELECT TOP 1 * from tbl_HomeCredit_DeliveryAdvice where TransactionID = {fNum(rs.Fields("TransactionID").Value)}", ConnServer, CursorTypeEnum.adOpenStatic)
+                If rx.RecordCount = 0 Then
+                    Dim strSQL As String = $"INSERT INTO tbl_HomeCredit_DeliveryAdvice
+                                                    (       TransactionID,
+                                                            ControlNo,
+                                                            [Name],
+                                                            DeliveryAdviceNo,
+                                                            [Date],
+                                                            DateExpired,
+                                                            TotalAmount,
+                                                            HomeCreditAmount,
+                                                            CustomersDownpaymentAmount,
+                                                            [Status],
+                                                            [Transacted],
+                                                            Remarks ,
+                                                            PreparedBy,
+                                                            LastUser,
+                                                            DateModified,
+                                                            DateCreated)
+                                                VALUES ({fNum(rs.Fields("TransactionID").Value)},
+                                                        '{fSqlFormat(rs.Fields("ControlNo").Value)}',
+                                                        '{fSqlFormat(rs.Fields("Name").Value)}',
+                                                       '{fSqlFormat(rs.Fields("DeliveryAdviceNo").Value)}',
+                                                        {fDateIsEmpty(rs.Fields("Date").Value.ToString())},
+                                                        {fDateIsEmpty(rs.Fields("DateExpired").Value.ToString())},
+                                                        {fNum(rs.Fields("TotalAmount").Value)} ,        
+                                                        {fNum(rs.Fields("HomeCreditAmount").Value)} ,  
+                                                        {fNum(rs.Fields("CustomersDownpaymentAmount").Value)} ,   
+                                                        {fNum(rs.Fields("Status").Value)} ,          
+                                                        {fNum(rs.Fields("Transacted").Value)} ,                         
+                                                        '{fSqlFormat(rs.Fields("Remarks").Value)}',
+                                                        '{fSqlFormat(rs.Fields("PreparedBy").Value)}',
+                                                        '{fSqlFormat(rs.Fields("LastUser").Value)}',
+                                                        {fDateIsEmpty(rs.Fields("DateModified").Value.ToString())},
+                                                        {fDateIsEmpty(rs.Fields("DateCreated").Value.ToString())});"
 
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_HomeCredit_DeliveryAdvice ON;")
+                    ConnServer.Execute(strSQL)
+                    ConnServer.Execute("SET IDENTITY_INSERT tbl_HomeCredit_DeliveryAdvice OFF;")
+                Else
+                    Dim strSQL As String = $"UPDATE tbl_HomeCredit_DeliveryAdvice SET
+                            ControlNo = '{fSqlFormat(rs.Fields("ControlNo").Value)}',
+                            [Name] = '{fSqlFormat(rs.Fields("Name").Value)}',
+                            DeliveryAdviceNo = '{fSqlFormat(rs.Fields("DeliveryAdviceNo").Value)}',
+                            [Date] = {fDateIsEmpty(rs.Fields("Date").Value.ToString())},
+                            DateExpired = {fDateIsEmpty(rs.Fields("DateExpired").Value.ToString())},
+                            TotalAmount = {fNum(rs.Fields("TotalAmount").Value)},
+                            HomeCreditAmount = {fNum(rs.Fields("HomeCreditAmount").Value)},
+                            CustomersDownpaymentAmount = {fNum(rs.Fields("CustomersDownpaymentAmount").Value)},
+                            [Status] = {fNum(rs.Fields("Status").Value)},
+                            [Transacted] = {fNum(rs.Fields("Transacted").Value)},
+                            Remarks = '{fSqlFormat(rs.Fields("Remarks").Value)}',
+                            PreparedBy = '{fSqlFormat(rs.Fields("PreparedBy").Value)}',
+                            LastUser = '{fSqlFormat(rs.Fields("LastUser").Value)}',
+                            DateModified = {fDateIsEmpty(rs.Fields("DateModified").Value.ToString())},
+                            DateCreated = {fDateIsEmpty(rs.Fields("DateCreated").Value.ToString())}
+                        WHERE TransactionID = {fNum(rs.Fields("TransactionID").Value)};"
+
+                    ConnServer.Execute(strSQL)
+                End If
+
+                rs.MoveNext()
+            End While
+        End If
+
+    End Sub
 End Module
