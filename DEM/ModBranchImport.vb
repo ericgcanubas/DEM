@@ -1,7 +1,7 @@
 ﻿Imports ADODB
 Module ModBranchImport
 
-
+    Public BranchImportReference As Integer
     Public Sub Branch_Insert_tbl_GiftCert_List(pb As ProgressBar, l As Label)
 
         rs = New Recordset
@@ -16,9 +16,8 @@ Module ModBranchImport
                 Application.DoEvents()
 
                 Dim rx As New Recordset
-                rx.Open($"SELECT TOP 1 * FROM tbl_GiftCert_List WHERE ValidFrom = {fDateIsEmpty(rs.Fields("ValidFrom").Value.ToString())} and 
-                                                                      ValidTo = {fDateIsEmpty(rs.Fields("ValidTo").Value.ToString())} And
-                                                                      GCNumber = { fNum(rs.Fields("GCNumber").Value)} And
+                rx.Open($"SELECT TOP 1 * FROM tbl_GiftCert_List WHERE  GCNumber = {fNum(rs.Fields("GCNumber").Value)} And 
+                                                                       Amount = {fNum(rs.Fields("Amount").Value)}  And
                                                                       DateAdded = {fDateIsEmpty(rs.Fields("DateAdded").Value.ToString())} ", ConnServer, CursorTypeEnum.adOpenStatic)
 
                 If rx.RecordCount = 0 Then
@@ -31,15 +30,24 @@ Module ModBranchImport
                                     DateAdded,
                                     Used,
                                     DateUsed)
-                                    VALUES ({rs.Fields("GCNumber").Value},
-                                    {rs.Fields("Amount").Value},
+                                    VALUES ({fNum(rs.Fields("GCNumber").Value)},
+                                    {fNum(rs.Fields("Amount").Value)},
                                    '{fSqlFormat(rs.Fields("Customer").Value.ToString())}',
                                     {fDateIsEmpty(rs.Fields("ValidFrom").Value.ToString())},
                                     {fDateIsEmpty(rs.Fields("ValidTo").Value.ToString())},
                                     {fDateIsEmpty(rs.Fields("DateAdded").Value.ToString())},
-                                    {rs.Fields("Used").Value},
+                                    {fNum(rs.Fields("Used").Value)},
                                     {fDateIsEmpty(rs.Fields("DateUsed").Value.ToString())}
                                 );"
+                    ConnServer.Execute(strSQL)
+
+                Else
+
+                    Dim strSQL As String = $"UPDATE tbl_GiftCert_List SET Used = {fNum(rs.Fields("Used").Value)} 
+                                                                    WHERE GCNumber = {fNum(rs.Fields("GCNumber").Value)} And 
+                                                                    Amount = {fNum(rs.Fields("Amount").Value)}  And
+                                                                    DateAdded = {fDateIsEmpty(rs.Fields("DateAdded").Value.ToString())} "
+
                     ConnServer.Execute(strSQL)
                 End If
                 rs.MoveNext()
@@ -390,9 +398,9 @@ Module ModBranchImport
                     ConnServer.Execute(strSQL)
                 Else
                     Dim strSQL As String = $"UPDATE tbl_PS_GT_ZZ SET
-                    [PSDate] = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())},
-                    ZZCount = {fNum(rs.Fields("ZZCount").Value)}
-                    WHERE  [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}';"
+                                [PSDate] = {fDateIsEmpty(rs.Fields("PSDate").Value.ToString())},
+                                ZZCount = {fNum(rs.Fields("ZZCount").Value)}
+                                WHERE  [Counter] = '{fSqlFormat(rs.Fields("Counter").Value)}';"
                     ConnServer.Execute(strSQL)
                 End If
                 rs.MoveNext()
@@ -648,7 +656,6 @@ Module ModBranchImport
                 Cashier='{fSqlFormat(rs.Fields("Cashier").Value)}' and 
                 ATDNumber='{fSqlFormat(rs.Fields("ATDNumber").Value)}' ", ConnServer, CursorTypeEnum.adOpenStatic)
                 If rx.RecordCount = 0 Then
-
                     Dim strSQL As String = $"INSERT INTO tbl_PS_EmployeeATD 
                                                 (TransactionNumber,
                                                 PSDate,
@@ -1592,8 +1599,12 @@ Module ModBranchImport
             Dim rx As New Recordset
             rx.Open($"SELECT * FROM tbl_info WHERE [Counter] <> 'Main'", ConnLocal, CursorTypeEnum.adOpenStatic)
             If rx.RecordCount <> 0 Then
+                BranchImportReference = Val(rx.Fields("REFERENCE").Value)
+                gbl_Counter = rx.Fields("Counter").Value
                 isHave = True
             Else
+                BranchImportReference = 0
+                gbl_Counter = ""
                 isHave = False
             End If
 

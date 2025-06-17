@@ -45,14 +45,14 @@
                                     DateAdded,
                                     Used,
                                     DateUsed)
-                                    VALUES ({rs.Fields("PK").Value},      
+                                    VALUES ({ fNum(rs.Fields("PK").Value)},      
                                     {rs.Fields("GCNumber").Value},
                                     {rs.Fields("Amount").Value},
                                    '{fSqlFormat(rs.Fields("Customer").Value.ToString())}',
                                     {fDateIsEmpty(rs.Fields("ValidFrom").Value.ToString())},
                                     {fDateIsEmpty(rs.Fields("ValidTo").Value.ToString())},
                                     {fDateIsEmpty(rs.Fields("DateAdded").Value.ToString())},
-                                    {rs.Fields("Used").Value},
+                                    {fNum(rs.Fields("Used").Value)},
                                     {fDateIsEmpty(rs.Fields("DateUsed").Value.ToString())}
                                 );"
                 ConnLocal.Execute(strSQL)

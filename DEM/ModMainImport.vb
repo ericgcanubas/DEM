@@ -1,7 +1,7 @@
 ﻿Imports ADODB
 Module ModMainImport
 
-
+    Public MainImportReference As Integer
     Public Sub Insert_tbl_PCPOS_Cashiers(pb As ProgressBar, l As Label)
 
         rs = New ADODB.Recordset
@@ -1525,8 +1525,7 @@ Module ModMainImport
                                         '{fSqlFormat(rs.Fields("Codes").Value)}',    
                                         '{fSqlFormat(rs.Fields("POSName").Value)}',    
                                          {fNum(rs.Fields("Used").Value)},          
-                                         {fDateIsEmpty(rs.Fields("CreatedOn").Value.ToString())}
-                                   );"
+                                         {fDateIsEmpty(rs.Fields("CreatedOn").Value.ToString())});"
 
                     ConnServer.Execute(strSQL)
                 End If
@@ -2380,10 +2379,12 @@ Module ModMainImport
         Dim isHave As Boolean
         Try
             Dim rx As New Recordset
-            rx.Open($"SELECT * FROM tbl_info WHERE Counter='Main'", ConnLocal, CursorTypeEnum.adOpenStatic)
+            rx.Open($"SELECT * FROM tbl_info WHERE [Counter]='Main'", ConnLocal, CursorTypeEnum.adOpenStatic)
             If rx.RecordCount <> 0 Then
+                MainImportReference = Val(rs.Fields("Reference").Value)
                 isHave = True
             Else
+                MainImportReference = 0
                 isHave = False
             End If
 

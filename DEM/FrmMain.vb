@@ -1,8 +1,8 @@
 ﻿Imports System.IO
 Imports System.Runtime.InteropServices
 Public Class FrmMain
-
-
+    Public Tmp_strConnection As String
+    Public getReference As Integer
     <DllImport("user32.dll")>
     Public Shared Function ReleaseCapture() As Boolean
     End Function
@@ -146,11 +146,11 @@ Public Class FrmMain
         lblDATABASE.Text = $"DB:{gbl_Database}"
         getConnection()
 
-        Dim str As String = CreateDBMain()
+        Tmp_strConnection = CreateDBMain()
 
         ConnTemp = New ADODB.Connection()
         ConnTemp.ConnectionTimeout = 30
-        ConnTemp.Open(str)
+        ConnTemp.Open(Tmp_strConnection)
         Maketbl_COUNTER()
         Maketbl_PARAMETER()
         gbl_DownloadType = Val(GetParameter("GenerateType"))
@@ -167,8 +167,7 @@ Public Class FrmMain
             Dim createTableSql As String = "CREATE TABLE tbl_counter_list (
                                                 [Counter] TEXT(5) PRIMARY KEY,
                                                 DateUpload DATETIME,        
-                                                [Reference] TEXT(15)
-                                        );"
+                                                [Reference] TEXT(15));"
 
             ConnTemp.Execute(createTableSql)
         Catch ex As Exception
@@ -176,6 +175,32 @@ Public Class FrmMain
         End Try
 
     End Sub
+    Private Sub UpdateCounterList()
+        Try
+            Dim rx As New ADODB.Recordset
+            rx.Open($"SELECT * FROM tbl_counter_list WHERE [Counter] = '{gbl_Counter}' ", ConnTemp, ADODB.CursorTypeEnum.adOpenStatic)
+            If rx.RecordCount <> 0 Then
+                ConnTemp.Execute($"UPDATE tbl_counter_list SET DateUpload = '{Date.Now()}', [Reference] = '{BranchImportReference}'  WHERE [Counter] = '{gbl_Counter}' ")
+            End If
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "Counter-List-Info", MessageBoxButtons.OK, MessageBoxIcon.Asterisk)
+        End Try
+
+    End Sub
+    Public Function CounterHasList() As Boolean
+        Dim rx As New ADODB.Recordset
+        rx.Open($"SELECT * FROM tbl_counter_list WHERE [Counter] = '{gbl_Counter}' ", ConnTemp, ADODB.CursorTypeEnum.adOpenStatic)
+        If rx.RecordCount = 0 Then
+            getReference = 0
+            CounterHasList = False
+
+        Else
+            getReference = Val(rx.Fields("Reference").Value)
+            CounterHasList = True
+
+        End If
+    End Function
+
     Private Sub Maketbl_PARAMETER()
 
         Try
@@ -244,11 +269,24 @@ Public Class FrmMain
                 ConnLocal.ConnectionTimeout = 30
                 ConnLocal.Open(str)
                 If GetBranchInfo() = True Then
-                    EnableControl(False)
+                    If CounterHasList() = False Then
+                        ConnLocal.Close()
+                        Exit Sub
+                    End If
 
-                    Branch_Insert_tbl_GiftCert_List(pbBranchLoading, lblBranchLoading)
+                    If getReference >= BranchImportReference Then
+                        MessageBox.Show("Invalid Upload. file already uploaded ")
+                        ConnLocal.Close()
+                        Exit Sub
+                    End If
+
+                    EnableControl(False)
                     Branch_Insert_tbl_VPlus_Codes(pbBranchLoading, lblBranchLoading)
                     Branch_Insert_tbl_VPlus_Codes_Validity(pbBranchLoading, lblBranchLoading)
+                    Branch_Insert_tbl_VPlus_Purchases_Points(pbBranchLoading, lblBranchLoading)
+
+                    Branch_Insert_tbl_GiftCert_List(pbBranchLoading, lblBranchLoading)
+                    Branch_Insert_tbl_GiftCert_Payment(pbBranchLoading, lblBranchLoading)
 
                     Branch_Insert_tbl_PS_GT(pbBranchLoading, lblBranchLoading)
                     Branch_Insert_tbl_PS_GT_ZZ(pbBranchLoading, lblBranchLoading)
@@ -258,10 +296,7 @@ Public Class FrmMain
 
                     Branch_Insert_tbl_PS_GT_Adjustment_EJournal(pbBranchLoading, lblBranchLoading)
                     Branch_Insert_tbl_PS_GT_Adjustment_EJournal_Detail(pbBranchLoading, lblBranchLoading)
-
                     Branch_Insert_tbl_PS_EmployeeATD(pbBranchLoading, lblBranchLoading)
-                    Branch_Insert_tbl_GiftCert_Payment(pbBranchLoading, lblBranchLoading)
-                    Branch_Insert_tbl_VPlus_Purchases_Points(pbBranchLoading, lblBranchLoading)
 
                     Branch_Insert_tbl_PS(pbBranchLoading, lblBranchLoading)
                     Branch_Insert_tbl_PS_Tmp(pbBranchLoading, lblBranchLoading)
@@ -273,15 +308,23 @@ Public Class FrmMain
                     Branch_Insert_tbl_PS_MiscPay_Voided(pbBranchLoading, lblBranchLoading)
 
                     Branch_Insert_tbl_PaidOutTransactions(pbBranchLoading, lblBranchLoading)
+
                     Branch_Insert_tbl_CreditMemo(pbBranchLoading, lblBranchLoading)
                     Branch_Insert_tbl_CreditMemo_CashRefund_Payment(pbBranchLoading, lblBranchLoading)
                     Branch_Insert_tbl_CreditMemo_Payment(pbBranchLoading, lblBranchLoading)
 
                     Branch_Insert_tbl_HomeCredit_DeliveryAdvice(pbBranchLoading, lblBranchLoading)
 
+                    UpdateCounterList()
+                    ConnLocal.Close()
+                    FileCopy(sourceFilePath)
+                    FileDelete(sourceFilePath)
+                    MessageBox.Show("Successfully Branch Data Upload", "Upload Message", MessageBoxButtons.OK, MessageBoxIcon.Information)
+
+
                 End If
                 ConnLocal.Close()
-                MessageBox.Show("Successfully Branch Data Upload", "Upload Message", MessageBoxButtons.OK, MessageBoxIcon.Information)
+
                 pbBranchLoading.Value = 0
                 lblBranchLoading.Text = ""
                 SetLog(True)

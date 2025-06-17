@@ -1,6 +1,9 @@
 ﻿Imports System.Runtime.InteropServices
 Imports System.IO
 Public Class FrmBranch
+
+    Dim GetReference As Integer
+
     <DllImport("user32.dll")>
     Public Shared Function ReleaseCapture() As Boolean
     End Function
@@ -31,6 +34,8 @@ Public Class FrmBranch
     Private Sub btnDownload_Click(sender As Object, e As EventArgs) Handles btnDownload.Click
 
 
+
+        ' Download Branch Data
         Dim saveFileDialog As New SaveFileDialog()
 
         saveFileDialog.Filter = ""
@@ -53,7 +58,7 @@ Public Class FrmBranch
 
                 Local_CreateTable_tbl_info(dtpDate.Value, refFile, gbl_Counter)
 
-
+                ' vplus
                 Branch_CreateTable_tbl_VPlus_Codes(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_VPlus_Codes_Validity(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_VPlus_Purchases_Points(pbBranchLoading, lblBranchLoading, dtpDate.Value)
@@ -61,18 +66,23 @@ Public Class FrmBranch
                 Branch_CreateTable_tbl_PS_GT(pbBranchLoading, lblBranchLoading)
                 Branch_CreateTable_tbl_PS_GT_ZZ(pbBranchLoading, lblBranchLoading)
 
+                'JOURNAL
                 Branch_CreateTable_tbl_PS_E_Journal(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_PS_E_Journal_Detail(pbBranchLoading, lblBranchLoading, dtpDate.Value)
 
+
+                'ADJUSTMENT JOURNAL
                 Branch_CreateTable_tbl_PS_GT_Adjustment_EJournal(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_PS_GT_Adjustment_EJournal_Detail(pbBranchLoading, lblBranchLoading, dtpDate.Value)
 
                 Branch_CreateTable_tbl_PS_EmployeeATD(pbBranchLoading, lblBranchLoading, dtpDate.Value)
 
+                ' GIFT CERT
                 Branch_CreateTable_tbl_GiftCert_List(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_GiftCert_Payment(pbBranchLoading, lblBranchLoading, dtpDate.Value)
-                Branch_CreateTable_tbl_PS(pbBranchLoading, lblMainLoading, dtpDate.Value)
 
+
+                Branch_CreateTable_tbl_PS(pbBranchLoading, lblMainLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_PS_Tmp(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_PS_ItemsSold_Tmp(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_PS_ItemsSold_Voided(pbBranchLoading, lblBranchLoading, dtpDate.Value)
@@ -84,12 +94,12 @@ Public Class FrmBranch
                 Branch_CreateTable_tbl_PaidOutTransactions(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_PaidOutTransactions_Det(pbBranchLoading, lblBranchLoading, dtpDate.Value)
 
+                ' CREDIT MEMO
                 Branch_CreateTable_tbl_CreditMemo(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_CreditMemo_CashRefund_Payment(pbBranchLoading, lblBranchLoading, dtpDate.Value)
                 Branch_CreateTable_tbl_CreditMemo_Payment(pbBranchLoading, lblBranchLoading, dtpDate.Value)
-
+                ' HOME CREDIT
                 Branch_CreateTable_tbl_HomeCredit_DeliveryAdvice(pbBranchLoading, lblBranchLoading, dtpDate.Value)
-
 
                 SetLog(False)
                 lblBranchLoading.Text = ""
@@ -130,6 +140,17 @@ Public Class FrmBranch
                 ConnLocal.Open(str)
 
                 If GetMainInfo() = True Then
+                    GetBranchInfo()
+
+                    If GetReference >= MainImportReference Then
+                        MessageBox.Show("Invalid Upload. file already uploaded ")
+                        ConnLocal.Close()
+                        Exit Sub
+                    End If
+
+
+
+
                     EnableControl(False)
 
                     Insert_Collect_tbl_CreditMemo(pbMainLoading, lblMainLoading)
@@ -197,7 +218,9 @@ Public Class FrmBranch
                     SetLog(True)
                     RefreshLog()
                     EnableControl(True)
+                    UpdateBranchInfo()
                     MessageBox.Show("Successfully Main Data Upload", "Upload Message", MessageBoxButtons.OK, MessageBoxIcon.Information)
+
                 Else
                     MessageBox.Show("Main data not found", "Upload Message", MessageBoxButtons.OK, MessageBoxIcon.Information)
                 End If
@@ -217,10 +240,72 @@ Public Class FrmBranch
         gbl_Server = GetSetting("DEM", "MODE", "SERVER")
         gbl_Database = GetSetting("DEM", "MODE", "DATABASE")
         gbl_Counter = GetSetting("DEM", "MODE", "COUNTER")
+
         lblCOUNTER.Text = $"COUNTER : {gbl_Counter}"
+
         getConnection()
         RefreshLog()
 
+        Dim str As String = CreateDBBranch()
+
+        ConnTemp = New ADODB.Connection()
+        ConnTemp.ConnectionTimeout = 30
+        ConnTemp.Open(str)
+        Maketbl_UploadLog()
+        MakeBranchInfo()
+
         EnableControl(True)
+    End Sub
+
+    Private Sub Maketbl_UploadLog()
+
+        Try
+            Dim createTableSql As String = "CREATE TABLE tbl_upload_log (
+                                                [Counter] TEXT(5) PRIMARY KEY,
+                                                DateUpload DATETIME,        
+                                                [Reference] TEXT(15));"
+
+            ConnTemp.Execute(createTableSql)
+        Catch ex As Exception
+
+        End Try
+
+
+
+    End Sub
+
+    Private Sub MakeBranchInfo()
+        If gbl_Counter <> "" Then
+            Try
+                rs = New ADODB.Recordset
+                rs.Open($"SELECT * FROM [tbl_upload_log] WHERE [Counter] = '{gbl_Counter}'", ConnTemp, ADODB.CursorTypeEnum.adOpenStatic)
+                If rs.RecordCount = 0 Then
+                    ConnTemp.Execute($"INSERT INTO [tbl_upload_log] ([Counter]) VALUES('{gbl_Counter}')  ")
+                    MessageBox.Show($"New Branch Info {gbl_Counter}", "Branch Info")
+                End If
+            Catch ex As Exception
+                MessageBox.Show(ex.Message, "Branch Info")
+            End Try
+
+        End If
+    End Sub
+
+
+    Private Sub UpdateBranchInfo()
+        Dim rx As New ADODB.Recordset
+        rx.Open($"SELECT * FROM [tbl_upload_log] WHERE [Counter] = '{gbl_Counter}'", ConnTemp, ADODB.CursorTypeEnum.adOpenStatic)
+        If rx.RecordCount <> 0 Then
+            ConnTemp.Execute($"UPDATE [tbl_upload_log] SET DateUpload = '{Date.Now()}', [Reference] = '{MainImportReference}'  WHERE [Counter] = '{gbl_Counter}'")
+        End If
+
+    End Sub
+    Public Sub GetBranchInfo()
+        Dim rx As New ADODB.Recordset
+        rx.Open($"SELECT * FROM [tbl_upload_log] WHERE [Counter] = '{gbl_Counter}'", ConnTemp, ADODB.CursorTypeEnum.adOpenStatic)
+        If rx.RecordCount <> 0 Then
+            GetReference = Val(rx.Fields("Reference").Value)
+        Else
+            GetReference = 0
+        End If
     End Sub
 End Class

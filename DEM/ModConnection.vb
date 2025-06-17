@@ -1,4 +1,5 @@
-﻿Imports ADOX
+﻿Imports System.IO
+Imports ADOX
 Module ModConnection
     Public gbl_DownloadType As Integer
     Public NItemOnly As Integer
@@ -82,6 +83,10 @@ Module ModConnection
 
 
     End Function
+    Public Function getFilePath() As String
+        Dim strDBName As String = "Main"
+        getFilePath = $"{Application.StartupPath}\{strDBName}"
+    End Function
 
 
     Public Function CreateDBMain()
@@ -89,9 +94,7 @@ Module ModConnection
         Try
             Dim catalog As New Catalog()
 
-            Dim strDBName As String = "Main"
-
-            Dim dbPath As String = $"{Application.StartupPath}\{strDBName}"
+            Dim dbPath As String = getFilePath()
             connectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" & dbPath
             catalog.Create(connectionString)
             CreateDBMain = connectionString
@@ -102,7 +105,24 @@ Module ModConnection
 
 
     End Function
+    Public Function CreateDBBranch()
+        Dim connectionString As String = ""
+        Try
+            Dim catalog As New Catalog()
 
+            Dim strDBName As String = "Branch"
+
+            Dim dbPath As String = $"{Application.StartupPath}\{strDBName}"
+            connectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" & dbPath
+            catalog.Create(connectionString)
+            CreateDBBranch = connectionString
+
+        Catch ex As Exception
+            CreateDBBranch = connectionString
+        End Try
+
+
+    End Function
     Public Function getConString(strDBName As String) As String
         Dim dbPath As String = $"{GL_EXPORT_PATH}"
         getConString = getConnectionString(dbPath)
@@ -207,4 +227,21 @@ Module ModConnection
             Return GetSetting("DEM", "MODE", "DOWNLOAD_LOG")
         End If
     End Function
+    Public Sub FileDelete(strFile As String)
+
+        If File.Exists(strFile) Then
+            File.Delete(strFile)
+        End If
+
+    End Sub
+
+    Public Sub FileCopy(sourcePath As String)
+        Dim fileName As String = Path.GetFileName(sourcePath) ' file name
+        Dim destinationPath As String = $"{Application.StartupPath}\{fileName}"
+
+        ' Overwrite destination if it exists (optional: set to False to avoid overwrite)
+        File.Copy(sourcePath, destinationPath, True)
+
+    End Sub
+
 End Module
