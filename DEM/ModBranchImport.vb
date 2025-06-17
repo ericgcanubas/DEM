@@ -1,7 +1,7 @@
 ﻿Imports ADODB
 Module ModBranchImport
 
-    Public BranchImportReference As Integer
+    Public BranchImportReference As Double
     Public Sub Branch_Insert_tbl_GiftCert_List(pb As ProgressBar, l As Label)
 
         rs = New Recordset
@@ -1599,7 +1599,7 @@ Module ModBranchImport
             Dim rx As New Recordset
             rx.Open($"SELECT * FROM tbl_info WHERE [Counter] <> 'Main'", ConnLocal, CursorTypeEnum.adOpenStatic)
             If rx.RecordCount <> 0 Then
-                BranchImportReference = Val(rx.Fields("REFERENCE").Value)
+                BranchImportReference = Val(rx.Fields("REFERENCE").Value.ToString())
                 gbl_Counter = rx.Fields("Counter").Value
                 isHave = True
             Else

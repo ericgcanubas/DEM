@@ -2,7 +2,7 @@
 Imports System.Runtime.InteropServices
 Public Class FrmMain
     Public Tmp_strConnection As String
-    Public getReference As Integer
+    Public getReference As Double
     <DllImport("user32.dll")>
     Public Shared Function ReleaseCapture() As Boolean
     End Function
@@ -195,7 +195,7 @@ Public Class FrmMain
             CounterHasList = False
 
         Else
-            getReference = Val(rx.Fields("Reference").Value)
+            getReference = Val(rx.Fields("Reference").Value.ToString())
             CounterHasList = True
 
         End If
@@ -316,14 +316,19 @@ Public Class FrmMain
                     Branch_Insert_tbl_HomeCredit_DeliveryAdvice(pbBranchLoading, lblBranchLoading)
 
                     UpdateCounterList()
-                    ConnLocal.Close()
+                    If ConnLocal.State = ConnectionState.Open Then
+                        ConnLocal.Close()
+                    End If
                     FileCopy(sourceFilePath)
                     FileDelete(sourceFilePath)
                     MessageBox.Show("Successfully Branch Data Upload", "Upload Message", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
 
                 End If
-                ConnLocal.Close()
+                If ConnLocal.State = ConnectionState.Open Then
+                    ConnLocal.Close()
+                End If
+
 
                 pbBranchLoading.Value = 0
                 lblBranchLoading.Text = ""

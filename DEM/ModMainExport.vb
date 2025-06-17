@@ -577,14 +577,20 @@ Module ModMainExport
 
     Private Sub Collect_tbl_GiftCert_List(pb As ProgressBar, l As Label)
 
-        If gbl_Branches = True Then
-            Exit Sub
+        If gbl_AdjustmentOnly = True Then
+            Dim dateTo As Date = Date.Now()
+            Dim dateFrom As Date = dateTo.AddMonths(-1)
+            rs = New ADODB.Recordset
+            rs.Open($"select * from tbl_GiftCert_List where ([DateAdded] between '{dateFrom.ToShortDateString}' and '{dateTo.ToShortDateString}') and DateUsed is null ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        Else
+            Dim year As Integer = Now.Year - 1
+
+            rs = New ADODB.Recordset
+            rs.Open($"select * from tbl_GiftCert_List where YEAR(ValidTo) >= {year}  and DateUsed is null ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+
         End If
 
-        Dim year As Integer = Now.Year - 1
 
-        rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_GiftCert_List where YEAR(ValidTo) > {year}  and DateUsed is null ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -648,13 +654,18 @@ Module ModMainExport
         End Try
     End Sub
     Private Sub Collect_tbl_VPlus_Codes(pb As ProgressBar, l As Label)
-        If gbl_Branches = True Then
-            Exit Sub
+        If gbl_AdjustmentOnly = True Then
+            Dim year As Integer = Now.Year - 1
+            rs = New ADODB.Recordset
+            rs.Open($"select * from tbl_VPlus_Codes where year(DateExpired) >= {year} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        Else
+            Dim year As Integer = Now.Year - 5
+
+            rs = New ADODB.Recordset
+            rs.Open($"select * from tbl_VPlus_Codes where year(DateExpired) > {year} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         End If
-        Dim year As Integer = Now.Year - 5
+
         Dim n As Integer = 0
-        rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_VPlus_Codes where year(DateExpired) > {year} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -663,8 +674,7 @@ Module ModMainExport
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_VPlus_Codes :" & pb.Maximum & "/" & pb.Value
                 Application.DoEvents()
-                If (IsNumeric(rs.Fields("Codes").Value) = True) Then
-
+                If IsNumeric(rs.Fields("Codes").Value) = True Then
 
                     Dim strSQL As String = $"INSERT INTO tbl_VPlus_Codes 
                                     (Codes,
@@ -720,14 +730,18 @@ Module ModMainExport
         End Try
     End Sub
     Private Sub Collect_tbl_VPlus_Codes_Validity(pb As ProgressBar, l As Label)
-        If gbl_Branches = True Then
-            Exit Sub
+        If gbl_AdjustmentOnly = True Then
+            Dim year As Integer = Now.Year - 1
+            rs = New ADODB.Recordset
+            rs.Open($"select tbl_VPlus_Codes_Validity.* from tbl_VPlus_Codes_Validity join tbl_VPlus_Codes on tbl_VPlus_Codes.codes = tbl_VPlus_Codes_Validity.codes  where year(tbl_VPlus_Codes.DateExpired) >= {year} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        Else
+            Dim year As Integer = Now.Year - 5
+            rs = New ADODB.Recordset
+            rs.Open($"select tbl_VPlus_Codes_Validity.* from tbl_VPlus_Codes_Validity join tbl_VPlus_Codes on tbl_VPlus_Codes.codes = tbl_VPlus_Codes_Validity.codes  where year(tbl_VPlus_Codes.DateExpired) > {year} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+
         End If
 
-        Dim year As Integer = Now.Year - 5
 
-        rs = New ADODB.Recordset
-        rs.Open($"select tbl_VPlus_Codes_Validity.* from tbl_VPlus_Codes_Validity join tbl_VPlus_Codes on tbl_VPlus_Codes.codes = tbl_VPlus_Codes_Validity.codes  where year(tbl_VPlus_Codes.DateExpired) > {year} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -761,7 +775,6 @@ Module ModMainExport
 
     End Sub
 
-
     Public Sub CreateTable_tbl_PCPOS_Cashiers_Changes(pb As ProgressBar, l As Label)
         Try
             Dim createTableSql As String = " CREATE TABLE tbl_PCPOS_Cashiers_Changes (
@@ -788,12 +801,16 @@ Module ModMainExport
             Exit Sub
         End If
 
-        If gbl_Branches = True Then
-            Exit Sub
+        If gbl_AdjustmentOnly = True Then
+            Dim dateTo As Date = Now.Date
+            Dim dateFrom As Date = dateTo.AddMonths(-1)
+            rs = New ADODB.Recordset
+            rs.Open($"select * from tbl_PCPOS_Cashiers_Changes WHERE EffectDate between '{dateFrom.ToShortDateString}' and '{dateTo.AddMonths(1).ToShortDateString}' ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        Else
+            rs = New ADODB.Recordset
+            rs.Open($"select * from tbl_PCPOS_Cashiers_Changes", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         End If
 
-        rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_PCPOS_Cashiers_Changes", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -859,7 +876,7 @@ Module ModMainExport
         Dim dateFrom As Date = dateTo.AddMonths(-1)
 
         rs = New ADODB.Recordset
-        rs.Open($"select top 1000 * from tbl_Items_Change where DateChange between '{dateFrom}' and '{dateTo}' order by dateChange desc", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select top 1000 * from tbl_Items_Change where DateChange between '{dateFrom.ToShortDateString}' and '{dateTo.AddMonths(1).ToShortDateString}' order by dateChange desc", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -1279,12 +1296,17 @@ Module ModMainExport
         End Try
     End Sub
     Private Sub Collect_tbl_Concession_PCR(pb As ProgressBar, l As Label)
-        If gbl_Branches = True Then
-            Exit Sub
+        If gbl_AdjustmentOnly = True Then
+            Dim dateTo As Date = Date.Now()
+            Dim dateFrom As Date = dateTo.AddMonths(-1)
+            rs = New ADODB.Recordset
+            rs.Open($"select * from tbl_Concession_PCR where ([EntryDate] between '{dateFrom.ToShortDateString}' and '{dateTo.ToShortDateString}') ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        Else
+            Dim year As Integer = Now.Year - 1
+            rs = New ADODB.Recordset
+            rs.Open($"select * from tbl_Concession_PCR where YYear >= '{year}' ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         End If
-        Dim year As Integer = Now.Year - 1
-        rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_Concession_PCR where YYear >= '{year}' ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -1480,12 +1502,21 @@ Module ModMainExport
     End Sub
 
     Private Sub Collect_tbl_Concession_PCR_Det(pb As ProgressBar, l As Label)
-        If gbl_Branches = True Then
-            Exit Sub
+        If gbl_AdjustmentOnly = True Then
+            Dim dateTo As Date = Date.Now()
+            Dim dateFrom As Date = dateTo.AddMonths(-1)
+
+            rs = New ADODB.Recordset
+            rs.Open($"select dd.* from [tbl_Concession_PCR_Det] as dd INNER JOIN tbl_Concession_PCR on tbl_Concession_PCR.PK = dd.ConcPCRKey WHERE (tbl_Concession_PCR.EntryDate between '{dateFrom.ToShortDateString}' and '{dateTo.ToShortDateString}') ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+
+        Else
+            Dim year As Integer = Now.Year - 1
+            rs = New ADODB.Recordset
+            rs.Open($"select dd.* from [tbl_Concession_PCR_Det] as dd INNER JOIN tbl_Concession_PCR on tbl_Concession_PCR.PK = dd.ConcPCRKey WHERE tbl_Concession_PCR.YYear >='{year}' ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+
         End If
-        Dim year As Integer = Now.Year - 1
-        rs = New ADODB.Recordset
-        rs.Open($"select dd.* from [tbl_Concession_PCR_Det] as dd INNER JOIN tbl_Concession_PCR on tbl_Concession_PCR.PK = dd.ConcPCRKey WHERE tbl_Concession_PCR.YYear >='{year}' ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+
+
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -1591,12 +1622,17 @@ Module ModMainExport
     End Sub
 
     Private Sub Collect_tbl_Concession_PCR_Effectivity(pb As ProgressBar, l As Label)
-        If gbl_Branches = True Then
-            Exit Sub
+        If gbl_AdjustmentOnly = True Then
+            Dim dateTo As Date = Date.Now()
+            Dim dateFrom As Date = dateTo.AddMonths(-1)
+            rs = New ADODB.Recordset
+            rs.Open($"select dd.* from tbl_Concession_PCR_Effectivity as dd INNER JOIN tbl_Concession_PCR on tbl_Concession_PCR.PK = dd.ConcPCRKey WHERE (tbl_Concession_PCR.EntryDate between '{dateFrom.ToShortDateString}' and '{dateTo.ToShortDateString}') ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        Else
+            Dim year As Integer = Now.Year - 1
+            rs = New ADODB.Recordset
+            rs.Open($"select dd.* from tbl_Concession_PCR_Effectivity as dd INNER JOIN tbl_Concession_PCR on tbl_Concession_PCR.PK = dd.ConcPCRKey WHERE  tbl_Concession_PCR.YYear >='{year}'  ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         End If
-        Dim year As Integer = Now.Year - 1
-        rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_Concession_PCR_Effectivity where YEAR(Effect_To) >= {year} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -1653,13 +1689,17 @@ Module ModMainExport
     End Sub
 
     Private Sub Collect_tbl_GiftCert_Changes(pb As ProgressBar, l As Label)
-        If gbl_Branches = True Then
-            Exit Sub
+        If gbl_AdjustmentOnly = True Then
+            Dim dateTo As Date = Date.Now()
+            Dim dateFrom As Date = dateTo.AddMonths(-1)
+            rs = New ADODB.Recordset
+            rs.Open($"select * from tbl_GiftCert_Changes WHERE ([EffectDate] between '{dateFrom.ToShortDateString}' and '{dateTo.AddMonths(1).ToShortDateString}')", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        Else
+            Dim year As Integer = Now.Year - 1
+            rs = New ADODB.Recordset
+            rs.Open($"select * from tbl_GiftCert_Changes ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         End If
-        Dim year As Integer = Now.Year - 1
 
-        rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_GiftCert_Changes ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -1750,15 +1790,18 @@ Module ModMainExport
     End Sub
     Private Sub Collect_tbl_VPlus_Codes_Changes(pb As ProgressBar, l As Label)
         If gbl_AdjustmentOnly = True Then
-            Exit Sub
-        End If
-        If gbl_Branches = True Then
-            Exit Sub
-        End If
-        Dim year As Integer = Now.Year - 1
+            Dim dateTo As Date = Date.Now()
+            Dim dateFrom As Date = dateTo.AddMonths(-1)
+            rs = New ADODB.Recordset
+            rs.Open($"select * from tbl_VPlus_Codes_Changes where (DateChange between '{dateFrom.ToShortDateString}' and '{dateTo.ToShortDateString}')  ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        Else
 
-        rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_VPlus_Codes_Changes where year(DateChange) >= {year}   ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+            Dim year As Integer = Now.Year - 1
+            rs = New ADODB.Recordset
+            rs.Open($"select * from tbl_VPlus_Codes_Changes where year(DateChange) >= {year}   ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        End If
+
+
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -1809,15 +1852,21 @@ Module ModMainExport
     End Sub
     Private Sub Collect_tbl_VPlus_Summary(pb As ProgressBar, l As Label)
         If gbl_AdjustmentOnly = True Then
-            Exit Sub
-        End If
-        If gbl_Branches = True Then
-            Exit Sub
-        End If
-        Dim year As Integer = Now.Year - 1
+            Dim dateTo As Date = Date.Now()
+            Dim dateFrom As Date = dateTo.AddMonths(-1)
 
-        rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_VPlus_Summary where year(TransDate) >= {year} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+            rs = New ADODB.Recordset
+            rs.Open($"select * from tbl_VPlus_Summary where ([TransDate] between '{dateFrom.ToShortDateString}' and '{dateTo.ToShortDateString}') ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        Else
+            Dim year As Integer = Now.Year - 1
+            rs = New ADODB.Recordset
+            rs.Open($"select * from tbl_VPlus_Summary where year(TransDate) >= {year} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+
+        End If
+
+
+
+
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -1868,8 +1917,7 @@ Module ModMainExport
                                             Codes TEXT(16) NOT NULL,
                                             POSName TEXT(3) NOT NULL,
                                             Used BYTE NOT NULL,
-                                            CreatedOn DATETIME NOT NULL
-                                        );"
+                                            CreatedOn DATETIME NOT NULL);"
 
             ConnLocal.Execute(createTableSql)
             Collect_tbl_VPlus_Codes_For_Offline(pb, l)
@@ -2320,8 +2368,6 @@ Module ModMainExport
             Exit Sub
         End If
 
-
-
         rs.CursorLocation = ADODB.CursorLocationEnum.adUseClient
         rs.Open($"select * from tbl_PS_E_Journal where [Counter] in ({CounterList}) and PsDate between '{FromDate}' and '{toDate}' and  year(PSDate) between {year} and {Now.Year}  ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
@@ -2553,7 +2599,7 @@ Module ModMainExport
 
         rs = New ADODB.Recordset
         rs.CursorLocation = ADODB.CursorLocationEnum.adUseClient
-        rs.Open($"select j.* from tbl_PS_GT_Adjustment_EJournal as j WHERE j.[Counter] in ({CounterList})  and j.PsDate between '{FromDate}' and '{ToDate}'  and  year(j.PsDate) between {year} and {Now.Year}  ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select j.* from tbl_PS_GT_Adjustment_EJournal as j WHERE j.[Counter] in ({CounterList})  and (j.PsDate between '{FromDate}' and '{ToDate}')  and  (year(j.PsDate) between {year} and {Now.Year})  ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -2663,7 +2709,7 @@ Module ModMainExport
     Private Sub Collect_tbl_PS_GT_Adjustment_EJournal_Detail(pb As ProgressBar, l As Label)
         Dim year As Integer = Now.Year - 1
         Dim ToDate As String = Now.Date.ToShortDateString()
-        Dim FromDate As String = Now.Date.AddMonths(-2).ToShortDateString()
+        Dim FromDate As String = Now.Date.AddMonths(-1).ToShortDateString()
 
         Dim CounterList As String = getCounterList()
 
@@ -2683,9 +2729,7 @@ Module ModMainExport
             While Not rs.EOF
                 pb.Value = pb.Value + 1
                 l.Text = "tbl_PS_GT_Adjustment_EJournal_Detail :" & pb.Maximum & "/" & pb.Value
-
                 Application.DoEvents()
-
                 Dim strSQL As String = $"INSERT INTO tbl_PS_GT_Adjustment_EJournal_Detail 
                                             (ID,
                                             TransactionNumber,
@@ -2830,8 +2874,9 @@ Module ModMainExport
             MessageBox.Show("Counter not found")
             Exit Sub
         End If
+
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_PaidOutTransactions  where MachineNo in ({CounterList}) and year(TransDate) >= {year} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_PaidOutTransactions  WHERE MachineNo IN ({CounterList}) and year(TransDate) >= {year} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -2885,7 +2930,6 @@ Module ModMainExport
         End If
 
     End Sub
-
 
     Public Sub CreateTable_tbl_PS_GT_History(pb As ProgressBar, l As Label)
 
@@ -2951,7 +2995,6 @@ Module ModMainExport
             Application.Exit()
         End Try
     End Sub
-
     Private Sub Collect_tbl_PS_GT_History(pb As ProgressBar, l As Label)
         Dim CounterList As String = getCounterList()
         If CounterList = "" Then
@@ -3100,7 +3143,6 @@ Module ModMainExport
             Application.Exit()
         End Try
     End Sub
-
     Private Sub Collect_tbl_PS_GT_Zero_Out(pb As ProgressBar, l As Label)
         Dim CounterList As String = getCounterList()
         If CounterList = "" Then
@@ -3135,6 +3177,7 @@ Module ModMainExport
             End While
         End If
     End Sub
+
     Public Sub CreateTable_tbl_CreditMemo(pb As ProgressBar, l As Label)
         Try
             Dim createTableSql As String = "CREATE TABLE tbl_CreditMemo (
@@ -3191,11 +3234,13 @@ Module ModMainExport
             MessageBox.Show("Counter not found")
             Exit Sub
         End If
-        Dim year As Integer = Now.Year - 1
+
+        Dim dateTo As Date = Date.Now()
+        Dim dateFrom As Date = dateTo.AddMonths(-1)
 
         Dim n As Integer = 0
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_CreditMemo  where YEAR(EntryDate) >= {year} and LEFT([POSNo_TransNo], CHARINDEX(' ', [POSNo_TransNo]) - 1) in ({CounterList})  ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_CreditMemo  where ([EntryDate] between '{dateFrom.ToShortDateString}' and '{dateTo.ToShortDateString}') and LEFT([POSNo_TransNo], CHARINDEX(' ', [POSNo_TransNo]) - 1) in ({CounterList})  ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -3278,9 +3323,7 @@ Module ModMainExport
                                                         '{fSqlFormat(rs.Fields("UpdatedBy").Value)}',
                                                          {fDateIsEmpty(rs.Fields("LastUpdated").Value.ToString())},
                                                          {fNum(rs.Fields("IsUsed").Value)} ,
-                                                         {fNum(rs.Fields("IsPrinted").Value)} 
-
-                                                );"
+                                                         {fNum(rs.Fields("IsPrinted").Value)} );"
 
                 ConnLocal.Execute(strSQL)
                 rs.MoveNext()
@@ -3288,6 +3331,7 @@ Module ModMainExport
         End If
 
     End Sub
+
     Public Sub CreateTable_tbl_HomeCredit_DeliveryAdvice(pb As ProgressBar, l As Label)
         Try
             Dim createTableSql As String = "CREATE TABLE tbl_HomeCredit_DeliveryAdvice (
@@ -3306,9 +3350,7 @@ Module ModMainExport
                                                             PreparedBy TEXT(100) NOT NULL,
                                                             LastUser TEXT(50),
                                                             DateModified DATETIME,
-                                                            DateCreated DATETIME NOT NULL
-                                                        );
-                                                        "
+                                                            DateCreated DATETIME NOT NULL);"
 
             ConnLocal.Execute(createTableSql)
             Collect_tbl_HomeCredit_DeliveryAdvice(pb, l)
@@ -3321,7 +3363,10 @@ Module ModMainExport
         Dim year As Integer = Now.Year - 1
         Dim n As Integer = 0
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_HomeCredit_DeliveryAdvice WHERE Year([Date]) >= {year} ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        Dim dateTo As Date = Date.Now()
+        Dim dateFrom As Date = dateTo.AddMonths(-1)
+
+        rs.Open($"SELECT * FROM tbl_HomeCredit_DeliveryAdvice WHERE  ([Date] between '{dateFrom.ToShortDateString}' and '{dateTo.ToShortDateString}') ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -3371,6 +3416,7 @@ Module ModMainExport
         End If
 
     End Sub
+
     Public Sub CreateTable_tbl_PS_MiscPay_Tmp(pb As ProgressBar, l As Label)
 
         Try
@@ -3414,11 +3460,12 @@ Module ModMainExport
             Exit Sub
         End If
 
-        Dim year As Integer = Now.Year - 1
+        Dim dateTo As Date = Date.Now()
+        Dim dateFrom As Date = dateTo.AddMonths(-1)
         Dim n As Integer = 0
 
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_PS_MiscPay_Tmp  where year(PSDate) >= {year} and [Counter] IN ({CounterList}) ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"SELECT * FROM tbl_PS_MiscPay_Tmp  WHERE (PSDate BETWEEN '{dateFrom.ToShortDateString}' and '{dateTo.ToShortDateString}') and [Counter] IN ({CounterList}) ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
@@ -3451,8 +3498,7 @@ Module ModMainExport
                                                     POSTableKey,
                                                     AmountAct,
                                                     [Tax],
-                                                    BankComm
-)
+                                                    BankComm)
                                                 VALUES ({fNum(rs.Fields("PK").Value)},      
                                                 '{fSqlFormat(rs.Fields("TransactionNumber").Value)}',
                                                  {fNum(rs.Fields("Line").Value)},
@@ -3527,9 +3573,11 @@ Module ModMainExport
 
         Dim year As Integer = Now.Year - 1
         Dim n As Integer = 0
+        Dim dateTo As Date = Date.Now()
+        Dim dateFrom As Date = dateTo.AddMonths(-1)
 
         rs = New ADODB.Recordset
-        rs.Open($"select * from tbl_PS_MiscPay where year(PSDate) >= {year} and [Counter] IN ({CounterList}) ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
+        rs.Open($"select * from tbl_PS_MiscPay where (PSDate between '{dateFrom.ToShortDateString}' and '{dateTo.ToShortDateString}') and [Counter] IN ({CounterList}) ", ConnServer, ADODB.CursorTypeEnum.adOpenStatic)
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0

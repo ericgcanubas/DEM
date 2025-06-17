@@ -2,7 +2,7 @@
 Imports System.IO
 Public Class FrmBranch
 
-    Dim GetReference As Integer
+    Dim GetReference As Double
 
     <DllImport("user32.dll")>
     Public Shared Function ReleaseCapture() As Boolean
@@ -147,9 +147,6 @@ Public Class FrmBranch
                         ConnLocal.Close()
                         Exit Sub
                     End If
-
-
-
 
                     EnableControl(False)
 
@@ -303,7 +300,7 @@ Public Class FrmBranch
         Dim rx As New ADODB.Recordset
         rx.Open($"SELECT * FROM [tbl_upload_log] WHERE [Counter] = '{gbl_Counter}'", ConnTemp, ADODB.CursorTypeEnum.adOpenStatic)
         If rx.RecordCount <> 0 Then
-            GetReference = Val(rx.Fields("Reference").Value)
+            GetReference = Val(rx.Fields("Reference").Value.ToString())
         Else
             GetReference = 0
         End If

@@ -1,7 +1,7 @@
 ﻿Imports ADODB
 Module ModMainImport
 
-    Public MainImportReference As Integer
+    Public MainImportReference As Double
     Public Sub Insert_tbl_PCPOS_Cashiers(pb As ProgressBar, l As Label)
 
         rs = New ADODB.Recordset
@@ -2381,7 +2381,8 @@ Module ModMainImport
             Dim rx As New Recordset
             rx.Open($"SELECT * FROM tbl_info WHERE [Counter]='Main'", ConnLocal, CursorTypeEnum.adOpenStatic)
             If rx.RecordCount <> 0 Then
-                MainImportReference = Val(rs.Fields("Reference").Value)
+
+                MainImportReference = Val(rx.Fields("Reference").Value.ToString())
                 isHave = True
             Else
                 MainImportReference = 0
@@ -2632,7 +2633,9 @@ Module ModMainImport
 
         Dim n As Integer = 0
         rs = New ADODB.Recordset
-        rs.Open($"SELECT * FROM tbl_CreditMemo  WHERE LEFT([POSNo_TransNo], CHARINDEX(' ', [POSNo_TransNo]) - 1) = '{gbl_Counter}' ", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
+
+        rs.Open($"SELECT * FROM tbl_CreditMemo WHERE Left([POSNo_TransNo], Instr([POSNo_TransNo], ' ') - 1) = '{gbl_Counter}'", ConnLocal, ADODB.CursorTypeEnum.adOpenStatic)
+
         pb.Maximum = rs.RecordCount
         pb.Value = 0
         pb.Minimum = 0
